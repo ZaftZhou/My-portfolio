@@ -2,8 +2,7 @@
   "personalInfo": {
     "name": "Zhou Bowen",
     "title": "Unity3D Developer & Technical Artist",
-    "bio": "Unity developer and hybrid generalist with a strong 3D art background. On the code side I focus on event-driven, data-driven systems in Unity and C# – using ScriptableObject-based data models, 
-    state machines and decoupled services for gameplay, UI and AI – and I often build editor tools and small frameworks to simplify workflows and reduce repetitive work. Because I’ve done 3D modelling and texturing myself, I understand artists’ constraints and design pipelines and shaders that fit real production needs.",
+    "bio": "Unity developer and hybrid generalist with a strong 3D art background. On the code side I focus on event-driven, data-driven systems in Unity and C# – using ScriptableObject-based data models, state machines and decoupled services for gameplay, UI and AI – and I often build editor tools and small frameworks to simplify workflows and reduce repetitive work. Because I’ve done 3D modelling and texturing myself, I understand artists’ constraints and design pipelines and shaders that fit real production needs.",
     "location": "Turku, Finland",
     "email": "your.email@example.com",
     "phone": "+358 415710055",
