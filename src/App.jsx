@@ -441,42 +441,42 @@ const CentralNeuralNetwork = () => {
       ctx.clearRect(0, 0, width, height);
       time += 1;
 
-      // Central neuron node
+      // Draw orbital paths
+      skills.forEach((skill) => {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, skill.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.15)');
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // Central glowing core
       const centralPulse = (Math.sin(time * 0.03) + 1) / 2;
-      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 50 + centralPulse * 10);
-      centralGlow.addColorStop(0, 'rgba(34, 211, 238, 0.4)');
-      centralGlow.addColorStop(0.5, 'rgba(34, 211, 238, 0.15)');
+      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 40 + centralPulse * 10);
+      centralGlow.addColorStop(0, 'rgba(34, 211, 238, 0.6)');
+      centralGlow.addColorStop(0.5, 'rgba(34, 211, 238, 0.3)');
       centralGlow.addColorStop(1, 'rgba(34, 211, 238, 0)');
       ctx.fillStyle = centralGlow;
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 50 + centralPulse * 10, 0, Math.PI * 2);
+      ctx.arc(centerX, centerY, 40 + centralPulse * 10, 0, Math.PI * 2);
       ctx.fill();
 
-      // Central node body
+      // Central core
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 25, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+      ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+      ctx.fillStyle = '#0f172a';
       ctx.fill();
       ctx.strokeStyle = '#22d3ee';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2;
       ctx.stroke();
-
-      // Inner pulse
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 15 + centralPulse * 5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(34, 211, 238, ${0.3 + centralPulse * 0.3})`;
-      ctx.fill();
 
       // Update node positions
       nodePositions.current = [];
 
       skills.forEach((skill, index) => {
         const angle = time * skill.speed + skill.offset;
-        const floatX = Math.cos(time * 0.015 + index) * 5;
-        const floatY = Math.sin(time * 0.015 + index) * 5;
-
-        const x = centerX + Math.cos(angle) * skill.radius + floatX;
-        const y = centerY + Math.sin(angle) * skill.radius + floatY;
+        const x = centerX + Math.cos(angle) * skill.radius;
+        const y = centerY + Math.sin(angle) * skill.radius;
 
         nodePositions.current.push({ x, y, skill });
 
@@ -494,107 +494,32 @@ const CentralNeuralNetwork = () => {
 
         const pulse = (Math.sin(time * 0.04 + index) + 1) / 2;
 
-        // Synaptic connection (neural pathway)
+        // Planet glow
+        const nodeSize = isHovered ? skill.size + 4 : skill.size;
+        const glowSize = nodeSize * 2.5;
+        const planetGlow = ctx.createRadialGradient(x, y, 0, x, y, glowSize);
+        planetGlow.addColorStop(0, skill.color.replace('rgb', 'rgba').replace(')', `, ${isHovered ? 0.5 : 0.3})`));
+        planetGlow.addColorStop(0.5, skill.color.replace('rgb', 'rgba').replace(')', `, ${isHovered ? 0.3 : 0.15})`));
+        planetGlow.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', ', 0)'));
+        ctx.fillStyle = planetGlow;
         ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-
-        // Multiple waypoints for organic neural path
-        const midX = (centerX + x) / 2;
-        const midY = (centerY + y) / 2;
-        const wave1X = midX + Math.sin(time * 0.02 + index) * 30;
-        const wave1Y = midY + Math.cos(time * 0.02 + index) * 30;
-
-        ctx.bezierCurveTo(
-          centerX + (wave1X - centerX) * 0.3, centerY + (wave1Y - centerY) * 0.3,
-          wave1X, wave1Y,
-          x, y
-        );
-
-        // Dynamic synapse strength
-        const baseAlpha = isHovered ? 0.5 : 0.2;
-        const synapseAlpha = baseAlpha + pulse * 0.2;
-
-        const gradient = ctx.createLinearGradient(centerX, centerY, x, y);
-        gradient.addColorStop(0, `rgba(34, 211, 238, ${synapseAlpha * 0.3})`);
-        gradient.addColorStop(0.5, skill.color.replace('rgb', 'rgba').replace(')', `, ${synapseAlpha})`));
-        gradient.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', `, ${synapseAlpha * 0.6})`));
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = isHovered ? 2 : 1.2;
-        ctx.stroke();
-
-        // Neurotransmitter particles traveling along synapse
-        const transmitterCount = isHovered ? 3 : 1;
-        for (let i = 0; i < transmitterCount; i++) {
-          const progress = ((time * 2 + i * 20) % 100) / 100;
-          const t = progress;
-
-          // Bezier curve position calculation
-          const transmitterX =
-            Math.pow(1-t, 3) * centerX +
-            3 * Math.pow(1-t, 2) * t * (centerX + (wave1X - centerX) * 0.3) +
-            3 * (1-t) * Math.pow(t, 2) * wave1X +
-            Math.pow(t, 3) * x;
-
-          const transmitterY =
-            Math.pow(1-t, 3) * centerY +
-            3 * Math.pow(1-t, 2) * t * (centerY + (wave1Y - centerY) * 0.3) +
-            3 * (1-t) * Math.pow(t, 2) * wave1Y +
-            Math.pow(t, 3) * y;
-
-          ctx.beginPath();
-          ctx.arc(transmitterX, transmitterY, 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = skill.color;
-          ctx.fill();
-
-          // Particle glow
-          ctx.beginPath();
-          ctx.arc(transmitterX, transmitterY, 5, 0, Math.PI * 2);
-          ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.2)');
-          ctx.fill();
-        }
-
-        // Neuron node
-        const nodeSize = isHovered ? skill.size + 6 : skill.size;
-        const nodeGlow = ctx.createRadialGradient(x, y, 0, x, y, nodeSize * 3);
-        nodeGlow.addColorStop(0, skill.color.replace('rgb', 'rgba').replace(')', `, ${isHovered ? 0.4 : 0.2})`));
-        nodeGlow.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', ', 0)'));
-        ctx.fillStyle = nodeGlow;
-        ctx.beginPath();
-        ctx.arc(x, y, nodeSize * 3, 0, Math.PI * 2);
+        ctx.arc(x, y, glowSize, 0, Math.PI * 2);
         ctx.fill();
 
-        // Node body
+        // Planet body
         ctx.beginPath();
         ctx.arc(x, y, nodeSize, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+        ctx.fillStyle = '#0f172a';
         ctx.fill();
         ctx.strokeStyle = skill.color;
-        ctx.lineWidth = isHovered ? 2.5 : 1.8;
+        ctx.lineWidth = isHovered ? 2.5 : 2;
         ctx.stroke();
 
-        // Inner nucleus
+        // Inner glow
         ctx.beginPath();
-        ctx.arc(x, y, nodeSize * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', `, ${0.5 + pulse * 0.3})`);
+        ctx.arc(x, y, nodeSize * 0.6, 0, Math.PI * 2);
+        ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', `, ${0.4 + pulse * 0.3})`);
         ctx.fill();
-
-        // Dendrite spikes (small branches)
-        if (isHovered) {
-          for (let i = 0; i < 6; i++) {
-            const spikeAngle = (Math.PI * 2 / 6) * i + time * 0.02;
-            const spikeLength = 8 + Math.sin(time * 0.1 + i) * 3;
-            const spikX = x + Math.cos(spikeAngle) * (nodeSize + spikeLength);
-            const spikY = y + Math.sin(spikeAngle) * (nodeSize + spikeLength);
-
-            ctx.beginPath();
-            ctx.moveTo(x + Math.cos(spikeAngle) * nodeSize, y + Math.sin(spikeAngle) * nodeSize);
-            ctx.lineTo(spikX, spikY);
-            ctx.strokeStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.5)');
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
 
         // Label
         ctx.font = isHovered ? 'bold 13px "JetBrains Mono", monospace' : '11px "JetBrains Mono", monospace';
@@ -808,15 +733,13 @@ const useScrollFadeIn = () => {
   return [ref, isVisible];
 };
 
-// 🌟 Typewriter Title Component
+// 🌟 Static Title Component
 const TypewriterTitle = () => {
   const fullText = `I am ${PERSONAL_INFO.name}`;
-  const [displayText, isComplete] = useTypewriter(fullText, 80);
 
   return (
-    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white min-h-[1.2em]">
-      {displayText}
-      {!isComplete && <span className="animate-pulse text-cyan-400">|</span>}
+    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">
+      {fullText}
     </h1>
   );
 };
@@ -1039,11 +962,23 @@ const PortfolioHeader = () => {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
       }`}
     >
-      <div>
-        <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
-          <Layers className="text-cyan-500" /> Selected Works
-        </h2>
-        <p className="text-slate-400">Click on any project to view the full breakdown.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-4">
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+            <Layers className="text-cyan-500" /> Selected Works
+          </h2>
+          <p className="text-slate-400">Click on any project to view the full breakdown.</p>
+        </div>
+        <div className="flex flex-col items-start md:items-end">
+          <p className="text-slate-500 text-xs font-bold mb-4 uppercase tracking-[0.2em]">Technical Arsenal</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 opacity-70 max-w-md justify-start md:justify-end">
+            {['Unity 3D', 'C#', 'HLSL', 'Shader Graph', 'Blender', 'Substance Painter', 'ZBrush', 'Git'].map((skill) => (
+              <span key={skill} className="text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors cursor-default">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1581,15 +1516,6 @@ const App = () => {
           </div>
         </div>
       </section>
-
-      <div className="border-y border-slate-800 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto px-4 py-10">
-          <p className="text-center text-slate-500 text-xs font-bold mb-8 uppercase tracking-[0.2em]">Technical Arsenal</p>
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 opacity-70">
-            {['Unity 3D', 'C#', 'HLSL', 'Shader Graph', 'Blender', 'Substance Painter', 'ZBrush', 'Git'].map((skill) => <span key={skill} className="text-lg font-semibold text-slate-300 hover:text-cyan-400 transition-colors cursor-default">{skill}</span>)}
-          </div>
-        </div>
-      </div>
 
       <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative z-10">
         <PortfolioHeader />
