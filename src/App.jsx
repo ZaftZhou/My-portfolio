@@ -738,217 +738,270 @@ const ProjectCard = ({ project, onClick }) => {
  * 📄 RESUME VIEW COMPONENT (Integrated from CV HTML)
  * ================================================================================
  */
+
 const ResumeView = () => {
   const handlePrint = () => {
     window.print();
   };
 
+  const highlightedProjects = PROJECTS_DATA.slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-[#0f172a] pt-24 pb-20 px-4 sm:px-6 lg:px-8 animate-in fade-in zoom-in duration-300">
+    <div className="relative min-h-screen bg-[#0f172a] pt-12 pb-16 animate-in fade-in zoom-in duration-300">
 
-      {/* Resume Container */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 print:max-w-none print:w-full">
+      <div className="absolute inset-0 pointer-events-none opacity-80">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(34,211,238,0.08),transparent_35%),radial-gradient(circle_at_80%_0,rgba(236,72,153,0.06),transparent_30%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:120px_120px]" />
+      </div>
 
-        {/* Left Sidebar */}
-        <aside className="w-full md:w-80 flex-shrink-0 space-y-8">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 print:max-w-none print:w-full">
 
-          {/* Contact */}
-          <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// CONTACT</h3>
-            <div className="space-y-2 text-sm font-mono">
-              <div className="flex items-start gap-2 text-slate-400">
-                <MapPin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span>{PERSONAL_INFO.location}</span>
-              </div>
-              <div className="flex items-start gap-2 text-slate-400">
-                <Mail size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span className="break-all">{PERSONAL_INFO.email}</span>
-              </div>
-              <div className="flex items-start gap-2 text-slate-400">
-                <Phone size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span>{PERSONAL_INFO.phone}</span>
-              </div>
-              <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <Linkedin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span className="break-all">linkedin.com/in/bowen-zhou-87b616251</span>
-              </a>
-              <a href={PERSONAL_INFO.socials.artstation} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <ExternalLink size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span>dreamzhou.artstation.com</span>
-              </a>
-              <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <Github size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                <span>github.com/ZaftZhou</span>
-              </a>
-            </div>
-          </div>
+        <div className="flex items-center justify-between pt-6 mb-4 print:hidden">
+          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-slate-500">cv_layout.v2</span>
+          <button onClick={handlePrint} className="inline-flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-lg border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 transition-colors">
+            <Printer size={16} /> Print / Save
+          </button>
+        </div>
 
-          {/* Education */}
-          <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// EDUCATION</h3>
-            <div className="space-y-4">
-              {EDUCATION_DATA.map((edu, idx) => (
-                <div key={idx} className="text-sm font-mono">
-                  <div className="font-bold text-white">{edu.school}</div>
-                  <div className="text-green-400 mt-1">{edu.degree}</div>
-                  <div className="text-slate-500 text-xs mt-1">{edu.year}</div>
+        <div className="grid grid-cols-12 gap-6 items-start">
+
+          {/* Left Sidebar */}
+          <aside className="col-span-12 md:col-span-3 space-y-6 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-xl shadow-cyan-900/20">
+
+            {/* Contact */}
+            <div className="space-y-3">
+              <h3 className="text-pink-400 text-xs font-bold uppercase tracking-widest font-mono flex items-center gap-2">// Contact</h3>
+              <div className="space-y-2 text-sm font-mono">
+                <div className="flex items-start gap-2 text-slate-300">
+                  <MapPin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <span>{PERSONAL_INFO.location}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tech Stack */}
-          <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// TECH_STACK</h3>
-            <div className="flex flex-wrap gap-2">
-              {['C#', 'Unity', 'FSM/AI', 'ShaderGraph', 'Blender', 'ZBrush', 'Git', 'Rider', 'HLSL'].map(skill => (
-                <span key={skill} className="px-2 py-1 bg-slate-800/50 border border-slate-700 rounded text-xs font-mono text-yellow-300 hover:border-cyan-500 hover:text-cyan-400 transition-colors">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Languages */}
-          <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// LANGUAGES</h3>
-            <div className="space-y-2 text-sm font-mono">
-              <div className="flex justify-between text-slate-400">
-                <span>Chinese</span>
-                <span className="text-slate-600">Native</span>
-              </div>
-              <div className="flex justify-between text-slate-400">
-                <span>English</span>
-                <span className="text-slate-600">Fluent</span>
-              </div>
-              <div className="flex justify-between text-slate-400">
-                <span>Finnish</span>
-                <span className="text-slate-600">Basic</span>
+                <div className="flex items-start gap-2 text-slate-300">
+                  <Mail size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <span className="break-all">{PERSONAL_INFO.email}</span>
+                </div>
+                <div className="flex items-start gap-2 text-slate-300">
+                  <Phone size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <span>{PERSONAL_INFO.phone}</span>
+                </div>
+                <div className="flex items-start gap-2 text-slate-300">
+                  <Github size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <a href={PERSONAL_INFO.socials.github} className="hover:text-white underline underline-offset-2 decoration-cyan-400">{PERSONAL_INFO.socials.github}</a>
+                </div>
+                <div className="flex items-start gap-2 text-slate-300">
+                  <Linkedin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <a href={PERSONAL_INFO.socials.linkedin} className="hover:text-white underline underline-offset-2 decoration-cyan-400">{PERSONAL_INFO.socials.linkedin}</a>
+                </div>
+                <div className="flex items-start gap-2 text-slate-300">
+                  <Palette size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <a href={PERSONAL_INFO.socials.artstation} className="hover:text-white underline underline-offset-2 decoration-cyan-400">{PERSONAL_INFO.socials.artstation}</a>
+                </div>
               </div>
             </div>
-          </div>
-        </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 space-y-8">
-
-          {/* Header */}
-          <header className="space-y-3">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white font-mono uppercase">
-              {PERSONAL_INFO.name.toUpperCase()}
-            </h1>
-            <div className="text-lg font-mono">
-              <span className="text-pink-400">class</span>{' '}
-              <span className="text-cyan-400 font-bold">UnityDeveloper</span>{' '}
-              <span className="text-slate-400">:</span>{' '}
-              <span className="text-green-400">TechnicalGeneralist</span>
-            </div>
-          </header>
-
-          {/* Abstract */}
-          <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-3 font-mono flex items-center gap-2">
-              <Terminal size={14} className="text-cyan-400" /> 01. ABSTRACT
-            </h2>
-            <div className="border-l-2 border-cyan-500 pl-4 py-2">
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {PERSONAL_INFO.bio}
-              </p>
-            </div>
-          </section>
-
-          {/* Projects */}
-          <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Code size={14} className="text-cyan-400" /> 02. PROJECTS
-            </h2>
-            <div className="space-y-6 border-l-2 border-slate-700 pl-6">
-              {PROJECTS_DATA.slice(0, 3).map((project, idx) => (
-                <div key={project.id} className="relative">
-                  <div className={`absolute -left-[27px] top-2 w-3 h-3 rounded-full ${idx === 0 ? 'bg-cyan-500' : 'bg-slate-600'}`}></div>
-
-                  <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
-                      <h3 className="text-lg font-bold text-white font-mono">{project.title}</h3>
-                      <span className="text-xs text-slate-500 font-mono">{project.details?.duration}</span>
+            {/* Education */}
+            <div className="space-y-3">
+              <h3 className="text-pink-400 text-xs font-bold uppercase tracking-widest font-mono flex items-center gap-2">// Education</h3>
+              <div className="space-y-3">
+                {EDUCATION_DATA.map((edu, idx) => (
+                  <div key={idx} className="text-sm text-slate-200 font-mono space-y-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="text-white font-semibold">{edu.school}</div>
+                      <span className="text-[10px] text-amber-300 bg-amber-300/10 px-2 py-0.5 rounded-full border border-amber-400/30">{edu.year}</span>
                     </div>
-                    <div className="text-xs text-green-400 font-mono mb-2">{project.details?.role}</div>
+                    <div className="text-slate-400">{edu.degree}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-400 mt-0.5">&gt;</span>
-                        <div>
-                          <span className="text-green-400 font-mono font-semibold">
-                            {project.details?.features?.[0]?.split(' ')[0]}:
-                          </span>
-                          <span className="text-slate-400 ml-1">{project.details?.solution}</span>
-                        </div>
+            {/* Tech Stack */}
+            <div className="space-y-3">
+              <h3 className="text-pink-400 text-xs font-bold uppercase tracking-widest font-mono flex items-center gap-2">// Tech_Stack</h3>
+              <div className="flex flex-wrap gap-2">
+                {["Unity3D", "C#", "HLSL", "Render Pipeline", "Shader Graph", "Blender", "Substance", "ZBrush"]
+                  .map((skill) => (
+                    <span key={skill} className="px-3 py-1 bg-slate-800 text-cyan-300 rounded text-[11px] font-mono border border-cyan-500/30 shadow-sm shadow-cyan-500/10">
+                      {skill}
+                    </span>
+                  ))}
+              </div>
+            </div>
+
+            {/* Languages */}
+            <div className="space-y-2">
+              <h3 className="text-pink-400 text-xs font-bold uppercase tracking-widest font-mono flex items-center gap-2">// Languages</h3>
+              <div className="flex flex-wrap gap-2">
+                {["Chinese", "English", "German", "Russian"].map((lang) => (
+                  <span key={lang} className="px-3 py-1 bg-slate-800 text-amber-200 rounded text-[11px] font-mono border border-amber-500/30 shadow-sm shadow-amber-500/10">
+                    {lang}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main className="col-span-12 md:col-span-6 space-y-8">
+
+            {/* Header */}
+            <header className="space-y-2">
+              <h1 className="text-5xl md:text-6xl font-black tracking-tight text-white font-mono uppercase drop-shadow-[0_10px_40px_rgba(34,211,238,0.2)]">
+                {PERSONAL_INFO.name.toUpperCase()}
+              </h1>
+              <div className="text-lg font-mono">
+                <span className="text-pink-400">class</span>{' '}
+                <span className="text-cyan-400 font-bold">UnityDeveloper</span>{' '}
+                <span className="text-slate-400">:</span>{' '}
+                <span className="text-green-400">TechnicalGeneralist</span>
+              </div>
+            </header>
+
+            {/* Abstract */}
+            <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg shadow-cyan-900/10">
+              <div className="flex items-center gap-2 text-yellow-300 text-xs font-bold uppercase tracking-[0.2em] font-mono mb-3">
+                <Terminal size={14} className="text-cyan-400" /> 01. Abstract
+              </div>
+              <div className="border-l-2 border-cyan-500/70 pl-4">
+                <p className="text-sm text-slate-200 leading-relaxed">
+                  {PERSONAL_INFO.bio}
+                </p>
+              </div>
+            </section>
+
+            {/* Projects */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 text-yellow-300 text-xs font-bold uppercase tracking-[0.2em] font-mono">
+                <Code size={14} className="text-cyan-400" /> 02. Projects
+              </div>
+              <div className="space-y-5">
+                {highlightedProjects.map((project, idx) => (
+                  <div key={project.id} className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-900/40 to-slate-900/70 p-5 shadow-lg shadow-cyan-900/10">
+                    <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-cyan-400 via-slate-500 to-transparent" />
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <div className="text-[10px] uppercase text-slate-500 font-semibold tracking-[0.2em]">project_{idx + 1}</div>
+                        <h3 className="text-xl font-bold text-white font-mono">{project.title}</h3>
+                        <div className="text-xs text-green-400 font-mono mt-1">{project.details?.role}</div>
                       </div>
+                      <span className="text-xs text-slate-400 font-mono bg-slate-800 px-2 py-1 rounded border border-slate-700">{project.details?.duration}</span>
+                    </div>
 
-                      {project.details?.features?.slice(1).map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-2">
-                          <span className="text-green-400 mt-0.5">&gt;</span>
-                          <span className="text-slate-400">{feature}</span>
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="px-2 py-1 text-[11px] bg-slate-800 text-slate-200 rounded border border-slate-700 font-mono">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <p className="text-sm text-slate-300 mt-3 leading-relaxed">{project.description}</p>
+
+                    <div className="mt-3 space-y-2">
+                      {project.details?.features?.map((feature, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2 text-sm text-slate-200">
+                          <span className="text-green-400 font-mono">&gt;</span>
+                          <span className="text-slate-300 leading-relaxed">{feature}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
 
-          {/* Work History */}
-          <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Briefcase size={14} className="text-cyan-400" /> 03. WORK_HISTORY
-            </h2>
-            <div className="space-y-6 border-l-2 border-slate-700 pl-6">
-              {EXPERIENCE_DATA.map((exp, idx) => (
-                <div key={idx} className="relative">
-                  <div className={`absolute -left-[27px] top-2 w-3 h-3 rounded-full ${idx === 0 ? 'bg-pink-500' : 'bg-slate-600'}`}></div>
-
-                  <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
-                      <h3 className="text-lg font-bold text-white font-mono">{exp.company}</h3>
-                      <span className="text-xs text-slate-500 font-mono">{exp.period}</span>
+            {/* Work History */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 text-yellow-300 text-xs font-bold uppercase tracking-[0.2em] font-mono">
+                <Briefcase size={14} className="text-cyan-400" /> 03. Work_History
+              </div>
+              <div className="space-y-6">
+                {EXPERIENCE_DATA.map((exp, idx) => (
+                  <div key={idx} className="grid grid-cols-[auto,1fr,auto] gap-4 items-start">
+                    <div className="h-full flex flex-col items-center">
+                      <div className={`w-3 h-3 rounded-full ${idx === 0 ? 'bg-pink-500' : 'bg-slate-500'}`}></div>
+                      {idx !== EXPERIENCE_DATA.length - 1 && <div className="flex-1 w-px bg-slate-700"></div>}
                     </div>
-                    <div className="text-xs text-green-400 font-mono mb-2">{exp.role}</div>
-                    <p className="text-sm text-slate-400 leading-relaxed">{exp.description}</p>
+                    <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 shadow-inner shadow-slate-900/40">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                        <h3 className="text-lg font-bold text-white font-mono">{exp.company}</h3>
+                        <span className="text-xs text-slate-400 font-mono">{exp.period}</span>
+                      </div>
+                      <div className="text-xs text-green-400 font-mono mt-1 mb-2">{exp.role}</div>
+                      <p className="text-sm text-slate-300 leading-relaxed">{exp.description}</p>
+                    </div>
+                    <span className="text-[11px] text-slate-500 font-mono uppercase tracking-[0.2em] pt-1">{`0${idx + 1}`}</span>
                   </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Strengths */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 text-yellow-300 text-xs font-bold uppercase tracking-[0.2em] font-mono">
+                <Zap size={14} className="text-cyan-400" /> 04. Strengths
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-slate-800 rounded-xl shadow-lg shadow-cyan-900/10">
+                  <h3 className="text-pink-400 font-bold text-sm mb-2 font-mono">System-Oriented</h3>
+                  <p className="text-xs text-slate-200 leading-relaxed">
+                    Prefers building reusable systems and tools over one-off scripts. Cares deeply about architecture and maintainability.
+                  </p>
                 </div>
-              ))}
-            </div>
-          </section>
+                <div className="p-4 bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-slate-800 rounded-xl shadow-lg shadow-emerald-900/10">
+                  <h3 className="text-green-400 font-bold text-sm mb-2 font-mono">Cross-Disciplinary</h3>
+                  <p className="text-xs text-slate-200 leading-relaxed">
+                    Communicates with artists and engineers, translating between visual language and technical constraints to move teams faster.
+                  </p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-slate-800 rounded-xl shadow-lg shadow-cyan-900/10">
+                  <h3 className="text-cyan-400 font-bold text-sm mb-2 font-mono">Self-Learner</h3>
+                  <p className="text-xs text-slate-200 leading-relaxed">
+                    Constantly dissecting new tech (HardMesh, ZBrush, HDRP) and applying it to practical prototypes.
+                  </p>
+                </div>
+              </div>
+            </section>
 
-          {/* Strengths */}
-          <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Zap size={14} className="text-cyan-400" /> 04. STRENGTHS
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-pink-400 font-bold text-sm mb-2 font-mono">System-Oriented</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Prefers building reusable systems and tools over one-off scripts. Cares about architecture.
-                </p>
-              </div>
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-green-400 font-bold text-sm mb-2 font-mono">Cross-Disciplinary</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Can talk with artists and engineers, translating between visual language and technical constraints.
-                </p>
-              </div>
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-cyan-400 font-bold text-sm mb-2 font-mono">Self-Learner</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Constantly dissecting new tech (HardMesh, ZBrush, HDRP) and applying it to practical prototypes.
-                </p>
+          </main>
+
+          {/* Right Column */}
+          <aside className="col-span-12 md:col-span-3 space-y-6">
+            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg shadow-cyan-900/20">
+              <div className="text-[10px] uppercase text-pink-400 font-bold tracking-[0.2em] font-mono mb-2">RESPONSIBILITY</div>
+              <div className="space-y-4">
+                {highlightedProjects.map((project) => (
+                  <div key={project.id} className="border-b border-slate-800 pb-4 last:border-0 last:pb-0">
+                    <h3 className="text-lg font-mono font-bold text-white leading-tight">{project.title}</h3>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="px-2 py-1 text-[11px] bg-slate-800 text-cyan-200 rounded border border-cyan-500/30 font-mono">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </section>
 
-        </main>
+            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg shadow-pink-900/20">
+              <div className="text-[10px] uppercase text-pink-400 font-bold tracking-[0.2em] font-mono mb-2">Takeaways</div>
+              <div className="space-y-4">
+                {highlightedProjects.map((project, idx) => (
+                  <div key={project.id} className="space-y-2 border-b border-slate-800 pb-4 last:border-0 last:pb-0">
+                    <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
+                      <span className="text-slate-300">{project.title}</span>
+                      <span className="text-[10px] text-slate-500">0{idx + 1}</span>
+                    </div>
+                    <p className="text-sm text-slate-200 leading-relaxed">{project.details?.solution}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+        </div>
       </div>
 
       {/* Floating Print Button */}
@@ -976,7 +1029,7 @@ const ResumeView = () => {
             width: 100%;
             margin: 0;
           }
-          .print\\:hidden {
+          .print\:hidden {
             display: none !important;
           }
           * {
