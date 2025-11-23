@@ -2,10 +2,11 @@
   "personalInfo": {
     "name": "Zhou Bowen",
     "title": "Unity3D Developer & Technical Artist",
-    "bio": "Unity developer and technical generalist with a dual background in Mechatronics and IT. Technically focused on building structured systems in Unity and C# (AI, dialogue, character frameworks, shaders). Aiming for a strong mid-level role with senior potential in architecture and tools.",
+    "bio": "Unity developer and hybrid generalist with a strong 3D art background. On the code side I focus on event-driven, data-driven systems in Unity and C# – using ScriptableObject-based data models, 
+    state machines and decoupled services for gameplay, UI and AI – and I often build editor tools and small frameworks to simplify workflows and reduce repetitive work. Because I’ve done 3D modelling and texturing myself, I understand artists’ constraints and design pipelines and shaders that fit real production needs.",
     "location": "Turku, Finland",
     "email": "your.email@example.com",
-    "phone": "+358 XX XXX XXXX",
+    "phone": "+358 415710055",
     "socials": {
       "github": "https://github.com/ZaftZhou",
       "linkedin": "https://linkedin.com/in/bowen-zhou-87b616251",
