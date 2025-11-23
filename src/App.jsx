@@ -1116,40 +1116,40 @@ const ResumeView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] pt-24 pb-20 px-4 sm:px-6 lg:px-8 animate-in fade-in zoom-in duration-300">
+    <div className="min-h-screen bg-[#282a36] pt-24 pb-20 px-4 sm:px-6 lg:px-8 animate-in fade-in zoom-in duration-300">
 
-      {/* Resume Container */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 print:max-w-none print:w-full">
+      {/* Resume Container - README Layout (Column Direction) */}
+      <div className="max-w-6xl mx-auto flex flex-col print:max-w-none print:w-full">
 
-        {/* Left Sidebar */}
-        <aside className="w-full md:w-80 flex-shrink-0 space-y-8">
+        {/* Sidebar - 2x2 Grid at Top */}
+        <aside className="w-full pb-8 mb-8 border-b border-[#44475a] grid grid-cols-1 md:grid-cols-2 gap-8">
 
           {/* Contact */}
           <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// CONTACT</h3>
-            <div className="space-y-2 text-sm font-mono">
-              <div className="flex items-start gap-2 text-slate-400">
-                <MapPin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// CONTACT</h3>
+            <div className="space-y-2 text-xs font-mono">
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <MapPin size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span>{PERSONAL_INFO.location}</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-400">
-                <Mail size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <Mail size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span className="break-all">{PERSONAL_INFO.email}</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-400">
-                <Phone size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <Phone size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span>{PERSONAL_INFO.phone}</span>
               </div>
-              <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <Linkedin size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+              <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <Linkedin size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span className="break-all">linkedin.com/in/bowen-zhou-87b616251</span>
               </a>
-              <a href={PERSONAL_INFO.socials.artstation} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <ExternalLink size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+              <a href={PERSONAL_INFO.socials.artstation} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <ExternalLink size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span>dreamzhou.artstation.com</span>
               </a>
-              <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noreferrer" className="flex items-start gap-2 text-slate-400 hover:text-cyan-400 transition-colors">
-                <Github size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+              <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <Github size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
                 <span>github.com/ZaftZhou</span>
               </a>
             </div>
@@ -1157,13 +1157,13 @@ const ResumeView = () => {
 
           {/* Education */}
           <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// EDUCATION</h3>
-            <div className="space-y-4">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// EDUCATION</h3>
+            <div className="space-y-3">
               {EDUCATION_DATA.map((edu, idx) => (
-                <div key={idx} className="text-sm font-mono">
-                  <div className="font-bold text-white">{edu.school}</div>
-                  <div className="text-green-400 mt-1">{edu.degree}</div>
-                  <div className="text-slate-500 text-xs mt-1">{edu.year}</div>
+                <div key={idx} className="text-xs font-mono">
+                  <div className="font-bold text-[#f8f8f2]">{edu.school}</div>
+                  <div className="text-[#50fa7b] opacity-90 mt-0.5">{edu.degree}</div>
+                  <div className="text-[#6272a4] mt-0.5">{edu.year}</div>
                 </div>
               ))}
             </div>
@@ -1171,10 +1171,10 @@ const ResumeView = () => {
 
           {/* Tech Stack */}
           <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// TECH_STACK</h3>
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// TECH_STACK</h3>
             <div className="flex flex-wrap gap-2">
               {['C#', 'Unity', 'FSM/AI', 'ShaderGraph', 'Blender', 'ZBrush', 'Git', 'Rider', 'HLSL'].map(skill => (
-                <span key={skill} className="px-2 py-1 bg-slate-800/50 border border-slate-700 rounded text-xs font-mono text-yellow-300 hover:border-cyan-500 hover:text-cyan-400 transition-colors">
+                <span key={skill} className="px-2 py-1 border border-[#44475a] rounded text-xs font-mono text-[#f1fa8c]">
                   {skill}
                 </span>
               ))}
@@ -1183,47 +1183,47 @@ const ResumeView = () => {
 
           {/* Languages */}
           <div className="space-y-3">
-            <h3 className="text-pink-400 text-sm font-bold uppercase tracking-wider font-mono">// LANGUAGES</h3>
-            <div className="space-y-2 text-sm font-mono">
-              <div className="flex justify-between text-slate-400">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// LANGUAGES</h3>
+            <div className="space-y-1 text-xs font-mono opacity-90">
+              <div className="flex justify-between text-[#f8f8f2]">
                 <span>Chinese</span>
-                <span className="text-slate-600">Native</span>
+                <span className="text-[#6272a4]">Native</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#f8f8f2]">
                 <span>English</span>
-                <span className="text-slate-600">Fluent</span>
+                <span className="text-[#6272a4]">Fluent</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#f8f8f2]">
                 <span>Finnish</span>
-                <span className="text-slate-600">Basic</span>
+                <span className="text-[#6272a4]">Basic</span>
               </div>
             </div>
           </div>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 space-y-8">
+        <main className="w-full space-y-8">
 
           {/* Header */}
-          <header className="space-y-3">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white font-mono uppercase">
+          <header className="border-b border-[#44475a] pb-6">
+            <h1 className="text-5xl font-bold tracking-tight mb-2 text-[#f8f8f2] font-mono uppercase">
               {PERSONAL_INFO.name.toUpperCase()}
             </h1>
-            <div className="text-lg font-mono">
-              <span className="text-pink-400">class</span>{' '}
-              <span className="text-cyan-400 font-bold">UnityDeveloper</span>{' '}
-              <span className="text-slate-400">:</span>{' '}
-              <span className="text-green-400">TechnicalGeneralist</span>
+            <div className="flex items-center gap-2 text-xl font-mono">
+              <span className="text-[#ff79c6]">class</span>
+              <span className="text-[#8be9fd] font-bold">UnityDeveloper</span>
+              <span className="text-[#f8f8f2]">:</span>
+              <span className="text-[#50fa7b]">TechnicalGeneralist</span>
             </div>
           </header>
 
           {/* Abstract */}
           <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-3 font-mono flex items-center gap-2">
-              <Terminal size={14} className="text-cyan-400" /> 01. ABSTRACT
-            </h2>
-            <div className="border-l-2 border-cyan-500 pl-4 py-2">
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-3 font-mono text-[#f1fa8c]">
+              <Terminal size={14} className="text-[#8be9fd]" /> 01. ABSTRACT
+            </div>
+            <div className="p-4 rounded border-l-2 border-[#8be9fd] bg-[#21222c]">
+              <p className="leading-relaxed text-sm font-light opacity-90 text-justify text-[#f8f8f2]">
                 {PERSONAL_INFO.bio}
               </p>
             </div>
@@ -1231,39 +1231,36 @@ const ResumeView = () => {
 
           {/* Projects */}
           <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Code size={14} className="text-cyan-400" /> 02. PROJECTS
-            </h2>
-            <div className="space-y-6 border-l-2 border-slate-700 pl-6">
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Code size={14} className="text-[#8be9fd]" /> 02. PROJECTS
+            </div>
+            <div className="space-y-6">
               {PROJECTS_DATA.slice(0, 3).map((project, idx) => (
-                <div key={project.id} className="relative">
-                  <div className={`absolute -left-[27px] top-2 w-3 h-3 rounded-full ${idx === 0 ? 'bg-cyan-500' : 'bg-slate-600'}`}></div>
+                <div key={project.id} className="relative pl-6 border-l border-[#44475a]">
+                  <div className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-[#8be9fd]' : 'bg-[#6272a4]'}`}></div>
 
                   <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
-                      <h3 className="text-lg font-bold text-white font-mono">{project.title}</h3>
-                      <span className="text-xs text-slate-500 font-mono">{project.details?.duration}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                      <h4 className="font-bold text-lg text-[#f8f8f2] font-mono">{project.title}</h4>
+                      <span className="text-xs font-mono opacity-70 text-[#6272a4]">{project.details?.duration}</span>
                     </div>
-                    <div className="text-xs text-green-400 font-mono mb-2">{project.details?.role}</div>
+                    <div className="text-xs font-bold mb-3 font-mono text-[#ff79c6]">{project.details?.role}</div>
 
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-400 mt-0.5">&gt;</span>
-                        <div>
-                          <span className="text-green-400 font-mono font-semibold">
-                            {project.details?.features?.[0]?.split(' ')[0]}:
-                          </span>
-                          <span className="text-slate-400 ml-1">{project.details?.solution}</span>
-                        </div>
-                      </div>
-
+                    <ul className="text-sm space-y-2 leading-relaxed opacity-90">
+                      <li className="flex items-start">
+                        <span className="text-[#ff79c6] font-bold mr-2">&gt;</span>
+                        <span className="text-[#f8f8f2]">
+                          <strong className="text-[#50fa7b]">{project.details?.features?.[0]}:</strong>{' '}
+                          {project.details?.solution}
+                        </span>
+                      </li>
                       {project.details?.features?.slice(1).map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-2">
-                          <span className="text-green-400 mt-0.5">&gt;</span>
-                          <span className="text-slate-400">{feature}</span>
-                        </div>
+                        <li key={fIdx} className="flex items-start">
+                          <span className="text-[#ff79c6] font-bold mr-2">&gt;</span>
+                          <span className="text-[#f8f8f2]">{feature}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 </div>
               ))}
@@ -1272,21 +1269,21 @@ const ResumeView = () => {
 
           {/* Work History */}
           <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Briefcase size={14} className="text-cyan-400" /> 03. WORK_HISTORY
-            </h2>
-            <div className="space-y-6 border-l-2 border-slate-700 pl-6">
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Briefcase size={14} className="text-[#8be9fd]" /> 03. WORK_HISTORY
+            </div>
+            <div className="space-y-6">
               {EXPERIENCE_DATA.map((exp, idx) => (
-                <div key={idx} className="relative">
-                  <div className={`absolute -left-[27px] top-2 w-3 h-3 rounded-full ${idx === 0 ? 'bg-pink-500' : 'bg-slate-600'}`}></div>
+                <div key={idx} className="relative pl-6 border-l border-[#44475a]">
+                  <div className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-[#ff79c6]' : 'bg-[#6272a4]'}`}></div>
 
                   <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
-                      <h3 className="text-lg font-bold text-white font-mono">{exp.company}</h3>
-                      <span className="text-xs text-slate-500 font-mono">{exp.period}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                      <h4 className="font-bold text-lg text-[#f8f8f2] font-mono">{exp.company}</h4>
+                      <span className="text-xs font-mono opacity-70 text-[#6272a4]">{exp.period}</span>
                     </div>
-                    <div className="text-xs text-green-400 font-mono mb-2">{exp.role}</div>
-                    <p className="text-sm text-slate-400 leading-relaxed">{exp.description}</p>
+                    <div className="text-xs font-bold mb-2 font-mono text-[#ff79c6]">{exp.role}</div>
+                    <p className="text-sm opacity-90 leading-relaxed text-[#f8f8f2]">{exp.description}</p>
                   </div>
                 </div>
               ))}
@@ -1295,25 +1292,25 @@ const ResumeView = () => {
 
           {/* Strengths */}
           <section>
-            <h2 className="text-yellow-400 text-sm font-bold uppercase tracking-wider mb-4 font-mono flex items-center gap-2">
-              <Zap size={14} className="text-cyan-400" /> 04. STRENGTHS
-            </h2>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Zap size={14} className="text-[#8be9fd]" /> 04. STRENGTHS
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-pink-400 font-bold text-sm mb-2 font-mono">System-Oriented</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#ff79c6] font-bold text-sm mb-2 font-mono">System-Oriented</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
                   Prefers building reusable systems and tools over one-off scripts. Cares about architecture.
                 </p>
               </div>
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-green-400 font-bold text-sm mb-2 font-mono">Cross-Disciplinary</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#50fa7b] font-bold text-sm mb-2 font-mono">Cross-Disciplinary</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
                   Can talk with artists and engineers, translating between visual language and technical constraints.
                 </p>
               </div>
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded">
-                <h3 className="text-cyan-400 font-bold text-sm mb-2 font-mono">Self-Learner</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#8be9fd] font-bold text-sm mb-2 font-mono">Self-Learner</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
                   Constantly dissecting new tech (HardMesh, ZBrush, HDRP) and applying it to practical prototypes.
                 </p>
               </div>
@@ -1326,7 +1323,7 @@ const ResumeView = () => {
       {/* Floating Print Button */}
       <button
         onClick={handlePrint}
-        className="fixed bottom-8 right-8 bg-cyan-600 hover:bg-cyan-500 text-white p-4 rounded-full shadow-2xl shadow-cyan-900/50 transition-transform hover:scale-110 print:hidden z-50"
+        className="fixed bottom-8 right-8 bg-[#8be9fd] hover:bg-[#50fa7b] text-[#282a36] p-4 rounded-full shadow-2xl shadow-[#8be9fd]/30 transition-all hover:scale-110 print:hidden z-50"
         title="Print CV / Save as PDF"
       >
         <Printer size={24} />
