@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video } from 'lucide-react';
 
 /**
  * ================================================================================
@@ -44,12 +44,13 @@ const EXPERIENCE_DATA = [
   }
 ];
 
+// 🛠️ MOCK DATA FOR GALLERY (Replace URLs with your local paths)
+// 提示：你可以将 url 替换为本地路径，例如 "/assets/vince/demo.mp4" 或 require('./assets/...')
 const PROJECTS_DATA = [
   {
     id: 1,
     title: "VINCE – Virtual Integration Home",
     category: "Game Dev",
-    // image: "https://...", 
     description: "Bachelor’s Thesis project. A virtual integration home system focusing on modular avatars and UI architecture.",
     tags: ["Unity", "C#", "Modular Avatar", "UI Architecture"],
     color: "from-cyan-500 to-blue-600",
@@ -59,7 +60,14 @@ const PROJECTS_DATA = [
       challenge: "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
       solution: "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
-      gallery: []
+      // 🌟 NEW: Media Array supports 'image' and 'video' types
+      media: [
+        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', caption: 'Avatar Customization Demo' },
+        { type: 'image', url: 'https://picsum.photos/800/600?random=101', caption: 'Main Menu UI' },
+        { type: 'image', url: 'https://picsum.photos/600/800?random=102', caption: 'Mobile Vertical Layout' }, // Portrait
+        { type: 'image', url: 'https://picsum.photos/800/500?random=103', caption: 'Shader Masking System' },
+        { type: 'image', url: 'https://picsum.photos/700/700?random=104', caption: 'Asset Database' }, // Square
+      ]
     }
   },
   {
@@ -75,7 +83,11 @@ const PROJECTS_DATA = [
       challenge: "Building a generic, reusable state machine that can handle complex enemy behaviors like patrolling, chasing, and wariness.",
       solution: "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
       features: ["Generic FSM Framework", "Layered Perception System", "Throttled Updates for Performance"],
-      gallery: []
+      media: [
+        { type: 'image', url: 'https://picsum.photos/800/400?random=201', caption: 'FSM Debug Gizmos' },
+        { type: 'image', url: 'https://picsum.photos/600/600?random=202', caption: 'Perception Cone' },
+        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4', caption: 'AI Patrolling Behavior' },
+      ]
     }
   },
   {
@@ -91,7 +103,10 @@ const PROJECTS_DATA = [
       challenge: "Decoupling dialogue logic from game world state while allowing for complex branching and quest hooks.",
       solution: "Used ScriptableObject definitions for nodes. Built a decoupled event system connecting dialogue to gold, shops, and quest logic.",
       features: ["Data-Driven Architecture", "Quest System Hooks", "Event-based Integration"],
-      gallery: []
+      media: [
+        { type: 'image', url: 'https://picsum.photos/800/600?random=301', caption: 'Node Graph Editor' },
+        { type: 'image', url: 'https://picsum.photos/800/600?random=302', caption: 'In-Game Dialogue UI' },
+      ]
     }
   },
   {
@@ -107,7 +122,11 @@ const PROJECTS_DATA = [
       challenge: "Rendering volumetric clouds in real-time on mid-range hardware without dropping below 60fps.",
       solution: "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
       features: ["Ray-marching with light scattering", "Weather map support", "Zero garbage collection allocation"],
-      gallery: []
+      media: [
+        { type: 'image', url: 'https://picsum.photos/1200/600?random=401', caption: 'Sunset Lighting' },
+        { type: 'image', url: 'https://picsum.photos/800/800?random=402', caption: 'Noise Texture Generation' },
+        { type: 'image', url: 'https://picsum.photos/800/500?random=403', caption: 'Performance Profiler' },
+      ]
     }
   },
   {
@@ -123,7 +142,10 @@ const PROJECTS_DATA = [
       challenge: "Replicating the specific stylized look of Nintendo games while maintaining flexibility for different lighting conditions.",
       solution: "Used the Camera Depth Texture to calculate water depth for absorption effects. Added Gerstner waves for vertex displacement.",
       features: ["Depth-based foam", "Refraction & Caustics", "Interactive ripples"],
-      gallery: []
+      media: [
+        { type: 'image', url: 'https://picsum.photos/800/600?random=501', caption: 'Water Edge Foam' },
+        { type: 'image', url: 'https://picsum.photos/800/600?random=502', caption: 'Underwater Caustics' },
+      ]
     }
   },
   {
@@ -139,7 +161,11 @@ const PROJECTS_DATA = [
       challenge: "Creating a highly detailed mech that is rigged for animation and optimized for game engines.",
       solution: "Used a boolean workflow in Blender for hard surface forms. Baked high-poly normals onto a low-poly mesh with weighted normals for perfect shading.",
       features: ["40k Tris (Game Ready)", "2 x 4K Texture Sets", "Custom IK Rig"],
-      gallery: []
+      media: [
+        { type: 'image', url: 'https://picsum.photos/600/900?random=601', caption: 'Full Body Render' }, // Tall Portrait
+        { type: 'image', url: 'https://picsum.photos/800/600?random=602', caption: 'Wireframe View' },
+        { type: 'image', url: 'https://picsum.photos/800/600?random=603', caption: 'Texture Maps' },
+      ]
     }
   }
 ];
@@ -299,6 +325,11 @@ const App = () => {
   ]);
   const [chatInput, setChatInput] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
+  
+  // 🌟 LIGHTBOX STATE
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
   const chatEndRef = useRef(null);
 
   const filteredProjects = activeCategory === 'All' 
@@ -315,6 +346,18 @@ const App = () => {
 
   useEffect(() => { if (selectedProject) window.scrollTo(0, 0); }, [selectedProject]);
   useEffect(() => { if (contactMode === 'chat') chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatHistory, contactMode]);
+
+  // 🌟 KEYBOARD NAVIGATION FOR LIGHTBOX
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!lightboxOpen) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevMedia();
+      if (e.key === 'ArrowRight') nextMedia();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, currentMediaIndex]);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault(); setFormStatus('submitting');
@@ -341,17 +384,45 @@ const App = () => {
     setIsChatLoading(false);
   };
 
+  // 🌟 LIGHTBOX HANDLERS
+  const openLightbox = (index) => {
+    setCurrentMediaIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const nextMedia = (e) => {
+    e?.stopPropagation();
+    if (!selectedProject?.details?.media) return;
+    setCurrentMediaIndex((prev) => (prev + 1) % selectedProject.details.media.length);
+  };
+
+  const prevMedia = (e) => {
+    e?.stopPropagation();
+    if (!selectedProject?.details?.media) return;
+    setCurrentMediaIndex((prev) => (prev - 1 + selectedProject.details.media.length) % selectedProject.details.media.length);
+  };
+
   const renderDetailView = () => {
     if (!selectedProject) return null;
     const { details } = selectedProject;
+    
+    // Ensure media exists, fallback to empty array
+    const mediaList = details.media || [];
+
     return (
-      <div className="min-h-screen bg-slate-950 animate-in fade-in duration-300">
-        <nav className="fixed top-0 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 z-50 h-16 flex items-center px-4 sm:px-8 justify-between">
+      <div className="min-h-screen bg-slate-950 animate-in fade-in duration-300 relative">
+        <nav className="fixed top-0 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 z-40 h-16 flex items-center px-4 sm:px-8 justify-between">
           <button onClick={() => setSelectedProject(null)} className="flex items-center gap-2 text-slate-300 hover:text-cyan-400 transition-colors font-medium group">
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Back to Portfolio
           </button>
         </nav>
+
         <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          {/* Header Area */}
           <div className={`w-full h-64 md:h-96 rounded-3xl bg-gradient-to-br ${selectedProject.color} relative overflow-hidden flex items-center justify-center shadow-2xl shadow-cyan-900/20 mb-12`}>
              <div className="text-white opacity-20 transform scale-150">
                 {selectedProject.category === 'Game Dev' && <Gamepad2 size={120} />}
@@ -364,17 +435,72 @@ const App = () => {
                 <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">{selectedProject.title}</h1>
              </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            
+            {/* Left Content Column */}
             <div className="md:col-span-2 space-y-10">
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Cpu size={20} className="text-cyan-500" /> The Challenge</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.challenge}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code size={20} className="text-cyan-500" /> The Solution</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.solution}</p></section>
-              <section><h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{details?.gallery && details.gallery.length > 0 ? details.gallery.map((img, idx) => (<div key={idx} className="aspect-video bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-center group overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all"><span className="text-slate-600 font-mono text-xs group-hover:text-cyan-400">Image {idx + 1}</span></div>)) : <p className="text-slate-500">No images available.</p>}</div>
+
+              {/* 🌟 MASONRY GALLERY */}
+              <section>
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery & Media</h3>
+                {mediaList.length > 0 ? (
+                  <div className="columns-1 sm:columns-2 gap-4 space-y-4">
+                    {mediaList.map((mediaItem, idx) => (
+                      <div 
+                        key={idx} 
+                        className="break-inside-avoid relative group rounded-xl overflow-hidden bg-slate-800 border border-slate-700 cursor-pointer shadow-lg hover:shadow-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300"
+                        onClick={() => openLightbox(idx)}
+                      >
+                         {/* Render based on type */}
+                         {mediaItem.type === 'video' ? (
+                           <div className="relative">
+                             <video 
+                                src={mediaItem.url} 
+                                className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                                muted
+                                preload="metadata"
+                             />
+                             <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-all">
+                                <div className="w-12 h-12 rounded-full bg-cyan-500/80 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform">
+                                   <Play fill="white" className="text-white ml-1" size={20} />
+                                </div>
+                             </div>
+                             <div className="absolute top-2 right-2 px-2 py-1 bg-black/60 rounded text-xs font-bold text-white flex items-center gap-1"><Video size={12}/> Video</div>
+                           </div>
+                         ) : (
+                           <div className="relative">
+                             <img 
+                               src={mediaItem.url} 
+                               alt={mediaItem.caption || `Gallery Image ${idx}`} 
+                               className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+                               loading="lazy"
+                             />
+                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
+                           </div>
+                         )}
+                         
+                         {/* Caption Overlay on Hover */}
+                         {mediaItem.caption && (
+                           <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                             <p className="text-white text-sm font-medium">{mediaItem.caption}</p>
+                           </div>
+                         )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-slate-500 border border-dashed border-slate-700 p-8 rounded-xl text-center">No media available for this project yet.</p>
+                )}
               </section>
             </div>
-            <aside className="space-y-8">
+
+            {/* Right Sidebar Info */}
+            <aside className="space-y-8 h-fit">
                <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-                  <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Details</h4>
+                  <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Project Details</h4>
                   <div className="space-y-4">
                     <div><span className="text-slate-500 text-sm block mb-1">Role</span><span className="text-white font-medium">{details?.role}</span></div>
                     <div><span className="text-slate-500 text-sm block mb-1">Duration</span><span className="text-white font-medium">{details?.duration}</span></div>
@@ -384,6 +510,69 @@ const App = () => {
             </aside>
           </div>
         </main>
+
+        {/* 🌟 FULLSCREEN LIGHTBOX OVERLAY */}
+        {lightboxOpen && mediaList[currentMediaIndex] && (
+          <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-200" onClick={closeLightbox}>
+             {/* Close Button */}
+             <button 
+                onClick={closeLightbox} 
+                className="absolute top-4 right-4 md:top-8 md:right-8 p-3 text-white/70 hover:text-white bg-black/50 hover:bg-slate-800 rounded-full transition-all z-50"
+             >
+                <X size={32} />
+             </button>
+
+             {/* Main Content Area */}
+             <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12" onClick={(e) => e.stopPropagation()}>
+                
+                {/* Previous Button */}
+                <button 
+                  onClick={prevMedia}
+                  className="absolute left-2 md:left-8 p-3 bg-black/50 hover:bg-cyan-500 text-white rounded-full transition-all backdrop-blur-sm group border border-white/10 hover:border-cyan-400 z-10"
+                >
+                  <ChevronLeft size={32} className="group-active:-translate-x-1 transition-transform" />
+                </button>
+
+                {/* Media Content */}
+                <div className="relative max-w-full max-h-full shadow-2xl shadow-black">
+                   {mediaList[currentMediaIndex].type === 'video' ? (
+                     <video 
+                       src={mediaList[currentMediaIndex].url} 
+                       controls 
+                       autoPlay 
+                       className="max-h-[85vh] max-w-[90vw] rounded shadow-lg bg-black"
+                     >
+                        Your browser does not support video.
+                     </video>
+                   ) : (
+                     <img 
+                       src={mediaList[currentMediaIndex].url} 
+                       alt={mediaList[currentMediaIndex].caption}
+                       className="max-h-[85vh] max-w-[90vw] object-contain rounded shadow-lg"
+                     />
+                   )}
+                   
+                   {/* Caption in Lightbox */}
+                   {mediaList[currentMediaIndex].caption && (
+                     <div className="absolute -bottom-12 left-0 right-0 text-center">
+                        <p className="text-white text-lg font-medium tracking-wide">{mediaList[currentMediaIndex].caption}</p>
+                        <p className="text-slate-500 text-sm mt-1">{currentMediaIndex + 1} / {mediaList.length}</p>
+                     </div>
+                   )}
+                </div>
+
+                {/* Next Button */}
+                <button 
+                  onClick={nextMedia}
+                  className="absolute right-2 md:right-8 p-3 bg-black/50 hover:bg-cyan-500 text-white rounded-full transition-all backdrop-blur-sm group border border-white/10 hover:border-cyan-400 z-10"
+                >
+                  <ChevronRight size={32} className="group-active:translate-x-1 transition-transform" />
+                </button>
+
+             </div>
+          </div>
+        )}
+
       </div>
     );
   };
