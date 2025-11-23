@@ -503,6 +503,90 @@ const TypewriterTitle = () => {
   );
 };
 
+// 🌟 Image Lightbox Component
+const ImageLightbox = ({ images, initialIndex, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  const goToPrevious = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const goToNext = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') goToPrevious();
+      if (e.key === 'ArrowRight') goToNext();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[10000] bg-black/95 flex items-center justify-center animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-[10001] p-3 bg-slate-800/80 hover:bg-slate-700 rounded-full text-white transition-all hover:scale-110"
+        title="Close (ESC)"
+      >
+        <X size={24} />
+      </button>
+
+      {/* Image Counter */}
+      {images.length > 1 && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[10001] px-4 py-2 bg-slate-800/80 rounded-full text-white text-sm font-mono">
+          {currentIndex + 1} / {images.length}
+        </div>
+      )}
+
+      {/* Previous Button */}
+      {images.length > 1 && (
+        <button
+          onClick={goToPrevious}
+          className="absolute left-4 z-[10001] p-3 bg-slate-800/80 hover:bg-slate-700 rounded-full text-white transition-all hover:scale-110"
+          title="Previous image (←)"
+        >
+          <ArrowLeft size={24} />
+        </button>
+      )}
+
+      {/* Image */}
+      <div className="max-w-[90vw] max-h-[90vh] relative" onClick={(e) => e.stopPropagation()}>
+        <img
+          src={images[currentIndex]}
+          alt={`Gallery image ${currentIndex + 1}`}
+          className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+        />
+      </div>
+
+      {/* Next Button */}
+      {images.length > 1 && (
+        <button
+          onClick={goToNext}
+          className="absolute right-4 z-[10001] p-3 bg-slate-800/80 hover:bg-slate-700 rounded-full text-white transition-all hover:scale-110"
+          title="Next image (→)"
+        >
+          <ArrowLeft size={24} className="rotate-180" />
+        </button>
+      )}
+
+      {/* Keyboard hint */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[10001] px-4 py-2 bg-slate-800/60 rounded-full text-white/60 text-xs font-mono">
+        {images.length > 1 ? '← → to navigate • ESC to close' : 'ESC to close'}
+      </div>
+    </div>
+  );
+};
+
 // 🌟 Portfolio Header Component with Fade-In
 const PortfolioHeader = () => {
   const [headerRef, isVisible] = useScrollFadeIn();
@@ -834,15 +918,16 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
   // View State: 'home' | 'resume'
   const [currentView, setCurrentView] = useState('home');
-  
+
   // --- Contact & Chat State (English) ---
   const [contactMode, setContactMode] = useState('email');
   const [formData, setFormData] = useState({ email: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
-  
+
   // Initial Chat Message in English
   const [chatHistory, setChatHistory] = useState([
     { role: 'ai', text: `Hi there! I'm ${PERSONAL_INFO.name}'s AI assistant. Ask me anything about his skills, experience, or projects! ✨` }
@@ -905,8 +990,17 @@ const App = () => {
   const renderDetailView = () => {
     if (!selectedProject) return null;
     const { details } = selectedProject;
+
     return (
       <div className="min-h-screen bg-slate-950 animate-in fade-in duration-300">
+        {/* Image Lightbox */}
+        {lightboxIndex !== null && (
+          <ImageLightbox
+            images={selectedProject.images}
+            initialIndex={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+          />
+        )}
         <nav className="fixed top-0 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 z-50 h-16 flex items-center px-4 sm:px-8 justify-between">
           <button onClick={() => setSelectedProject(null)} className="flex items-center gap-2 text-slate-300 hover:text-cyan-400 transition-colors font-medium group">
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Back to Portfolio
@@ -938,7 +1032,7 @@ const App = () => {
                         className={`bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group ${
                           selectedProject.images.length === 1 ? 'w-full' : 'w-full sm:w-[calc(50%-0.5rem)]'
                         }`}
-                        onClick={() => window.open(img, '_blank')}
+                        onClick={() => setLightboxIndex(idx)}
                       >
                         <img
                           src={img}
