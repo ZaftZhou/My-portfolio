@@ -3,10 +3,11 @@ import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronD
 
 /**
  * ================================================================================
- * 🔧 配置区域 (CONFIGURATION AREA)
+ * 🔧 CONFIGURATION AREA
  * ================================================================================
  */
 
+// 🔑 Gemini API Key (Provided automatically by the environment, or enter manually)
 const apiKey = ""; 
 
 const PERSONAL_INFO = {
@@ -22,6 +23,8 @@ const PERSONAL_INFO = {
   }
 };
 
+// 📧 Email Service Configuration
+// Leave empty to use the default mailto behavior
 const FORMSPREE_ENDPOINT = ""; 
 
 const CATEGORIES = ['All', 'Game Dev', 'Shaders', '3D Art', 'Tools'];
@@ -142,7 +145,7 @@ const PROJECTS_DATA = [
 
 /**
  * ================================================================================
- * 🧠 AI 逻辑区域
+ * 🧠 AI LOGIC AREA
  * ================================================================================
  */
 
@@ -153,6 +156,11 @@ const generateSystemPrompt = () => {
     Here is ${PERSONAL_INFO.name}'s Resume Data:
     - Work Experience: ${JSON.stringify(EXPERIENCE_DATA)}
     - Projects: ${JSON.stringify(PROJECTS_DATA.map(p => ({ title: p.title, category: p.category, description: p.description, tags: p.tags, tech: p.details?.features })))}
+    
+    Instructions:
+    1. Answer questions in English.
+    2. Be concise and professional.
+    3. Highlight specific projects or skills when relevant.
   `;
 };
 
@@ -172,7 +180,7 @@ const callGeminiAPI = async (userQuery) => {
 
 /**
  * ================================================================================
- * 🕸️ 核心连接网络动画 (Hub & Spoke Neural Network)
+ * 🕸️ Central Hub Neural Network Animation
  * ================================================================================
  */
 const CentralNeuralNetwork = () => {
@@ -187,6 +195,7 @@ const CentralNeuralNetwork = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     
+    // Core skill nodes configuration
     const skills = [
       { name: 'C#', color: '#22d3ee', radius: 140, speed: 0.002, offset: 0 },
       { name: 'HLSL', color: '#e879f9', radius: 140, speed: 0.002, offset: Math.PI },
@@ -279,7 +288,7 @@ const CentralNeuralNetwork = () => {
 
 /**
  * ================================================================================
- * 🛑 视图渲染区域
+ * 🛑 VIEW RENDERING AREA
  * ================================================================================
  */
 
@@ -287,9 +296,13 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  
+  // --- Contact & Chat State (English) ---
   const [contactMode, setContactMode] = useState('email');
   const [formData, setFormData] = useState({ email: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
+  
+  // Initial Chat Message in English
   const [chatHistory, setChatHistory] = useState([
     { role: 'ai', text: `Hi there! I'm ${PERSONAL_INFO.name}'s AI assistant. Ask me anything about his skills, experience, or projects! ✨` }
   ]);
@@ -314,7 +327,18 @@ const App = () => {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault(); setFormStatus('submitting');
-    setTimeout(() => { setFormStatus('success'); setFormData({ email: '', message: '' }); }, 1500);
+    
+    // Simulate sending (or use Formspree if configured)
+    setTimeout(() => { 
+        setFormStatus('success'); 
+        // If using mailto fallback
+        if (!FORMSPREE_ENDPOINT) {
+            const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.email}`);
+            const body = encodeURIComponent(formData.message);
+            window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`;
+        }
+        setFormData({ email: '', message: '' }); 
+    }, 1500);
   };
 
   const handleChatSubmit = async (e) => {
@@ -380,7 +404,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white animate-in fade-in">
-      {/* 🌟 定义自定义 CSS 动画 */}
+      {/* 🌟 Custom CSS Animations */}
       <style>{`
         @keyframes float {
           0% { transform: translateY(0px); }
@@ -444,15 +468,13 @@ const App = () => {
         
         {/* 🌟 Hero Visual: Central Hub Neural Network */}
         <div className="flex-1 relative h-[400px] md:h-[500px] w-full flex items-center justify-center">
-          
-          {/* 背景：动态连接线和卫星节点 */}
+          {/* Background: Dynamic Connections */}
           <CentralNeuralNetwork />
 
-          {/* 核心：中央 Box 图标 (HTML层，为了保持高品质的阴影和模糊效果) */}
+          {/* Core: Central Box Icon */}
           <div className="relative z-10 w-32 h-32 md:w-48 md:h-48 rounded-full bg-slate-800/90 border-4 border-slate-700/50 backdrop-blur-md flex items-center justify-center shadow-[0_0_50px_rgba(34,211,238,0.3)] animate-float">
              <Box size={60} className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
           </div>
-          
         </div>
       </section>
 
@@ -465,7 +487,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* 🌟 PORTFOLIO SECTION (Grid Layout Restored) */}
+      {/* 🌟 PORTFOLIO SECTION (Restored to Grid Layout) */}
       <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
@@ -488,7 +510,7 @@ const App = () => {
             >
               <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative overflow-hidden p-6 flex items-center justify-center`}>
                  <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-all"></div>
-                 {/* 图标放大旋转 */}
+                 {/* Icon Scale & Rotate */}
                  <div className="bg-slate-950/30 backdrop-blur-sm p-4 rounded-full transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-500 border border-white/10 relative z-10 shadow-lg">
                     {project.category === 'Game Dev' && <Gamepad2 size={32} className="text-white" />}
                     {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
