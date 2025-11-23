@@ -1,0 +1,175 @@
+[
+  {
+    "id": 1,
+    "title": "VINCE – Virtual Integration Home",
+    "category": "Game Dev",
+    "description": "Bachelor's Thesis project. A virtual integration home system focusing on modular avatars and UI architecture.",
+    "tags": ["Unity", "C#", "Modular Avatar", "UI Architecture"],
+    "color": "from-cyan-500 to-blue-600",
+    "images": [
+      "/projects/vince/image1.jpg",
+      "/projects/vince/image2.jpg",
+      "/projects/vince/image3.jpg"
+    ],
+    "details": {
+      "role": "Unity Developer & Tech Designer",
+      "duration": "2024–2025",
+      "challenge": "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
+      "solution": "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
+      "features": [
+        "Modular Avatar System",
+        "Mask-based Shader Workflow",
+        "Mobile Optimized UI",
+        "User Research Integration"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  },
+  {
+    "id": 2,
+    "title": "AI Enemy System (Prototype)",
+    "category": "Game Dev",
+    "description": "A personal prototype focusing on FSM frameworks and perception systems for game AI.",
+    "tags": ["Unity", "C#", "FSM", "AI Perception"],
+    "color": "from-purple-500 to-pink-500",
+    "images": [
+      "/projects/ai-enemy/image1.jpg",
+      "/projects/ai-enemy/image2.jpg"
+    ],
+    "details": {
+      "role": "Solo Developer",
+      "duration": "2024",
+      "challenge": "Building a generic, reusable state machine that can handle complex enemy behaviors like patrolling, chasing, and wariness.",
+      "solution": "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
+      "features": [
+        "Generic FSM Framework",
+        "Layered Perception System",
+        "Throttled Updates for Performance"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  },
+  {
+    "id": 3,
+    "title": "Dialogue System",
+    "category": "Tools",
+    "description": "A data-driven dialogue system with branching narratives and quest integration.",
+    "tags": ["Unity", "C#", "ScriptableObject", "Event System"],
+    "color": "from-emerald-500 to-teal-600",
+    "images": [
+      "/projects/dialogue/image1.jpg",
+      "/projects/dialogue/image2.jpg"
+    ],
+    "details": {
+      "role": "Solo Developer",
+      "duration": "2023–2024",
+      "challenge": "Decoupling dialogue logic from game world state while allowing for complex branching and quest hooks.",
+      "solution": "Used ScriptableObject definitions for nodes. Built a decoupled event system connecting dialogue to gold, shops, and quest logic.",
+      "features": [
+        "Data-Driven Architecture",
+        "Quest System Hooks",
+        "Event-based Integration"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  },
+  {
+    "id": 4,
+    "title": "Volumetric Cloud Renderer",
+    "category": "Shaders",
+    "description": "A highly optimized ray-marching shader for volumetric clouds. Written in HLSL.",
+    "tags": ["HLSL", "Shader Graph", "Compute Shaders", "Optimization"],
+    "color": "from-indigo-500 to-purple-500",
+    "images": [
+      "/projects/clouds/image1.jpg",
+      "/projects/clouds/image2.jpg"
+    ],
+    "details": {
+      "role": "Technical Artist",
+      "duration": "1 Month",
+      "challenge": "Rendering volumetric clouds in real-time on mid-range hardware without dropping below 60fps.",
+      "solution": "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
+      "features": [
+        "Ray-marching with light scattering",
+        "Weather map support",
+        "Zero garbage collection allocation"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  },
+  {
+    "id": 5,
+    "title": "Stylized Water Shader",
+    "category": "Shaders",
+    "description": "Zelda-inspired water shader including depth-based color absorption.",
+    "tags": ["URP", "Shader Graph", "VFX Graph"],
+    "color": "from-blue-400 to-teal-400",
+    "images": [
+      "/projects/water/image1.jpg",
+      "/projects/water/image2.jpg",
+      "/projects/water/image3.jpg"
+    ],
+    "details": {
+      "role": "VFX Artist",
+      "duration": "2 Weeks",
+      "challenge": "Replicating the specific stylized look of Nintendo games while maintaining flexibility for different lighting conditions.",
+      "solution": "Used the Camera Depth Texture to calculate water depth for absorption effects. Added Gerstner waves for vertex displacement.",
+      "features": [
+        "Depth-based foam",
+        "Refraction & Caustics",
+        "Interactive ripples"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  },
+  {
+    "id": 6,
+    "title": "Sci-Fi Mecha Model",
+    "category": "3D Art",
+    "description": "Hard-surface character model. High-poly sculpted in ZBrush, textured in Substance.",
+    "tags": ["Blender", "Substance Painter", "ZBrush", "PBR Workflow"],
+    "color": "from-orange-500 to-red-500",
+    "images": [
+      "/projects/mecha/image1.jpg",
+      "/projects/mecha/image2.jpg",
+      "/projects/mecha/image3.jpg",
+      "/projects/mecha/image4.jpg"
+    ],
+    "details": {
+      "role": "3D Artist",
+      "duration": "4 Weeks",
+      "challenge": "Creating a highly detailed mech that is rigged for animation and optimized for game engines.",
+      "solution": "Used a boolean workflow in Blender for hard surface forms. Baked high-poly normals onto a low-poly mesh with weighted normals for perfect shading.",
+      "features": [
+        "40k Tris (Game Ready)",
+        "2 x 4K Texture Sets",
+        "Custom IK Rig"
+      ],
+      "links": {
+        "demo": "",
+        "github": "",
+        "video": ""
+      }
+    }
+  }
+]

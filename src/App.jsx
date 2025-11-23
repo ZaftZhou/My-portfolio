@@ -1,166 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, FileText, Download, Printer, MapPin, Phone, GraduationCap, Briefcase } from 'lucide-react';
 
+// 🎯 Import configuration data from JSON files
+import configData from './data/config.json';
+import projectsData from './data/projects.json';
+
 /**
  * ================================================================================
- * 🔧 CONFIGURATION AREA (Updated with Real CV Data)
+ * 🔧 CONFIGURATION AREA - Now loaded from JSON files!
  * ================================================================================
+ * To update your portfolio:
+ * 1. Edit src/data/config.json for personal info
+ * 2. Edit src/data/projects.json for projects
+ * 3. Add images to public/projects/[project-folder]/
  */
 
-const apiKey = ""; 
+const PERSONAL_INFO = configData.personalInfo;
+const EDUCATION_DATA = configData.education;
+const EXPERIENCE_DATA = configData.experience;
+const CATEGORIES = configData.categories;
+const PROJECTS_DATA = projectsData;
 
-const PERSONAL_INFO = {
-  name: "Zhou Bowen", 
-  title: "Unity3D Developer & Technical Artist",
-  bio: "Unity developer and technical generalist with a dual background in Mechatronics and IT. Technically focused on building structured systems in Unity and C# (AI, dialogue, character frameworks, shaders). Aiming for a strong mid-level role with senior potential in architecture and tools.",
-  location: "Turku, Finland",
-  email: "your.email@example.com", 
-  phone: "+358 XX XXX XXXX",
-  socials: {
-    github: "https://github.com/ZaftZhou",
-    linkedin: "https://linkedin.com/in/bowen-zhou-87b616251",
-    artstation: "https://dreamzhou.artstation.com/"
-  }
-};
-
-const FORMSPREE_ENDPOINT = ""; 
-
-const CATEGORIES = ['All', 'Game Dev', 'Shaders', '3D Art', 'Tools'];
-
-// 🌟 Real Data from CV
-const EDUCATION_DATA = [
-  {
-    school: "Turku Univ. Applied Sci",
-    degree: "B.Eng. Info Tech",
-    year: "Expected 2025"
-  },
-  {
-    school: "Shanghai Maritime Univ.",
-    degree: "B.Eng. Mechatronics",
-    year: "2014"
-  }
-];
-
-const EXPERIENCE_DATA = [
-  {
-    role: "Founder / Technical Generalist",
-    company: "Shanghai Demu Network Co., Ltd",
-    period: "2019 – Present",
-    description: "Founded studio focused on 3D digital content. Coordinated client requirements and provided technical training in 3D tools. Shifted focus towards interactive media and Unity."
-  },
-  {
-    role: "Freelance 3D Artist",
-    company: "Self-Employed",
-    period: "2018 – 2019",
-    description: "Produced assets for clients, optimized for real-time engines."
-  },
-  {
-    role: "3D Product Designer",
-    company: "Previous Experience",
-    period: "2014 – 2018",
-    description: "Designed interactive concepts and conducted technical training."
-  }
-];
-
-// 🌟 Real Projects from CV
-const PROJECTS_DATA = [
-  {
-    id: 1,
-    title: "VINCE – Virtual Integration Home",
-    category: "Game Dev",
-    description: "Bachelor’s Thesis project. A virtual integration home system focusing on modular avatars and UI architecture.",
-    tags: ["Unity", "C#", "Modular Avatar", "UI Architecture"],
-    color: "from-cyan-500 to-blue-600",
-    details: {
-      role: "Unity Developer & Tech Designer",
-      duration: "2024–2025",
-      challenge: "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
-      solution: "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
-      features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
-      gallery: ["#1", "#2", "#3"]
-    }
-  },
-  {
-    id: 2,
-    title: "AI Enemy System (Prototype)",
-    category: "Game Dev",
-    description: "A personal prototype focusing on FSM frameworks and perception systems for game AI.",
-    tags: ["Unity", "C#", "FSM", "AI Perception"],
-    color: "from-purple-500 to-pink-500",
-    details: {
-      role: "Solo Developer",
-      duration: "2024",
-      challenge: "Building a generic, reusable state machine that can handle complex enemy behaviors like patrolling, chasing, and wariness.",
-      solution: "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
-      features: ["Generic FSM Framework", "Layered Perception System", "Throttled Updates for Performance"],
-      gallery: ["#1", "#2"]
-    }
-  },
-  {
-    id: 3,
-    title: "Dialogue System",
-    category: "Tools",
-    description: "A data-driven dialogue system with branching narratives and quest integration.",
-    tags: ["Unity", "C#", "ScriptableObject", "Event System"],
-    color: "from-emerald-500 to-teal-600",
-    details: {
-      role: "Solo Developer",
-      duration: "2023–2024",
-      challenge: "Decoupling dialogue logic from game world state while allowing for complex branching and quest hooks.",
-      solution: "Used ScriptableObject definitions for nodes. Built a decoupled event system connecting dialogue to gold, shops, and quest logic.",
-      features: ["Data-Driven Architecture", "Quest System Hooks", "Event-based Integration"],
-      gallery: ["#1", "#2"]
-    }
-  },
-  {
-    id: 4,
-    title: "Volumetric Cloud Renderer",
-    category: "Shaders",
-    description: "A highly optimized ray-marching shader for volumetric clouds. Written in HLSL.",
-    tags: ["HLSL", "Shader Graph", "Compute Shaders", "Optimization"],
-    color: "from-indigo-500 to-purple-500",
-    details: {
-      role: "Technical Artist",
-      duration: "1 Month",
-      challenge: "Rendering volumetric clouds in real-time on mid-range hardware without dropping below 60fps.",
-      solution: "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
-      features: ["Ray-marching with light scattering", "Weather map support", "Zero garbage collection allocation"],
-      gallery: ["#1", "#2"]
-    }
-  },
-  {
-    id: 5,
-    title: "Stylized Water Shader",
-    category: "Shaders",
-    description: "Zelda-inspired water shader including depth-based color absorption.",
-    tags: ["URP", "Shader Graph", "VFX Graph"],
-    color: "from-blue-400 to-teal-400",
-    details: {
-      role: "VFX Artist",
-      duration: "2 Weeks",
-      challenge: "Replicating the specific stylized look of Nintendo games while maintaining flexibility for different lighting conditions.",
-      solution: "Used the Camera Depth Texture to calculate water depth for absorption effects. Added Gerstner waves for vertex displacement.",
-      features: ["Depth-based foam", "Refraction & Caustics", "Interactive ripples"],
-      gallery: ["#1", "#2", "#3"]
-    }
-  },
-  {
-    id: 6,
-    title: "Sci-Fi Mecha Model",
-    category: "3D Art",
-    description: "Hard-surface character model. High-poly sculpted in ZBrush, textured in Substance.",
-    tags: ["Blender", "Substance Painter", "ZBrush", "PBR Workflow"],
-    color: "from-orange-500 to-red-500",
-    details: {
-      role: "3D Artist",
-      duration: "4 Weeks",
-      challenge: "Creating a highly detailed mech that is rigged for animation and optimized for game engines.",
-      solution: "Used a boolean workflow in Blender for hard surface forms. Baked high-poly normals onto a low-poly mesh with weighted normals for perfect shading.",
-      features: ["40k Tris (Game Ready)", "2 x 4K Texture Sets", "Custom IK Rig"],
-      gallery: ["#1", "#2", "#3", "#4"]
-    }
-  }
-];
+const apiKey = configData.apiKeys.gemini;
+const FORMSPREE_ENDPOINT = configData.apiKeys.formspree;
 
 /**
  * ================================================================================
@@ -1068,7 +930,17 @@ const App = () => {
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Cpu size={20} className="text-cyan-500" /> The Challenge</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.challenge}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code size={20} className="text-cyan-500" /> The Solution</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.solution}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{details?.gallery ? details.gallery.map((img, idx) => (<div key={idx} className="aspect-video bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-center group overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all"><span className="text-slate-600 font-mono text-xs group-hover:text-cyan-400">Image {idx + 1}</span></div>)) : <p className="text-slate-500">No images.</p>}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {selectedProject.images && selectedProject.images.length > 0 ? (
+                    selectedProject.images.map((img, idx) => (
+                      <div key={idx} className="aspect-video bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-center group overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all">
+                        <img src={img} alt={`${selectedProject.title} screenshot ${idx + 1}`} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.innerHTML = `<span class="text-slate-600 font-mono text-xs group-hover:text-cyan-400">Image ${idx + 1}</span>`; }} />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-slate-500">No images available yet. Add images to public/projects/</p>
+                  )}
+                </div>
               </section>
             </div>
             <aside className="space-y-8">
