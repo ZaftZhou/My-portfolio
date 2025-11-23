@@ -224,6 +224,8 @@ const ParticleStarfield = () => {
 const CentralNeuralNetwork = () => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const [hoveredSkill, setHoveredSkill] = useState(null);
+  const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -232,24 +234,63 @@ const CentralNeuralNetwork = () => {
 
     const ctx = canvas.getContext('2d');
     let animationFrameId;
-    
+
     const skills = [
-      { name: 'C#', color: '#22d3ee', radius: 140, speed: 0.002, offset: 0 },
-      { name: 'HLSL', color: '#e879f9', radius: 140, speed: 0.002, offset: Math.PI },
-      { name: 'Unity', color: '#ffffff', radius: 190, speed: -0.0015, offset: 1 },
-      { name: 'Shader Graph', color: '#a78bfa', radius: 190, speed: -0.0015, offset: 3 },
-      { name: 'VFX', color: '#f472b6', radius: 190, speed: -0.0015, offset: 5 },
+      { name: 'C#', color: '#22d3ee', radius: 140, speed: 0.002, offset: 0, size: 18 },
+      { name: 'HLSL', color: '#e879f9', radius: 140, speed: 0.002, offset: Math.PI, size: 14 },
+      { name: 'Unity', color: '#ffffff', radius: 190, speed: -0.0015, offset: 1, size: 20 },
+      { name: 'Shader Graph', color: '#a78bfa', radius: 190, speed: -0.0015, offset: 3, size: 16 },
+      { name: 'VFX', color: '#f472b6', radius: 190, speed: -0.0015, offset: 5, size: 15 },
     ];
 
     let time = 0;
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = container.clientWidth * dpr;
-      canvas.height = container.clientHeight * dpr;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+
+      canvas.width = containerWidth * dpr;
+      canvas.height = containerHeight * dpr;
       ctx.scale(dpr, dpr);
-      canvas.style.width = `${container.clientWidth}px`;
-      canvas.style.height = `${container.clientHeight}px`;
+      canvas.style.width = `${containerWidth}px`;
+      canvas.style.height = `${containerHeight}px`;
+    };
+
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mousePos.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    };
+
+    const handleClick = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      skills.forEach((skill) => {
+        const angle = time * skill.speed + skill.offset;
+        const x = centerX + Math.cos(angle) * skill.radius;
+        const y = centerY + Math.sin(angle) * skill.radius;
+
+        const distance = Math.sqrt(Math.pow(clickX - x, 2) + Math.pow(clickY - y, 2));
+        if (distance < 25) {
+          // Create ripple effect on click
+          createRipple(x, y, skill.color);
+        }
+      });
+    };
+
+    let ripples = [];
+    const createRipple = (x, y, color) => {
+      ripples.push({ x, y, color, radius: 0, alpha: 1 });
     };
 
     const draw = () => {
@@ -261,46 +302,150 @@ const CentralNeuralNetwork = () => {
       ctx.clearRect(0, 0, width, height);
       time += 1;
 
+      // Draw orbital paths (like planetary orbits)
+      [140, 190].forEach((radius) => {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 10]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      // Draw central "sun" with glow
+      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 60);
+      centralGlow.addColorStop(0, 'rgba(34, 211, 238, 0.3)');
+      centralGlow.addColorStop(0.5, 'rgba(34, 211, 238, 0.1)');
+      centralGlow.addColorStop(1, 'rgba(34, 211, 238, 0)');
+      ctx.fillStyle = centralGlow;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Central icon/core
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.fill();
+      ctx.strokeStyle = '#22d3ee';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Inner glow
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(34, 211, 238, 0.2)';
+      ctx.fill();
+
+      // Track skill positions for hover detection
+      const skillPositions = [];
+
       skills.forEach((skill, index) => {
         const angle = time * skill.speed + skill.offset;
-        const floatX = Math.cos(time * 0.01 + index) * 5; 
-        const floatY = Math.sin(time * 0.01 + index) * 5;
-        
+        const floatX = Math.cos(time * 0.01 + index) * 3;
+        const floatY = Math.sin(time * 0.01 + index) * 3;
+
         const x = centerX + Math.cos(angle) * skill.radius + floatX;
         const y = centerY + Math.sin(angle) * skill.radius + floatY;
 
-        const pulse = (Math.sin(time * 0.05 + index) + 1) / 2; 
-        const alpha = 0.15 + pulse * 0.15;
-        
-        const gradient = ctx.createLinearGradient(centerX, centerY, x, y);
-        gradient.addColorStop(0, `rgba(34, 211, 238, 0)`);
-        gradient.addColorStop(0.5, skill.color === '#ffffff' ? `rgba(255,255,255, ${alpha})` : skill.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba'));
-        gradient.addColorStop(1, skill.color === '#ffffff' ? `rgba(255,255,255, ${alpha})` : skill.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba'));
+        skillPositions.push({ x, y, skill });
 
+        // Check if mouse is hovering over this skill
+        const distance = Math.sqrt(
+          Math.pow(mousePos.current.x - x, 2) +
+          Math.pow(mousePos.current.y - y, 2)
+        );
+        const isHovered = distance < 25;
+        if (isHovered && hoveredSkill !== skill.name) {
+          setHoveredSkill(skill.name);
+        } else if (!isHovered && hoveredSkill === skill.name) {
+          setHoveredSkill(null);
+        }
+
+        const pulse = (Math.sin(time * 0.05 + index) + 1) / 2;
+        const baseAlpha = isHovered ? 0.4 : 0.15;
+        const alpha = baseAlpha + pulse * 0.15;
+
+        // Neural fiber connection
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
-        ctx.lineTo(x, y);
+
+        // Curved path for organic feel
+        const controlX = (centerX + x) / 2 + Math.sin(time * 0.02 + index) * 20;
+        const controlY = (centerY + y) / 2 + Math.cos(time * 0.02 + index) * 20;
+        ctx.quadraticCurveTo(controlX, controlY, x, y);
+
+        const gradient = ctx.createLinearGradient(centerX, centerY, x, y);
+        gradient.addColorStop(0, `rgba(34, 211, 238, 0)`);
+        gradient.addColorStop(0.5, skill.color.replace('rgb', 'rgba').replace(')', `, ${alpha})`));
+        gradient.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', `, ${alpha})`));
+
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = isHovered ? 2.5 : 1.5;
         ctx.stroke();
 
+        // Particle effect along the line
+        if (isHovered || time % 60 < 30) {
+          const particleProgress = (time % 60) / 60;
+          const particleX = centerX + (x - centerX) * particleProgress;
+          const particleY = centerY + (y - centerY) * particleProgress;
+
+          ctx.beginPath();
+          ctx.arc(particleX, particleY, 2, 0, Math.PI * 2);
+          ctx.fillStyle = skill.color;
+          ctx.fill();
+        }
+
+        // Planet glow
+        const planetGlow = ctx.createRadialGradient(x, y, 0, x, y, isHovered ? 35 : 25);
+        planetGlow.addColorStop(0, skill.color.replace('rgb', 'rgba').replace(')', ', 0.3)'));
+        planetGlow.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', ', 0)'));
+        ctx.fillStyle = planetGlow;
         ctx.beginPath();
-        ctx.arc(x, y, 16, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.arc(x, y, isHovered ? 35 : 25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Planet body
+        const planetSize = isHovered ? skill.size + 4 : skill.size;
+        ctx.beginPath();
+        ctx.arc(x, y, planetSize, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
         ctx.fill();
         ctx.strokeStyle = skill.color;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = isHovered ? 3 : 2;
         ctx.stroke();
 
+        // Inner core
         ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = skill.color;
+        ctx.arc(x, y, planetSize * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.6)');
         ctx.fill();
 
-        ctx.font = '12px "JetBrains Mono", monospace';
+        // Label
+        ctx.font = isHovered ? 'bold 13px "JetBrains Mono", monospace' : '12px "JetBrains Mono", monospace';
         ctx.fillStyle = skill.color;
         ctx.textAlign = 'center';
-        ctx.fillText(skill.name, x, y + 32);
+        ctx.shadowColor = isHovered ? skill.color : 'transparent';
+        ctx.shadowBlur = isHovered ? 10 : 0;
+        ctx.fillText(skill.name, x, y + planetSize + 20);
+        ctx.shadowBlur = 0;
+      });
+
+      // Draw ripples
+      ripples = ripples.filter(ripple => {
+        ripple.radius += 2;
+        ripple.alpha -= 0.02;
+
+        if (ripple.alpha > 0) {
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = ripple.color.replace('rgb', 'rgba').replace(')', `, ${ripple.alpha})`);
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          return true;
+        }
+        return false;
       });
 
       animationFrameId = requestAnimationFrame(draw);
@@ -308,17 +453,22 @@ const CentralNeuralNetwork = () => {
 
     resizeCanvas();
     draw();
+
     window.addEventListener('resize', resizeCanvas);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('click', handleClick);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('click', handleClick);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [hoveredSkill]);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none">
-      <canvas ref={canvasRef} />
+    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
+      <canvas ref={canvasRef} className="cursor-pointer" />
     </div>
   );
 };
@@ -503,78 +653,102 @@ const TypewriterTitle = () => {
   );
 };
 
-// 🌟 Masonry Gallery Component
+// 🌟 Masonry Gallery Component (Supports Images & Videos)
 const MasonryGallery = ({ images, projectTitle, onImageClick }) => {
   const [columns, setColumns] = useState([[], []]);
 
   useEffect(() => {
-    // Split images into 2 columns for masonry layout
+    // Split media into 2 columns for masonry layout
     const col1 = [];
     const col2 = [];
 
-    images.forEach((img, idx) => {
+    images.forEach((media, idx) => {
       if (idx % 2 === 0) {
-        col1.push({ img, idx });
+        col1.push({ media, idx });
       } else {
-        col2.push({ img, idx });
+        col2.push({ media, idx });
       }
     });
 
     setColumns([col1, col2]);
   }, [images]);
 
+  const isVideo = (src) => {
+    if (typeof src === 'string') {
+      return /\.(mp4|webm|ogg|mov)$/i.test(src);
+    }
+    return false;
+  };
+
+  const renderMedia = (media, idx) => {
+    const src = typeof media === 'string' ? media : media.src || media;
+    const isVid = isVideo(src);
+
+    return (
+      <div
+        key={idx}
+        className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group relative"
+        onClick={() => onImageClick(idx)}
+      >
+        {isVid ? (
+          <>
+            <video
+              src={src}
+              className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              muted
+              loop
+              playsInline
+              onMouseEnter={(e) => e.target.play()}
+              onMouseLeave={(e) => e.target.pause()}
+            />
+            <div className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded-full text-xs font-mono flex items-center gap-1">
+              <Play size={12} /> Video
+            </div>
+          </>
+        ) : (
+          <img
+            src={src}
+            alt={`${projectTitle} screenshot ${idx + 1}`}
+            className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Media ${idx + 1}</span></div>`;
+            }}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="flex gap-4">
       {/* Column 1 */}
       <div className="flex-1 flex flex-col gap-4">
-        {columns[0].map(({ img, idx }) => (
-          <div
-            key={idx}
-            className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
-            onClick={() => onImageClick(idx)}
-          >
-            <img
-              src={img}
-              alt={`${projectTitle} screenshot ${idx + 1}`}
-              className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
-              }}
-            />
-          </div>
-        ))}
+        {columns[0].map(({ media, idx }) => renderMedia(media, idx))}
       </div>
 
       {/* Column 2 */}
       {columns[1].length > 0 && (
         <div className="flex-1 flex flex-col gap-4">
-          {columns[1].map(({ img, idx }) => (
-            <div
-              key={idx}
-              className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
-              onClick={() => onImageClick(idx)}
-            >
-              <img
-                src={img}
-                alt={`${projectTitle} screenshot ${idx + 1}`}
-                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
-                }}
-              />
-            </div>
-          ))}
+          {columns[1].map(({ media, idx }) => renderMedia(media, idx))}
         </div>
       )}
     </div>
   );
 };
 
-// 🌟 Image Lightbox Component
+// 🌟 Media Lightbox Component (Supports Images & Videos)
 const ImageLightbox = ({ images, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const videoRef = useRef(null);
+
+  const currentMedia = images[currentIndex];
+  const isVideo = (src) => {
+    const mediaStr = typeof src === 'string' ? src : src?.src || '';
+    return /\.(mp4|webm|ogg|mov)$/i.test(mediaStr);
+  };
+  const currentSrc = typeof currentMedia === 'string' ? currentMedia : currentMedia?.src || currentMedia;
+  const isCurrentVideo = isVideo(currentSrc);
 
   const goToPrevious = (e) => {
     if (e) e.stopPropagation();
@@ -591,10 +765,28 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft') goToPrevious();
       if (e.key === 'ArrowRight') goToNext();
+      // Space to play/pause video
+      if (e.key === ' ' && isCurrentVideo && videoRef.current) {
+        e.preventDefault();
+        if (videoRef.current.paused) {
+          videoRef.current.play();
+        } else {
+          videoRef.current.pause();
+        }
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [onClose, isCurrentVideo]);
+
+  // Auto-play video when it becomes current
+  useEffect(() => {
+    if (isCurrentVideo && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Auto-play may be blocked, user will need to click play
+      });
+    }
+  }, [currentIndex, isCurrentVideo]);
 
   return (
     <div
@@ -610,9 +802,10 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
         <X size={24} />
       </button>
 
-      {/* Image Counter */}
+      {/* Media Counter & Type */}
       {images.length > 1 && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[10001] px-4 py-2 bg-slate-800/80 rounded-full text-white text-sm font-mono">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[10001] px-4 py-2 bg-slate-800/80 rounded-full text-white text-sm font-mono flex items-center gap-2">
+          {isCurrentVideo && <Play size={14} />}
           {currentIndex + 1} / {images.length}
         </div>
       )}
@@ -622,19 +815,30 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
         <button
           onClick={goToPrevious}
           className="absolute left-4 z-[10001] p-3 bg-slate-800/80 hover:bg-slate-700 rounded-full text-white transition-all hover:scale-110"
-          title="Previous image (←)"
+          title="Previous (←)"
         >
           <ArrowLeft size={24} />
         </button>
       )}
 
-      {/* Image */}
+      {/* Media Display */}
       <div className="max-w-[90vw] max-h-[90vh] relative" onClick={(e) => e.stopPropagation()}>
-        <img
-          src={images[currentIndex]}
-          alt={`Gallery image ${currentIndex + 1}`}
-          className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-        />
+        {isCurrentVideo ? (
+          <video
+            ref={videoRef}
+            src={currentSrc}
+            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            controls
+            loop
+            playsInline
+          />
+        ) : (
+          <img
+            src={currentSrc}
+            alt={`Gallery image ${currentIndex + 1}`}
+            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+          />
+        )}
       </div>
 
       {/* Next Button */}
@@ -642,7 +846,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
         <button
           onClick={goToNext}
           className="absolute right-4 z-[10001] p-3 bg-slate-800/80 hover:bg-slate-700 rounded-full text-white transition-all hover:scale-110"
-          title="Next image (→)"
+          title="Next (→)"
         >
           <ArrowLeft size={24} className="rotate-180" />
         </button>
@@ -650,7 +854,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
 
       {/* Keyboard hint */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[10001] px-4 py-2 bg-slate-800/60 rounded-full text-white/60 text-xs font-mono">
-        {images.length > 1 ? '← → to navigate • ESC to close' : 'ESC to close'}
+        {images.length > 1 ? `← → to navigate${isCurrentVideo ? ' • SPACE to play/pause' : ''} • ESC to close` : isCurrentVideo ? 'SPACE to play/pause • ESC to close' : 'ESC to close'}
       </div>
     </div>
   );
@@ -1202,7 +1406,7 @@ const App = () => {
           </div>
         </div>
         
-        <div className="flex-1 relative h-[400px] md:h-[500px] w-full flex items-center justify-center">
+        <div className="flex-1 relative h-[500px] md:h-[600px] w-full max-w-full flex items-center justify-center overflow-visible">
           <CentralNeuralNetwork />
           <div className="relative z-10 w-32 h-32 md:w-48 md:h-48 rounded-full bg-slate-800/90 border-4 border-slate-700/50 backdrop-blur-md flex items-center justify-center shadow-[0_0_50px_rgba(34,211,238,0.3)] animate-float">
              <Box size={60} className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
