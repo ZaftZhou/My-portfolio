@@ -27,6 +27,14 @@ const FORMSPREE_ENDPOINT = "";
 
 const CATEGORIES = ['All', 'Game Dev', 'Shaders', '3D Art', 'Tools'];
 
+const PROJECT_ASSET_BASE = '/projects';
+const buildGalleryEntries = (folder, files = []) =>
+  files.map((file) => ({
+    file,
+    folder,
+    src: `${PROJECT_ASSET_BASE}/${folder}/${file}`
+  }));
+
 // 🌟 Real Data from CV
 const EDUCATION_DATA = [
   {
@@ -67,6 +75,7 @@ const PROJECTS_DATA = [
   {
     id: 1,
     title: "VINCE – Virtual Integration Home",
+    slug: "vince",
     category: "Game Dev",
     description: "Bachelor’s Thesis project. A virtual integration home system focusing on modular avatars and UI architecture.",
     tags: ["Unity", "C#", "Modular Avatar", "UI Architecture"],
@@ -77,12 +86,14 @@ const PROJECTS_DATA = [
       challenge: "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
       solution: "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
-      gallery: ["#1", "#2", "#3"]
+      assetFolder: "vince",
+      gallery: buildGalleryEntries('vince', ['cover.jpg', 'ui.jpg', 'avatar-mask.jpg'])
     }
   },
   {
     id: 2,
     title: "AI Enemy System (Prototype)",
+    slug: "ai-enemy-system",
     category: "Game Dev",
     description: "A personal prototype focusing on FSM frameworks and perception systems for game AI.",
     tags: ["Unity", "C#", "FSM", "AI Perception"],
@@ -93,12 +104,14 @@ const PROJECTS_DATA = [
       challenge: "Building a generic, reusable state machine that can handle complex enemy behaviors like patrolling, chasing, and wariness.",
       solution: "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
       features: ["Generic FSM Framework", "Layered Perception System", "Throttled Updates for Performance"],
-      gallery: ["#1", "#2"]
+      assetFolder: "ai-enemy-system",
+      gallery: buildGalleryEntries('ai-enemy-system', ['fsm.jpg', 'perception.jpg'])
     }
   },
   {
     id: 3,
     title: "Dialogue System",
+    slug: "dialogue-system",
     category: "Tools",
     description: "A data-driven dialogue system with branching narratives and quest integration.",
     tags: ["Unity", "C#", "ScriptableObject", "Event System"],
@@ -109,12 +122,14 @@ const PROJECTS_DATA = [
       challenge: "Decoupling dialogue logic from game world state while allowing for complex branching and quest hooks.",
       solution: "Used ScriptableObject definitions for nodes. Built a decoupled event system connecting dialogue to gold, shops, and quest logic.",
       features: ["Data-Driven Architecture", "Quest System Hooks", "Event-based Integration"],
-      gallery: ["#1", "#2"]
+      assetFolder: "dialogue-system",
+      gallery: buildGalleryEntries('dialogue-system', ['nodes.jpg', 'quest-hooks.jpg'])
     }
   },
   {
     id: 4,
     title: "Volumetric Cloud Renderer",
+    slug: "volumetric-cloud-renderer",
     category: "Shaders",
     description: "A highly optimized ray-marching shader for volumetric clouds. Written in HLSL.",
     tags: ["HLSL", "Shader Graph", "Compute Shaders", "Optimization"],
@@ -125,12 +140,14 @@ const PROJECTS_DATA = [
       challenge: "Rendering volumetric clouds in real-time on mid-range hardware without dropping below 60fps.",
       solution: "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
       features: ["Ray-marching with light scattering", "Weather map support", "Zero garbage collection allocation"],
-      gallery: ["#1", "#2"]
+      assetFolder: "volumetric-cloud-renderer",
+      gallery: buildGalleryEntries('volumetric-cloud-renderer', ['clouds.jpg', 'lighting.jpg'])
     }
   },
   {
     id: 5,
     title: "Stylized Water Shader",
+    slug: "stylized-water-shader",
     category: "Shaders",
     description: "Zelda-inspired water shader including depth-based color absorption.",
     tags: ["URP", "Shader Graph", "VFX Graph"],
@@ -141,12 +158,14 @@ const PROJECTS_DATA = [
       challenge: "Replicating the specific stylized look of Nintendo games while maintaining flexibility for different lighting conditions.",
       solution: "Used the Camera Depth Texture to calculate water depth for absorption effects. Added Gerstner waves for vertex displacement.",
       features: ["Depth-based foam", "Refraction & Caustics", "Interactive ripples"],
-      gallery: ["#1", "#2", "#3"]
+      assetFolder: "stylized-water-shader",
+      gallery: buildGalleryEntries('stylized-water-shader', ['foam.jpg', 'refraction.jpg', 'ripples.jpg'])
     }
   },
   {
     id: 6,
     title: "Sci-Fi Mecha Model",
+    slug: "sci-fi-mecha",
     category: "3D Art",
     description: "Hard-surface character model. High-poly sculpted in ZBrush, textured in Substance.",
     tags: ["Blender", "Substance Painter", "ZBrush", "PBR Workflow"],
@@ -157,7 +176,8 @@ const PROJECTS_DATA = [
       challenge: "Creating a highly detailed mech that is rigged for animation and optimized for game engines.",
       solution: "Used a boolean workflow in Blender for hard surface forms. Baked high-poly normals onto a low-poly mesh with weighted normals for perfect shading.",
       features: ["40k Tris (Game Ready)", "2 x 4K Texture Sets", "Custom IK Rig"],
-      gallery: ["#1", "#2", "#3", "#4"]
+      assetFolder: "sci-fi-mecha",
+      gallery: buildGalleryEntries('sci-fi-mecha', ['beauty.jpg', 'wireframe.jpg', 'textures.jpg', 'rig.jpg'])
     }
   }
 ];
@@ -315,6 +335,38 @@ const CentralNeuralNetwork = () => {
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none">
       <canvas ref={canvasRef} />
+    </div>
+  );
+};
+
+const GalleryImage = ({ entry, title }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!entry || hasError) {
+    return (
+      <div className="aspect-video bg-slate-800 rounded-xl border border-dashed border-slate-700 flex flex-col items-center justify-center gap-2 text-slate-500 px-4 text-center">
+        <ImageIcon size={20} className="text-cyan-400" />
+        <p className="text-xs leading-relaxed">
+          Place <span className="text-cyan-300">{entry?.file || 'image-name.ext'}</span> in
+          <span className="text-cyan-300"> /public{PROJECT_ASSET_BASE}/{entry?.folder || 'your-folder'}</span>
+          {' '}then list it in the gallery array.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-video bg-slate-900 rounded-xl border border-slate-700 overflow-hidden group hover:border-cyan-500/50 transition-all relative">
+      <img
+        src={entry.src}
+        alt={`${title} image ${entry.file}`}
+        className="w-full h-full object-cover"
+        onError={() => setHasError(true)}
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-xs text-white font-mono">
+        {entry.file}
+      </div>
     </div>
   );
 };
@@ -669,7 +721,12 @@ const App = () => {
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Cpu size={20} className="text-cyan-500" /> The Challenge</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.challenge}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code size={20} className="text-cyan-500" /> The Solution</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.solution}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{details?.gallery ? details.gallery.map((img, idx) => (<div key={idx} className="aspect-video bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-center group overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all"><span className="text-slate-600 font-mono text-xs group-hover:text-cyan-400">Image {idx + 1}</span></div>)) : <p className="text-slate-500">No images.</p>}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{details?.gallery?.length
+                  ? details.gallery.map((entry, idx) => (
+                      <GalleryImage key={`${entry.src}-${idx}`} entry={entry} title={selectedProject.title} />
+                    ))
+                  : <p className="text-slate-500">No images yet. Add file names to the gallery array for this project.</p>}
+                </div>
               </section>
             </div>
             <aside className="space-y-8">
@@ -680,6 +737,17 @@ const App = () => {
                     <div><span className="text-slate-500 text-sm block mb-1">Duration</span><span className="text-white font-medium">{details?.duration}</span></div>
                     <div><span className="text-slate-500 text-sm block mb-1">Tech Stack</span><div className="flex flex-wrap gap-2 mt-2">{selectedProject.tags.map(tag => <span key={tag} className="text-xs px-2 py-1 bg-slate-800 border border-slate-700 rounded text-cyan-300">{tag}</span>)}</div></div>
                   </div>
+               </div>
+               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+                 <div className="flex items-center gap-2 text-slate-300 font-semibold"><RefreshCw size={16} className="text-cyan-400" /> Faster uploads next time</div>
+                 <ol className="text-sm text-slate-400 space-y-2 list-decimal list-inside">
+                   <li>Create <code className="bg-slate-800 px-1.5 py-0.5 rounded text-cyan-300">public{PROJECT_ASSET_BASE}/{details?.assetFolder || selectedProject.slug}</code></li>
+                   <li>Drop JPG/PNG/WebP files there (keep names simple, e.g. <span className="text-cyan-300">cover.jpg</span>).</li>
+                   <li>Update <code className="bg-slate-800 px-1.5 py-0.5 rounded text-cyan-300">PROJECTS_DATA</code> → <code className="bg-slate-800 px-1.5 py-0.5 rounded text-cyan-300">gallery</code> with the filenames only.</li>
+                 </ol>
+                 <div className="text-xs text-slate-500 bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                   Example: <span className="text-cyan-300">gallery: buildGalleryEntries('{details?.assetFolder || selectedProject.slug}', ['cover.jpg', 'ui-01.png'])</span>
+                 </div>
                </div>
             </aside>
           </div>
