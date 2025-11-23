@@ -162,6 +162,19 @@ const PROJECTS_DATA = [
   }
 ];
 
+const QUICK_PROMPTS = [
+  "What is your approach to building reusable gameplay systems?",
+  "Tell me about the VINCE virtual integration home project.",
+  "How do you optimize shaders for real-time performance?",
+  "Which tools have you built to speed up content production?"
+];
+
+const PORTFOLIO_STATS = {
+  gameplayAndTools: PROJECTS_DATA.filter(p => ['Game Dev', 'Tools'].includes(p.category)).length,
+  artAndShaders: PROJECTS_DATA.filter(p => ['Shaders', '3D Art'].includes(p.category)).length,
+  experienceRoles: EXPERIENCE_DATA.length,
+};
+
 /**
  * ================================================================================
  * 🧠 AI LOGIC AREA
@@ -739,6 +752,23 @@ const App = () => {
             <button onClick={() => scrollToSection('portfolio')} className="px-8 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-200 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-white/10">View Projects</button>
             <button onClick={() => scrollToSection('contact')} className="px-8 py-3 rounded-full bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all">Contact Me</button>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
+            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/70 text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-1">Gameplay & Tools</p>
+              <p className="text-2xl font-bold text-white">{PORTFOLIO_STATS.gameplayAndTools} projects</p>
+              <p className="text-sm text-slate-400">State machines, dialogue pipelines, runtime UI systems.</p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/70 text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-1">Shaders & Art</p>
+              <p className="text-2xl font-bold text-white">{PORTFOLIO_STATS.artAndShaders} showcases</p>
+              <p className="text-sm text-slate-400">HLSL, Shader Graph, VFX-ready 3D assets.</p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/70 text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-1">Experience</p>
+              <p className="text-2xl font-bold text-white">{PORTFOLIO_STATS.experienceRoles}+ roles</p>
+              <p className="text-sm text-slate-400">Hands-on across studios, freelance, and founding a team.</p>
+            </div>
+          </div>
           <div className="flex items-center justify-center md:justify-start gap-6 pt-4 text-slate-500">
             <a href={PERSONAL_INFO.socials.github} className="hover:text-white transition-colors"><Github size={24} /></a>
             <a href={PERSONAL_INFO.socials.linkedin} className="hover:text-blue-400 transition-colors"><Linkedin size={24} /></a>
@@ -830,6 +860,26 @@ const App = () => {
           <h2 className="text-4xl font-bold text-white mb-6">Let's Build Something Amazing</h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">Have a question? You can email me directly, or chat with my AI assistant to learn more about my work instantly.</p>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-2">Direct Email</p>
+            <p className="text-white font-semibold mb-3 break-words">{PERSONAL_INFO.email}</p>
+            <a href={`mailto:${PERSONAL_INFO.email}`} className="inline-flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-white transition-colors"><Mail size={16} /> Compose Message</a>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-2">Location</p>
+            <p className="text-white font-semibold">{PERSONAL_INFO.location}</p>
+            <p className="text-slate-400 text-sm">Available for hybrid and remote collaborations.</p>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-2">Networks</p>
+            <div className="flex items-center gap-3 text-slate-300">
+              <a href={PERSONAL_INFO.socials.linkedin} className="hover:text-white transition-colors inline-flex items-center gap-1"><Linkedin size={16} /> LinkedIn</a>
+              <span className="text-slate-600">•</span>
+              <a href={PERSONAL_INFO.socials.github} className="hover:text-white transition-colors inline-flex items-center gap-1"><Github size={16} /> GitHub</a>
+            </div>
+          </div>
+        </div>
         <div className="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col">
           <div className="flex border-b border-slate-800">
             <button onClick={() => setContactMode('email')} className={`flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 transition-colors ${contactMode === 'email' ? 'bg-slate-800 text-white' : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'}`}><Mail size={18} /> Send Email</button>
@@ -851,6 +901,18 @@ const App = () => {
             )}
             {contactMode === 'chat' && (
               <div className="flex flex-col h-[400px] animate-in fade-in slide-in-from-bottom-4 duration-300">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {QUICK_PROMPTS.map(prompt => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => setChatInput(prompt)}
+                      className="px-3 py-2 rounded-lg bg-slate-800 text-xs text-slate-200 border border-slate-700 hover:border-cyan-500/50 hover:text-white transition-colors"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
                 <div className="flex-grow overflow-y-auto space-y-4 mb-4 pr-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                   {chatHistory.map((msg, idx) => (<div key={idx} className={`flex items-start gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}><div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'ai' ? 'bg-gradient-to-br from-cyan-500 to-blue-600' : 'bg-slate-700'}`}>{msg.role === 'ai' ? <Bot size={18} className="text-white" /> : <User size={18} className="text-slate-300" />}</div><div className={`p-3 rounded-2xl text-sm leading-relaxed max-w-[80%] ${msg.role === 'ai' ? 'bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700' : 'bg-cyan-900/30 text-cyan-100 rounded-tr-none border border-cyan-500/30'}`}>{msg.text}</div></div>))}
                   {isChatLoading && (<div className="flex items-start gap-3"><div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0"><Bot size={18} className="text-white" /></div><div className="p-3 bg-slate-800 rounded-2xl rounded-tl-none border border-slate-700 flex items-center gap-2"><Loader2 size={16} className="animate-spin text-cyan-400" /><span className="text-slate-400 text-xs">Thinking...</span></div></div>)}<div ref={chatEndRef} />
