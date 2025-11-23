@@ -933,14 +933,27 @@ const App = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {selectedProject.images && selectedProject.images.length > 0 ? (
                     selectedProject.images.map((img, idx) => (
-                      <div key={idx} className="aspect-video bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-center group overflow-hidden cursor-pointer hover:border-cyan-500/50 transition-all">
-                        <img src={img} alt={`${selectedProject.title} screenshot ${idx + 1}`} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.innerHTML = `<span class="text-slate-600 font-mono text-xs group-hover:text-cyan-400">Image ${idx + 1}</span>`; }} />
+                      <div
+                        key={idx}
+                        className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
+                        onClick={() => window.open(img, '_blank')}
+                      >
+                        <img
+                          src={img}
+                          alt={`${selectedProject.title} screenshot ${idx + 1}`}
+                          className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
+                          }}
+                        />
                       </div>
                     ))
                   ) : (
                     <p className="text-slate-500">No images available yet. Add images to public/projects/</p>
                   )}
                 </div>
+                <p className="text-slate-500 text-xs mt-4 text-center">💡 Click on any image to view full size</p>
               </section>
             </div>
             <aside className="space-y-8">
