@@ -62,7 +62,7 @@ const PROJECTS_DATA = [
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
       // 🌟 NEW: Media Array supports 'image' and 'video' types
       media: [
-        { type: 'video', url: '/projects/vince/video1.MP4', caption: 'Avatar Customization Demo' },
+        { type: 'video', url: '/projects/vince/video1.mp4', caption: 'Avatar Customization Demo' },
         { type: 'image', url: '/projects/vince/image1.png', caption: 'Main Menu UI' },
         { type: 'image', url: '/projects/vince/image2.png', caption: 'Main Menu UI' },
         { type: 'image', url: '/projects/vince/image3.png', caption: 'Main Menu UI' },
