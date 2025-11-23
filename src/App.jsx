@@ -1,6 +1,7 @@
 import React from 'react';
-import { Github, Linkedin, Mail, Link2 } from 'lucide-react';
+import { Github, Linkedin, Mail, Link2, Sparkles, MoveRight } from 'lucide-react';
 import './App.css';
+import projects from './data/projects.json';
 
 const socialLinks = [
   { icon: <Github size={18} />, label: 'GitHub', href: 'https://github.com' },
@@ -20,15 +21,63 @@ const arsenal = [
   'Git'
 ];
 
-const categories = ['All', 'Game Dev', 'Shader Dev', '3D Art', 'Tools'];
+const gradientLookup = {
+  'from-cyan-500 to-blue-600': 'linear-gradient(135deg, #22d3ee, #2563eb)',
+  'from-purple-500 to-pink-500': 'linear-gradient(135deg, #a855f7, #ec4899)',
+  'from-emerald-500 to-teal-600': 'linear-gradient(135deg, #10b981, #0d9488)',
+  'from-indigo-500 to-purple-500': 'linear-gradient(135deg, #6366f1, #a855f7)',
+  'from-blue-400 to-teal-400': 'linear-gradient(135deg, #60a5fa, #2dd4bf)',
+  'from-orange-500 to-red-500': 'linear-gradient(135deg, #f97316, #ef4444)'
+};
+
+const categories = ['All', ...Array.from(new Set(projects.map((project) => project.category)))];
+
+const ProjectCard = ({ project }) => {
+  const accentGradient = gradientLookup[project.color] || 'linear-gradient(135deg, #22d3ee, #2563eb)';
+  const headline = project.details?.features?.[0] || 'Technical Art';
+
+  return (
+    <article className="project-card" style={{ ['--accent-gradient']: accentGradient }}>
+      <div className="project-card__halo" />
+      <div className="project-card__beam" />
+      <div className="project-card__header">
+        <span className="project-chip">{project.category}</span>
+        <div className="project-energy" />
+      </div>
+      <h4 className="project-title">{project.title}</h4>
+      <p className="project-description">{project.description}</p>
+      <div className="project-tags">
+        {project.tags.slice(0, 4).map((tag) => (
+          <span key={tag} className="project-tag">
+            {tag}
+          </span>
+        ))}
+      </div>
+      <div className="project-card__footer">
+        <div className="project-meta">
+          <Sparkles size={16} />
+          <span>{headline}</span>
+        </div>
+        <button className="ghost-button">
+          View breakdown <MoveRight size={16} />
+        </button>
+      </div>
+    </article>
+  );
+};
 
 function App() {
+  const [activeCategory, setActiveCategory] = React.useState('All');
+  const filteredProjects = projects.filter(
+    (project) => activeCategory === 'All' || project.category === activeCategory
+  );
+
   return (
     <div className="min-h-screen bg-[#0b1021] text-white relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-indigo-600/10 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.06),transparent_35%)]" />
+        <div className="aurora" />
+        <div className="scanline" />
+        <div className="floating-rings" />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-6 pb-16">
@@ -69,7 +118,7 @@ function App() {
           </div>
 
           <div className="relative w-full max-w-lg mx-auto">
-            <div className="relative aspect-square rounded-3xl bg-gradient-to-br from-[#121a33] to-[#0b0f26] border border-slate-800/70 shadow-[0_30px_120px_rgba(0,0,0,0.5)] overflow-hidden">
+            <div className="hero-plate">
               <div className="absolute inset-6 rounded-full border border-cyan-500/30" />
               <div className="absolute inset-12 rounded-full border border-indigo-500/20" />
               <div className="absolute inset-20 rounded-full bg-gradient-to-b from-cyan-500/10 to-transparent" />
@@ -107,10 +156,20 @@ function App() {
           </p>
           <div className="flex flex-wrap gap-3 pt-3">
             {categories.map((category) => (
-              <button key={category} className={`filter-btn ${category === 'All' ? 'active' : ''}`}>
+              <button
+                key={category}
+                className={`filter-btn ${category === activeCategory ? 'active' : ''}`}
+                onClick={() => setActiveCategory(category)}
+              >
                 {category}
               </button>
             ))}
+          </div>
+          <div className="project-grid">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+            <div className="grid-highlight" />
           </div>
         </section>
       </div>
