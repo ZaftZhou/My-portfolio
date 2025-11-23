@@ -84,6 +84,7 @@ const PROJECTS_DATA = [
       solution: "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
       features: ["Generic FSM Framework", "Layered Perception System", "Throttled Updates for Performance"],
       media: [
+        { type: 'video', url: '/projects/aiEnemy/video1.mp4', caption: 'Simple State Machine Demo' },
         { type: 'image', url: 'https://picsum.photos/800/400?random=201', caption: 'FSM Debug Gizmos' },
         { type: 'image', url: 'https://picsum.photos/600/600?random=202', caption: 'Perception Cone' },
         { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4', caption: 'AI Patrolling Behavior' },
@@ -111,7 +112,7 @@ const PROJECTS_DATA = [
   },
   {
     id: 4,
-    title: "Volumetric Cloud Renderer",
+    title: "Visualize Drone Swarm Algorithm",
     category: "Shaders",
     description: "A highly optimized ray-marching shader for volumetric clouds. Written in HLSL.",
     tags: ["HLSL", "Shader Graph", "Compute Shaders", "Optimization"],
