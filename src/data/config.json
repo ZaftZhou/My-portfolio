@@ -14,8 +14,8 @@
   },
   "education": [
     {
-      "school": "Turku Univ. Applied Sci",
-      "degree": "B.Eng. Info Tech",
+      "school": "Turku Univ. Applied Science",
+      "degree": "B.Eng. Information and Communication Tech",
       "year": "Expected 2025"
     },
     {
@@ -27,7 +27,7 @@
   "experience": [
     {
       "role": "Founder / Technical Generalist",
-      "company": "Shanghai Demu Network Co., Ltd",
+      "company": "Shanghai Demoon Network Co., Ltd",
       "period": "2019 – Present",
       "description": "Founded studio focused on 3D digital content. Coordinated client requirements and provided technical training in 3D tools. Shifted focus towards interactive media and Unity."
     },
