@@ -62,11 +62,11 @@ const PROJECTS_DATA = [
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
       // 🌟 NEW: Media Array supports 'image' and 'video' types
       media: [
-        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', caption: 'Avatar Customization Demo' },
-        { type: 'image', url: 'https://picsum.photos/800/600?random=101', caption: 'Main Menu UI' },
-        { type: 'image', url: 'https://picsum.photos/600/800?random=102', caption: 'Mobile Vertical Layout' }, // Portrait
-        { type: 'image', url: 'https://picsum.photos/800/500?random=103', caption: 'Shader Masking System' },
-        { type: 'image', url: 'https://picsum.photos/700/700?random=104', caption: 'Asset Database' }, // Square
+        { type: 'video', url: '/projects/vince/video1.MP4', caption: 'Avatar Customization Demo' },
+        { type: 'image', url: '/projects/vince/image1.png', caption: 'Main Menu UI' },
+        { type: 'image', url: '/projects/vince/image2.png', caption: 'Main Menu UI' },
+        { type: 'image', url: '/projects/vince/image3.png', caption: 'Main Menu UI' },
+        { type: 'image', url: 'https://picsum.photos/600/800?random=102', caption: 'Mobile Vertical Layout' }, 
       ]
     }
   },
