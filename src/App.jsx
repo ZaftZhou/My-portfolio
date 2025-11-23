@@ -503,6 +503,75 @@ const TypewriterTitle = () => {
   );
 };
 
+// 🌟 Masonry Gallery Component
+const MasonryGallery = ({ images, projectTitle, onImageClick }) => {
+  const [columns, setColumns] = useState([[], []]);
+
+  useEffect(() => {
+    // Split images into 2 columns for masonry layout
+    const col1 = [];
+    const col2 = [];
+
+    images.forEach((img, idx) => {
+      if (idx % 2 === 0) {
+        col1.push({ img, idx });
+      } else {
+        col2.push({ img, idx });
+      }
+    });
+
+    setColumns([col1, col2]);
+  }, [images]);
+
+  return (
+    <div className="flex gap-4">
+      {/* Column 1 */}
+      <div className="flex-1 flex flex-col gap-4">
+        {columns[0].map(({ img, idx }) => (
+          <div
+            key={idx}
+            className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
+            onClick={() => onImageClick(idx)}
+          >
+            <img
+              src={img}
+              alt={`${projectTitle} screenshot ${idx + 1}`}
+              className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Column 2 */}
+      {columns[1].length > 0 && (
+        <div className="flex-1 flex flex-col gap-4">
+          {columns[1].map(({ img, idx }) => (
+            <div
+              key={idx}
+              className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
+              onClick={() => onImageClick(idx)}
+            >
+              <img
+                src={img}
+                alt={`${projectTitle} screenshot ${idx + 1}`}
+                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // 🌟 Image Lightbox Component
 const ImageLightbox = ({ images, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -1024,31 +1093,15 @@ const App = () => {
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Cpu size={20} className="text-cyan-500" /> The Challenge</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.challenge}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code size={20} className="text-cyan-500" /> The Solution</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.solution}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery</h3>
-                <div className="flex flex-wrap gap-4">
-                  {selectedProject.images && selectedProject.images.length > 0 ? (
-                    selectedProject.images.map((img, idx) => (
-                      <div
-                        key={idx}
-                        className={`bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group ${
-                          selectedProject.images.length === 1 ? 'w-full' : 'w-full sm:w-[calc(50%-0.5rem)]'
-                        }`}
-                        onClick={() => setLightboxIndex(idx)}
-                      >
-                        <img
-                          src={img}
-                          alt={`${selectedProject.title} screenshot ${idx + 1}`}
-                          className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.parentElement.innerHTML = `<div class="aspect-video flex items-center justify-center"><span class="text-slate-600 font-mono text-xs">Image ${idx + 1}</span></div>`;
-                          }}
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-slate-500">No images available yet. Add images to public/projects/</p>
-                  )}
-                </div>
+                {selectedProject.images && selectedProject.images.length > 0 ? (
+                  <MasonryGallery
+                    images={selectedProject.images}
+                    projectTitle={selectedProject.title}
+                    onImageClick={(idx) => setLightboxIndex(idx)}
+                  />
+                ) : (
+                  <p className="text-slate-500">No images available yet. Add images to public/projects/</p>
+                )}
                 <p className="text-slate-500 text-xs mt-4 text-center">💡 Click on any image to view full size</p>
               </section>
             </div>
