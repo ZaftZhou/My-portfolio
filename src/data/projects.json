@@ -8,8 +8,7 @@
     "color": "from-cyan-500 to-blue-600",
     "images": [
       "/projects/vince/image1.png",
-      "/projects/vince/image2.jpg",
-      "/projects/vince/image3.jpg"
+      "/projects/vince/image2.png"
     ],
     "details": {
       "role": "Unity Developer & Tech Designer",
