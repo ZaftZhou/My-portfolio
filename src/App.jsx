@@ -204,6 +204,161 @@ const callGeminiAPI = async (userQuery) => {
  * 🕸️ ANIMATION COMPONENTS
  * ================================================================================
  */
+
+// 🌟 Interactive Particle Starfield Background
+const ParticleStarfield = () => {
+  const canvasRef = useRef(null);
+  const particles = useRef([]);
+  const mouse = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    };
+
+    class Particle {
+      constructor() {
+        this.reset();
+        this.y = Math.random() * canvas.height;
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.size = Math.random() * 2 + 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+        this.twinkle = 0;
+      }
+
+      update() {
+        // Mouse attraction
+        const dx = mouse.current.x - this.x;
+        const dy = mouse.current.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 150) {
+          const force = (150 - dist) / 150;
+          this.vx += (dx / dist) * force * 0.2;
+          this.vy += (dy / dist) * force * 0.2;
+        }
+
+        // Damping
+        this.vx *= 0.98;
+        this.vy *= 0.98;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Twinkle effect
+        this.twinkle += this.twinkleSpeed;
+
+        // Wrap around edges
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+      }
+
+      draw() {
+        const twinkleOpacity = this.opacity * (0.5 + Math.sin(this.twinkle) * 0.5);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(34, 211, 238, ${twinkleOpacity})`;
+        ctx.fill();
+
+        // Glow effect
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
+        gradient.addColorStop(0, `rgba(34, 211, 238, ${twinkleOpacity * 0.3})`);
+        gradient.addColorStop(1, 'rgba(34, 211, 238, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const init = () => {
+      particles.current = [];
+      const particleCount = Math.min(150, Math.floor((canvas.width * canvas.height) / 10000));
+      for (let i = 0; i < particleCount; i++) {
+        particles.current.push(new Particle());
+      }
+    };
+
+    const connectParticles = () => {
+      for (let i = 0; i < particles.current.length; i++) {
+        for (let j = i + 1; j < particles.current.length; j++) {
+          const dx = particles.current[i].x - particles.current[j].x;
+          const dy = particles.current[i].y - particles.current[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(34, 211, 238, ${0.1 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles.current[i].x, particles.current[i].y);
+            ctx.lineTo(particles.current[j].x, particles.current[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.current.forEach(particle => {
+        particle.update();
+        particle.draw();
+      });
+
+      connectParticles();
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const handleMouseMove = (e) => {
+      mouse.current = {
+        x: e.clientX,
+        y: e.clientY + window.scrollY
+      };
+    };
+
+    resizeCanvas();
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      init();
+    });
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full pointer-events-none z-0"
+      style={{ height: '100%' }}
+    />
+  );
+};
+
 const CentralNeuralNetwork = () => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -302,6 +457,263 @@ const CentralNeuralNetwork = () => {
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none">
       <canvas ref={canvasRef} />
+    </div>
+  );
+};
+
+// 🌟 Typewriter Effect Hook
+const useTypewriter = (text, speed = 50) => {
+  const [displayText, setDisplayText] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let index = 0;
+    setDisplayText('');
+    setIsComplete(false);
+
+    const timer = setInterval(() => {
+      if (index < text.length) {
+        setDisplayText(text.substring(0, index + 1));
+        index++;
+      } else {
+        setIsComplete(true);
+        clearInterval(timer);
+      }
+    }, speed);
+
+    return () => clearInterval(timer);
+  }, [text, speed]);
+
+  return [displayText, isComplete];
+};
+
+// 🌟 Custom Cursor Component
+const CustomCursor = () => {
+  const cursorRef = useRef(null);
+  const cursorDotRef = useRef(null);
+  const [isPointer, setIsPointer] = useState(false);
+
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    const cursorDot = cursorDotRef.current;
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
+    const handleMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (cursorDot) {
+        cursorDot.style.left = `${mouseX}px`;
+        cursorDot.style.top = `${mouseY}px`;
+      }
+
+      // Check if hovering over clickable elements
+      const target = e.target;
+      const isClickable = target.closest('a, button, input, textarea, [role="button"]');
+      setIsPointer(!!isClickable);
+    };
+
+    const animate = () => {
+      const dx = mouseX - cursorX;
+      const dy = mouseY - cursorY;
+
+      cursorX += dx * 0.15;
+      cursorY += dy * 0.15;
+
+      if (cursor) {
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animate();
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <>
+      <div
+        ref={cursorRef}
+        className={`fixed w-8 h-8 border-2 rounded-full pointer-events-none z-[9999] transition-all duration-200 ${
+          isPointer
+            ? 'border-cyan-400 scale-150 bg-cyan-400/10'
+            : 'border-cyan-500/50 bg-cyan-500/5'
+        }`}
+        style={{ transform: 'translate(-50%, -50%)' }}
+      />
+      <div
+        ref={cursorDotRef}
+        className={`fixed w-1 h-1 rounded-full pointer-events-none z-[9999] transition-all duration-100 ${
+          isPointer ? 'bg-cyan-300' : 'bg-cyan-500'
+        }`}
+        style={{ transform: 'translate(-50%, -50%)' }}
+      />
+    </>
+  );
+};
+
+// 🌟 3D Tilt Card Hook
+const use3DTilt = () => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const handleMouseMove = (e) => {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    };
+
+    const handleMouseLeave = () => {
+      element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    };
+
+    element.addEventListener('mousemove', handleMouseMove);
+    element.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      element.removeEventListener('mousemove', handleMouseMove);
+      element.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
+  return ref;
+};
+
+// 🌟 Scroll Fade-In Hook
+const useScrollFadeIn = () => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return [ref, isVisible];
+};
+
+// 🌟 Typewriter Title Component
+const TypewriterTitle = () => {
+  const fullText = `I am ${PERSONAL_INFO.name}`;
+  const [displayText, isComplete] = useTypewriter(fullText, 80);
+
+  return (
+    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white min-h-[1.2em]">
+      {displayText}
+      {!isComplete && <span className="animate-pulse text-cyan-400">|</span>}
+    </h1>
+  );
+};
+
+// 🌟 Portfolio Header Component with Fade-In
+const PortfolioHeader = () => {
+  const [headerRef, isVisible] = useScrollFadeIn();
+
+  return (
+    <div
+      ref={headerRef}
+      className={`transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
+      }`}
+    >
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+          <Layers className="text-cyan-500" /> Selected Works
+        </h2>
+        <p className="text-slate-400">Click on any project to view the full breakdown.</p>
+      </div>
+    </div>
+  );
+};
+
+// 🌟 Project Card Component with 3D Tilt
+const ProjectCard = ({ project, onClick }) => {
+  const tiltRef = use3DTilt();
+  const [fadeRef, isVisible] = useScrollFadeIn();
+
+  const setRefs = (element) => {
+    tiltRef.current = element;
+    fadeRef.current = element;
+  };
+
+  return (
+    <div
+      ref={setRefs}
+      onClick={onClick}
+      className={`group card-shimmer bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-400 transition-all duration-500 ease-out hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col h-full relative ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+      style={{
+        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+        transformStyle: 'preserve-3d',
+        cursor: 'pointer'
+      }}
+    >
+      <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative overflow-hidden p-6 flex items-center justify-center`}>
+        <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-all"></div>
+        <div className="bg-slate-950/30 backdrop-blur-sm p-4 rounded-full transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-500 border border-white/10 relative z-10 shadow-lg">
+          {project.category === 'Game Dev' && <Gamepad2 size={32} className="text-white" />}
+          {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
+          {project.category === '3D Art' && <Box size={32} className="text-white" />}
+          {project.category === 'Tools' && <Terminal size={32} className="text-white" />}
+        </div>
+        <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/50 backdrop-blur rounded text-xs text-white font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-20">
+          View Details →
+        </div>
+      </div>
+
+      <div className="p-6 flex flex-col flex-grow relative z-20 bg-slate-900 group-hover:bg-slate-800/50 transition-colors">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider">{project.category}</span>
+            <h3 className="text-xl font-bold text-white mt-1 group-hover:text-cyan-300 transition-colors">{project.title}</h3>
+          </div>
+        </div>
+        <p className="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{project.description}</p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {project.tags.map(tag => (
+            <span key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded border border-slate-700 font-mono">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -693,12 +1105,15 @@ const App = () => {
 
   // HOME VIEW
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white animate-in fade-in">
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white animate-in fade-in" style={{ cursor: 'none' }}>
+      <ParticleStarfield />
+      <CustomCursor />
       <style>{`
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
         @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-15deg); } 50% { transform: translateX(150%) skewX(-15deg); } 100% { transform: translateX(150%) skewX(-15deg); } }
         .animate-float { animation: float 6s ease-in-out infinite; }
         .card-shimmer:hover::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: shimmer 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        * { cursor: none !important; }
       `}</style>
 
       <nav className="fixed top-0 w-full bg-slate-950/80 backdrop-blur-md border-b border-slate-800 z-50">
@@ -729,10 +1144,10 @@ const App = () => {
         )}
       </nav>
 
-      <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 min-h-[600px]">
+      <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 min-h-[600px] relative z-10">
         <div className="flex-1 space-y-6 text-center md:text-left z-10">
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-medium border border-cyan-500/20"><Sparkles size={14} className="mr-2" />Tech Art & Game Development</div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">I am <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{PERSONAL_INFO.name}</span></h1>
+          <TypewriterTitle />
           <h2 className="text-xl sm:text-2xl text-slate-400 font-light">{PERSONAL_INFO.title}</h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto md:mx-0 leading-relaxed">{PERSONAL_INFO.bio}</p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-4">
@@ -763,12 +1178,9 @@ const App = () => {
         </div>
       </div>
 
-      <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative z-10">
+        <PortfolioHeader />
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2"><Layers className="text-cyan-500" /> Selected Works</h2>
-            <p className="text-slate-400">Click on any project to view the full breakdown.</p>
-          </div>
           <div className="flex p-1 bg-slate-900 rounded-lg border border-slate-800 overflow-x-auto scrollbar-hide">
             {CATEGORIES.map((cat) => (
               <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all whitespace-nowrap ${activeCategory === cat ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>{cat}</button>
@@ -777,34 +1189,12 @@ const App = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => (
-            <div 
-              key={project.id} 
-              onClick={() => setSelectedProject(project)} 
-              className="group card-shimmer bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-400 transition-all duration-300 ease-out hover:-translate-y-3 hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col h-full cursor-pointer relative"
-            >
-              <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative overflow-hidden p-6 flex items-center justify-center`}>
-                 <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-all"></div>
-                 <div className="bg-slate-950/30 backdrop-blur-sm p-4 rounded-full transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-500 border border-white/10 relative z-10 shadow-lg">
-                    {project.category === 'Game Dev' && <Gamepad2 size={32} className="text-white" />}
-                    {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
-                    {project.category === '3D Art' && <Box size={32} className="text-white" />}
-                    {project.category === 'Tools' && <Terminal size={32} className="text-white" />}
-                 </div>
-                 <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/50 backdrop-blur rounded text-xs text-white font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-20">View Details →</div>
-              </div>
-              
-              <div className="p-6 flex flex-col flex-grow relative z-20 bg-slate-900 group-hover:bg-slate-800/50 transition-colors">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider">{project.category}</span>
-                    <h3 className="text-xl font-bold text-white mt-1 group-hover:text-cyan-300 transition-colors">{project.title}</h3>
-                  </div>
-                </div>
-                <p className="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mt-auto">{project.tags.map(tag => <span key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded border border-slate-700 font-mono">{tag}</span>)}</div>
-              </div>
-            </div>
+          {filteredProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onClick={() => setSelectedProject(project)}
+            />
           ))}
         </div>
       </section>
