@@ -221,11 +221,109 @@ const ParticleStarfield = () => {
   );
 };
 
+// 🧠 Neural Node Modal - Click to expand node details
+const NeuralNodeModal = ({ node, onClose }) => {
+  if (!node) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-2xl w-full mx-4 bg-slate-900 border-2 rounded-2xl shadow-2xl animate-in zoom-in duration-300"
+        style={{ borderColor: node.color }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 bg-slate-800 hover:bg-slate-700 rounded-full transition-colors"
+        >
+          <X size={20} className="text-white" />
+        </button>
+
+        {/* Node visualization */}
+        <div className="p-8 border-b border-slate-800 flex items-center gap-6">
+          <div
+            className="relative w-24 h-24 rounded-full flex items-center justify-center animate-pulse"
+            style={{
+              backgroundColor: node.color.replace('rgb', 'rgba').replace(')', ', 0.1)'),
+              borderColor: node.color,
+              borderWidth: '3px'
+            }}
+          >
+            <div
+              className="w-16 h-16 rounded-full"
+              style={{
+                backgroundColor: node.color.replace('rgb', 'rgba').replace(')', ', 0.4)')
+              }}
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold text-white font-mono mb-2">{node.name}</h2>
+            <p className="text-sm text-slate-400 font-mono">{node.category || 'Core Skill'}</p>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="p-8">
+          <h3 className="text-lg font-bold text-cyan-400 mb-3 font-mono">Description</h3>
+          <p className="text-slate-300 leading-relaxed mb-6">{node.description}</p>
+
+          {node.projects && (
+            <>
+              <h3 className="text-lg font-bold text-cyan-400 mb-3 font-mono">Related Projects</h3>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {node.projects.map((project, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm"
+                  >
+                    {project}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
+          {node.proficiency && (
+            <>
+              <h3 className="text-lg font-bold text-cyan-400 mb-3 font-mono">Proficiency</h3>
+              <div className="w-full bg-slate-800 rounded-full h-3 mb-6">
+                <div
+                  className="h-3 rounded-full transition-all duration-1000"
+                  style={{
+                    width: `${node.proficiency}%`,
+                    backgroundColor: node.color
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            onClick={onClose}
+            className="w-full py-3 bg-gradient-to-r text-white font-bold rounded-lg hover:opacity-90 transition-opacity"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${node.color}, ${node.color}99)`
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const CentralNeuralNetwork = () => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [hoveredSkill, setHoveredSkill] = useState(null);
+  const [selectedNode, setSelectedNode] = useState(null);
   const mousePos = useRef({ x: 0, y: 0 });
+  const nodePositions = useRef([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -236,11 +334,66 @@ const CentralNeuralNetwork = () => {
     let animationFrameId;
 
     const skills = [
-      { name: 'C#', color: '#22d3ee', radius: 140, speed: 0.002, offset: 0, size: 18 },
-      { name: 'HLSL', color: '#e879f9', radius: 140, speed: 0.002, offset: Math.PI, size: 14 },
-      { name: 'Unity', color: '#ffffff', radius: 190, speed: -0.0015, offset: 1, size: 20 },
-      { name: 'Shader Graph', color: '#a78bfa', radius: 190, speed: -0.0015, offset: 3, size: 16 },
-      { name: 'VFX', color: '#f472b6', radius: 190, speed: -0.0015, offset: 5, size: 15 },
+      {
+        name: 'C#',
+        color: '#22d3ee',
+        radius: 140,
+        speed: 0.001,
+        offset: 0,
+        size: 12,
+        category: 'Programming Language',
+        description: 'Object-oriented programming for Unity and .NET development. Focus on clean code architecture, SOLID principles, and performance optimization.',
+        projects: ['VINCE', 'AI Enemy System', 'Dialogue System'],
+        proficiency: 90
+      },
+      {
+        name: 'HLSL',
+        color: '#e879f9',
+        radius: 140,
+        speed: 0.001,
+        offset: Math.PI,
+        size: 10,
+        category: 'Shader Language',
+        description: 'High-level shader language for GPU programming. Custom shaders for visual effects, post-processing, and rendering optimization.',
+        projects: ['Volumetric Clouds', 'Stylized Water'],
+        proficiency: 85
+      },
+      {
+        name: 'Unity',
+        color: '#ffffff',
+        radius: 190,
+        speed: -0.0008,
+        offset: 1,
+        size: 14,
+        category: 'Game Engine',
+        description: 'Professional game engine for 3D/2D interactive experiences. Expert in editor tools, custom workflows, and engine optimization.',
+        projects: ['VINCE', 'AI Enemy System', 'Dialogue System'],
+        proficiency: 95
+      },
+      {
+        name: 'Shader Graph',
+        color: '#a78bfa',
+        radius: 190,
+        speed: -0.0008,
+        offset: 3,
+        size: 11,
+        category: 'Visual Programming',
+        description: 'Node-based shader creation tool for Unity. Creating complex visual effects without writing code.',
+        projects: ['Stylized Water', 'Volumetric Clouds'],
+        proficiency: 88
+      },
+      {
+        name: 'VFX',
+        color: '#f472b6',
+        radius: 190,
+        speed: -0.0008,
+        offset: 5,
+        size: 11,
+        category: 'Visual Effects',
+        description: 'Visual effects and particle systems for games. Creating stunning real-time effects with performance in mind.',
+        projects: ['VINCE', 'Stylized Water'],
+        proficiency: 82
+      },
     ];
 
     let time = 0;
@@ -270,27 +423,13 @@ const CentralNeuralNetwork = () => {
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
 
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      const centerX = width / 2;
-      const centerY = height / 2;
-
-      skills.forEach((skill) => {
-        const angle = time * skill.speed + skill.offset;
-        const x = centerX + Math.cos(angle) * skill.radius;
-        const y = centerY + Math.sin(angle) * skill.radius;
-
+      // Check if clicked on any node
+      nodePositions.current.forEach(({ x, y, skill }) => {
         const distance = Math.sqrt(Math.pow(clickX - x, 2) + Math.pow(clickY - y, 2));
-        if (distance < 25) {
-          // Create ripple effect on click
-          createRipple(x, y, skill.color);
+        if (distance < 30) {
+          setSelectedNode(skill);
         }
       });
-    };
-
-    let ripples = [];
-    const createRipple = (x, y, color) => {
-      ripples.push({ x, y, color, radius: 0, alpha: 1 });
     };
 
     const draw = () => {
@@ -302,150 +441,176 @@ const CentralNeuralNetwork = () => {
       ctx.clearRect(0, 0, width, height);
       time += 1;
 
-      // Draw orbital paths (like planetary orbits)
-      [140, 190].forEach((radius) => {
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)';
-        ctx.lineWidth = 1;
-        ctx.setLineDash([5, 10]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      });
-
-      // Draw central "sun" with glow
-      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 60);
-      centralGlow.addColorStop(0, 'rgba(34, 211, 238, 0.3)');
-      centralGlow.addColorStop(0.5, 'rgba(34, 211, 238, 0.1)');
+      // Central neuron node
+      const centralPulse = (Math.sin(time * 0.03) + 1) / 2;
+      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 50 + centralPulse * 10);
+      centralGlow.addColorStop(0, 'rgba(34, 211, 238, 0.4)');
+      centralGlow.addColorStop(0.5, 'rgba(34, 211, 238, 0.15)');
       centralGlow.addColorStop(1, 'rgba(34, 211, 238, 0)');
       ctx.fillStyle = centralGlow;
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
+      ctx.arc(centerX, centerY, 50 + centralPulse * 10, 0, Math.PI * 2);
       ctx.fill();
 
-      // Central icon/core
+      // Central node body
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.arc(centerX, centerY, 25, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
       ctx.fill();
       ctx.strokeStyle = '#22d3ee';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Inner glow
+      // Inner pulse
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(34, 211, 238, 0.2)';
+      ctx.arc(centerX, centerY, 15 + centralPulse * 5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(34, 211, 238, ${0.3 + centralPulse * 0.3})`;
       ctx.fill();
 
-      // Track skill positions for hover detection
-      const skillPositions = [];
+      // Update node positions
+      nodePositions.current = [];
 
       skills.forEach((skill, index) => {
         const angle = time * skill.speed + skill.offset;
-        const floatX = Math.cos(time * 0.01 + index) * 3;
-        const floatY = Math.sin(time * 0.01 + index) * 3;
+        const floatX = Math.cos(time * 0.015 + index) * 5;
+        const floatY = Math.sin(time * 0.015 + index) * 5;
 
         const x = centerX + Math.cos(angle) * skill.radius + floatX;
         const y = centerY + Math.sin(angle) * skill.radius + floatY;
 
-        skillPositions.push({ x, y, skill });
+        nodePositions.current.push({ x, y, skill });
 
-        // Check if mouse is hovering over this skill
+        // Check if mouse is hovering
         const distance = Math.sqrt(
           Math.pow(mousePos.current.x - x, 2) +
           Math.pow(mousePos.current.y - y, 2)
         );
-        const isHovered = distance < 25;
+        const isHovered = distance < 30;
         if (isHovered && hoveredSkill !== skill.name) {
           setHoveredSkill(skill.name);
         } else if (!isHovered && hoveredSkill === skill.name) {
           setHoveredSkill(null);
         }
 
-        const pulse = (Math.sin(time * 0.05 + index) + 1) / 2;
-        const baseAlpha = isHovered ? 0.4 : 0.15;
-        const alpha = baseAlpha + pulse * 0.15;
+        const pulse = (Math.sin(time * 0.04 + index) + 1) / 2;
 
-        // Neural fiber connection
+        // Synaptic connection (neural pathway)
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
 
-        // Curved path for organic feel
-        const controlX = (centerX + x) / 2 + Math.sin(time * 0.02 + index) * 20;
-        const controlY = (centerY + y) / 2 + Math.cos(time * 0.02 + index) * 20;
-        ctx.quadraticCurveTo(controlX, controlY, x, y);
+        // Multiple waypoints for organic neural path
+        const midX = (centerX + x) / 2;
+        const midY = (centerY + y) / 2;
+        const wave1X = midX + Math.sin(time * 0.02 + index) * 30;
+        const wave1Y = midY + Math.cos(time * 0.02 + index) * 30;
+
+        ctx.bezierCurveTo(
+          centerX + (wave1X - centerX) * 0.3, centerY + (wave1Y - centerY) * 0.3,
+          wave1X, wave1Y,
+          x, y
+        );
+
+        // Dynamic synapse strength
+        const baseAlpha = isHovered ? 0.5 : 0.2;
+        const synapseAlpha = baseAlpha + pulse * 0.2;
 
         const gradient = ctx.createLinearGradient(centerX, centerY, x, y);
-        gradient.addColorStop(0, `rgba(34, 211, 238, 0)`);
-        gradient.addColorStop(0.5, skill.color.replace('rgb', 'rgba').replace(')', `, ${alpha})`));
-        gradient.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', `, ${alpha})`));
+        gradient.addColorStop(0, `rgba(34, 211, 238, ${synapseAlpha * 0.3})`);
+        gradient.addColorStop(0.5, skill.color.replace('rgb', 'rgba').replace(')', `, ${synapseAlpha})`));
+        gradient.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', `, ${synapseAlpha * 0.6})`));
 
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = isHovered ? 2.5 : 1.5;
+        ctx.lineWidth = isHovered ? 2 : 1.2;
         ctx.stroke();
 
-        // Particle effect along the line
-        if (isHovered || time % 60 < 30) {
-          const particleProgress = (time % 60) / 60;
-          const particleX = centerX + (x - centerX) * particleProgress;
-          const particleY = centerY + (y - centerY) * particleProgress;
+        // Neurotransmitter particles traveling along synapse
+        const transmitterCount = isHovered ? 3 : 1;
+        for (let i = 0; i < transmitterCount; i++) {
+          const progress = ((time * 2 + i * 20) % 100) / 100;
+          const t = progress;
+
+          // Bezier curve position calculation
+          const transmitterX =
+            Math.pow(1-t, 3) * centerX +
+            3 * Math.pow(1-t, 2) * t * (centerX + (wave1X - centerX) * 0.3) +
+            3 * (1-t) * Math.pow(t, 2) * wave1X +
+            Math.pow(t, 3) * x;
+
+          const transmitterY =
+            Math.pow(1-t, 3) * centerY +
+            3 * Math.pow(1-t, 2) * t * (centerY + (wave1Y - centerY) * 0.3) +
+            3 * (1-t) * Math.pow(t, 2) * wave1Y +
+            Math.pow(t, 3) * y;
 
           ctx.beginPath();
-          ctx.arc(particleX, particleY, 2, 0, Math.PI * 2);
+          ctx.arc(transmitterX, transmitterY, 2.5, 0, Math.PI * 2);
           ctx.fillStyle = skill.color;
+          ctx.fill();
+
+          // Particle glow
+          ctx.beginPath();
+          ctx.arc(transmitterX, transmitterY, 5, 0, Math.PI * 2);
+          ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.2)');
           ctx.fill();
         }
 
-        // Planet glow
-        const planetGlow = ctx.createRadialGradient(x, y, 0, x, y, isHovered ? 35 : 25);
-        planetGlow.addColorStop(0, skill.color.replace('rgb', 'rgba').replace(')', ', 0.3)'));
-        planetGlow.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', ', 0)'));
-        ctx.fillStyle = planetGlow;
+        // Neuron node
+        const nodeSize = isHovered ? skill.size + 6 : skill.size;
+        const nodeGlow = ctx.createRadialGradient(x, y, 0, x, y, nodeSize * 3);
+        nodeGlow.addColorStop(0, skill.color.replace('rgb', 'rgba').replace(')', `, ${isHovered ? 0.4 : 0.2})`));
+        nodeGlow.addColorStop(1, skill.color.replace('rgb', 'rgba').replace(')', ', 0)'));
+        ctx.fillStyle = nodeGlow;
         ctx.beginPath();
-        ctx.arc(x, y, isHovered ? 35 : 25, 0, Math.PI * 2);
+        ctx.arc(x, y, nodeSize * 3, 0, Math.PI * 2);
         ctx.fill();
 
-        // Planet body
-        const planetSize = isHovered ? skill.size + 4 : skill.size;
+        // Node body
         ctx.beginPath();
-        ctx.arc(x, y, planetSize, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.arc(x, y, nodeSize, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
         ctx.fill();
         ctx.strokeStyle = skill.color;
-        ctx.lineWidth = isHovered ? 3 : 2;
+        ctx.lineWidth = isHovered ? 2.5 : 1.8;
         ctx.stroke();
 
-        // Inner core
+        // Inner nucleus
         ctx.beginPath();
-        ctx.arc(x, y, planetSize * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.6)');
+        ctx.arc(x, y, nodeSize * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = skill.color.replace('rgb', 'rgba').replace(')', `, ${0.5 + pulse * 0.3})`);
         ctx.fill();
 
+        // Dendrite spikes (small branches)
+        if (isHovered) {
+          for (let i = 0; i < 6; i++) {
+            const spikeAngle = (Math.PI * 2 / 6) * i + time * 0.02;
+            const spikeLength = 8 + Math.sin(time * 0.1 + i) * 3;
+            const spikX = x + Math.cos(spikeAngle) * (nodeSize + spikeLength);
+            const spikY = y + Math.sin(spikeAngle) * (nodeSize + spikeLength);
+
+            ctx.beginPath();
+            ctx.moveTo(x + Math.cos(spikeAngle) * nodeSize, y + Math.sin(spikeAngle) * nodeSize);
+            ctx.lineTo(spikX, spikY);
+            ctx.strokeStyle = skill.color.replace('rgb', 'rgba').replace(')', ', 0.5)');
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
         // Label
-        ctx.font = isHovered ? 'bold 13px "JetBrains Mono", monospace' : '12px "JetBrains Mono", monospace';
+        ctx.font = isHovered ? 'bold 13px "JetBrains Mono", monospace' : '11px "JetBrains Mono", monospace';
         ctx.fillStyle = skill.color;
         ctx.textAlign = 'center';
         ctx.shadowColor = isHovered ? skill.color : 'transparent';
         ctx.shadowBlur = isHovered ? 10 : 0;
-        ctx.fillText(skill.name, x, y + planetSize + 20);
+        ctx.fillText(skill.name, x, y + nodeSize + 18);
         ctx.shadowBlur = 0;
-      });
 
-      // Draw ripples
-      ripples = ripples.filter(ripple => {
-        ripple.radius += 2;
-        ripple.alpha -= 0.02;
-
-        if (ripple.alpha > 0) {
-          ctx.beginPath();
-          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-          ctx.strokeStyle = ripple.color.replace('rgb', 'rgba').replace(')', `, ${ripple.alpha})`);
-          ctx.lineWidth = 2;
-          ctx.stroke();
-          return true;
+        // "Click to expand" hint on hover
+        if (isHovered) {
+          ctx.font = '9px "JetBrains Mono", monospace';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          ctx.fillText('click to expand', x, y + nodeSize + 32);
         }
-        return false;
       });
 
       animationFrameId = requestAnimationFrame(draw);
@@ -467,9 +632,12 @@ const CentralNeuralNetwork = () => {
   }, [hoveredSkill]);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
-      <canvas ref={canvasRef} className="cursor-pointer" />
-    </div>
+    <>
+      <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
+        <canvas ref={canvasRef} className="cursor-pointer" />
+      </div>
+      <NeuralNodeModal node={selectedNode} onClose={() => setSelectedNode(null)} />
+    </>
   );
 };
 
