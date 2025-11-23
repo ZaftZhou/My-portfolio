@@ -930,12 +930,14 @@ const App = () => {
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Cpu size={20} className="text-cyan-500" /> The Challenge</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.challenge}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code size={20} className="text-cyan-500" /> The Solution</h3><p className="text-slate-400 leading-relaxed text-lg">{details?.solution}</p></section>
               <section><h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-500" /> Gallery</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-wrap gap-4">
                   {selectedProject.images && selectedProject.images.length > 0 ? (
                     selectedProject.images.map((img, idx) => (
                       <div
                         key={idx}
-                        className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group"
+                        className={`bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer hover:border-cyan-500 transition-all group ${
+                          selectedProject.images.length === 1 ? 'w-full' : 'w-full sm:w-[calc(50%-0.5rem)]'
+                        }`}
                         onClick={() => window.open(img, '_blank')}
                       >
                         <img
