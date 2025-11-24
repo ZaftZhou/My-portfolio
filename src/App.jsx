@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video, Printer, Briefcase } from 'lucide-react';
 
 /**
  * ================================================================================
@@ -29,23 +29,43 @@ const FORMSPREE_ENDPOINT = "";
 
 const CATEGORIES = ['All', 'Game Dev', 'Shaders', '3D Art', 'Tools'];
 
+// 📝 UPDATED EXPERIENCE DATA FROM USER IMAGE
 const EXPERIENCE_DATA = [
   {
-    role: "Technical Artist",
-    company: "Game Studio A",
-    period: "2022 - Present",
-    description: "Spearheaded the transition from Built-in RP to URP. Wrote custom shaders for character skin and foliage to improve performance on mobile devices by 30%. Developed editor tools to automate asset import pipelines."
+    role: "Founder / Technical Generalist",
+    company: "Shanghai Demoon Network Co., Ltd",
+    period: "2019 - Present",
+    description: "Founded studio focused on 3D digital content. Coordinated client requirements and provided technical training in 3D tools. Shifted focus towards interactive media and Unity."
   },
   {
-    role: "3D Generalist & Unity Dev",
-    company: "Indie Team B",
-    period: "2020 - 2022",
-    description: "Responsible for the entire character pipeline: modeling, texturing, and implementation in Unity. Coded player controllers and inventory systems in C#."
+    role: "Freelance 3D Artist",
+    company: "Self-Employed",
+    period: "2018 - 2019",
+    description: "Produced assets for clients, optimized for real-time engines."
+  },
+  {
+    role: "3D Product Designer",
+    company: "Previous Experience",
+    period: "2014 - 2018",
+    description: "Designed interactive concepts and conducted technical training."
+  }
+];
+
+// 🎓 EDUCATION DATA (Inferred from Bio for Resume View)
+const EDUCATION_DATA = [
+  {
+    school: "Turku University of Applied Sciences",
+    degree: "Bachelor of Engineering, Information Technology",
+    year: "2020 - 2024"
+  },
+  {
+    school: "University of Science & Technology",
+    degree: "Bachelor of Engineering, Mechatronics",
+    year: "2016 - 2020"
   }
 ];
 
 // 🛠️ MOCK DATA FOR GALLERY (Replace URLs with your local paths)
-// 提示：你可以将 url 替换为本地路径，例如 "/assets/vince/demo.mp4" 或 require('./assets/...')
 const PROJECTS_DATA = [
   {
     id: 1,
@@ -60,9 +80,13 @@ const PROJECTS_DATA = [
       challenge: "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
       solution: "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
-      // 🌟 NEW: Media Array supports 'image' and 'video' types
       media: [
-        { type: 'video', url: '/projects/vince/video1.mp4', caption: 'Avatar Customization Demo' },
+        { 
+          type: 'video', 
+          url: '/projects/vince/video1.mp4', 
+          poster: '/projects/vince/image1.png', 
+          caption: 'Avatar Customization Demo' 
+        },
         { type: 'image', url: '/projects/vince/image1.png', caption: 'Main Menu UI' },
         { type: 'image', url: '/projects/vince/image2.png', caption: 'Main Menu UI' },
         { type: 'image', url: '/projects/vince/image3.png', caption: 'Main Menu UI' },
@@ -84,7 +108,7 @@ const PROJECTS_DATA = [
       solution: "Implemented a generic state machine with concrete states (Patrol, Chase, Wary). Created a layered perception system with FOV checks and sphere casts.",
       features: ["Generic FSM Framework", "Layered Perception System", "Throttled Updates for Performance"],
       media: [
-        { type: 'video', url: '/projects/aiEnemy/video1.mp4', caption: 'Simple State Machine Demo' },
+         { type: 'video', url: '/projects/aiEnemy/video1.mp4', caption: 'Simple State Machine Demo' },
         { type: 'image', url: 'https://picsum.photos/800/400?random=201', caption: 'FSM Debug Gizmos' },
         { type: 'image', url: 'https://picsum.photos/600/600?random=202', caption: 'Perception Cone' },
         { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4', caption: 'AI Patrolling Behavior' },
@@ -124,6 +148,7 @@ const PROJECTS_DATA = [
       solution: "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
       features: ["Ray-marching with light scattering", "Weather map support", "Zero garbage collection allocation"],
       media: [
+        { type: 'video', url: '/projects/drone/video1.mp4', caption: 'Visualize Drone Swarm Algorithm Demo' },
         { type: 'image', url: 'https://picsum.photos/1200/600?random=401', caption: 'Sunset Lighting' },
         { type: 'image', url: 'https://picsum.photos/800/800?random=402', caption: 'Noise Texture Generation' },
         { type: 'image', url: 'https://picsum.photos/800/500?random=403', caption: 'Performance Profiler' },
@@ -206,6 +231,43 @@ const callGeminiAPI = async (userQuery) => {
  * 🕸️ ANIMATION COMPONENTS
  * ================================================================================
  */
+
+// 🌟 NEW: Reveal Animation Component (Updated with className support)
+const RevealOnScroll = ({ children, delay = 0, className = "" }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target); // Only animate once
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 transform ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const CentralNeuralNetwork = () => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -310,6 +372,268 @@ const CentralNeuralNetwork = () => {
 
 /**
  * ================================================================================
+ * 📄 RESUME VIEW COMPONENT (Dracula Theme)
+ * ================================================================================
+ */
+const ResumeView = ({ onClose }) => {
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="min-h-screen bg-[#282a36] pt-24 pb-20 px-4 sm:px-6 lg:px-8 animate-in fade-in zoom-in duration-300">
+
+      {/* Back Button - Top Left */}
+      <button 
+        onClick={onClose} 
+        className="fixed top-6 left-6 md:top-8 md:left-8 z-50 flex items-center gap-2 text-[#6272a4] hover:text-[#f8f8f2] bg-[#282a36]/50 hover:bg-[#44475a] px-4 py-2 rounded-full backdrop-blur border border-[#44475a] transition-all print:hidden group"
+      >
+        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+        <span className="font-mono text-sm font-bold">BACK_TO_SITE</span>
+      </button>
+
+      {/* Resume Container - README Layout (Column Direction) */}
+      <div className="max-w-6xl mx-auto flex flex-col print:max-w-none print:w-full">
+
+        {/* Sidebar - 2x2 Grid at Top */}
+        <aside className="w-full pb-8 mb-8 border-b border-[#44475a] grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          {/* Contact */}
+          <div className="space-y-3">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// CONTACT</h3>
+            <div className="space-y-2 text-xs font-mono">
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <MapPin size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span>{PERSONAL_INFO.location}</span>
+              </div>
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <Mail size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span className="break-all">{PERSONAL_INFO.email}</span>
+              </div>
+              <div className="flex items-start gap-3 text-[#f8f8f2] opacity-90">
+                <Phone size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span>{PERSONAL_INFO.phone}</span>
+              </div>
+              <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <Linkedin size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span className="break-all">linkedin.com/in/bowen-zhou-87b616251</span>
+              </a>
+              <a href={PERSONAL_INFO.socials.artstation} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <ExternalLink size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span>dreamzhou.artstation.com</span>
+              </a>
+              <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#f8f8f2] opacity-90 hover:text-[#8be9fd] transition-colors">
+                <Github size={14} className="text-[#8be9fd] mt-0.5 flex-shrink-0" />
+                <span>github.com/ZaftZhou</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Education */}
+          <div className="space-y-3">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// EDUCATION</h3>
+            <div className="space-y-3">
+              {EDUCATION_DATA.map((edu, idx) => (
+                <div key={idx} className="text-xs font-mono">
+                  <div className="font-bold text-[#f8f8f2]">{edu.school}</div>
+                  <div className="text-[#50fa7b] opacity-90 mt-0.5">{edu.degree}</div>
+                  <div className="text-[#6272a4] mt-0.5">{edu.year}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tech Stack */}
+          <div className="space-y-3">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// TECH_STACK</h3>
+            <div className="flex flex-wrap gap-2">
+              {['C#', 'Unity', 'FSM/AI', 'ShaderGraph', 'Blender', 'ZBrush', 'Git', 'Rider', 'HLSL'].map(skill => (
+                <span key={skill} className="px-2 py-1 border border-[#44475a] rounded text-xs font-mono text-[#f1fa8c]">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Languages */}
+          <div className="space-y-3">
+            <h3 className="text-[#ff79c6] text-xs font-bold uppercase tracking-widest border-b border-[#44475a] pb-1 mb-2 font-mono">// LANGUAGES</h3>
+            <div className="space-y-1 text-xs font-mono opacity-90">
+              <div className="flex justify-between text-[#f8f8f2]">
+                <span>Chinese</span>
+                <span className="text-[#6272a4]">Native</span>
+              </div>
+              <div className="flex justify-between text-[#f8f8f2]">
+                <span>English</span>
+                <span className="text-[#6272a4]">Fluent</span>
+              </div>
+              <div className="flex justify-between text-[#f8f8f2]">
+                <span>Finnish</span>
+                <span className="text-[#6272a4]">Basic</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="w-full space-y-8">
+
+          {/* Header */}
+          <header className="border-b border-[#44475a] pb-6">
+            <h1 className="text-5xl font-bold tracking-tight mb-2 text-[#f8f8f2] font-mono uppercase">
+              {PERSONAL_INFO.name.toUpperCase()}
+            </h1>
+            <div className="flex items-center gap-2 text-xl font-mono">
+              <span className="text-[#ff79c6]">class</span>
+              <span className="text-[#8be9fd] font-bold">UnityDeveloper</span>
+              <span className="text-[#f8f8f2]">:</span>
+              <span className="text-[#50fa7b]">TechnicalGeneralist</span>
+            </div>
+          </header>
+
+          {/* Abstract */}
+          <section>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-3 font-mono text-[#f1fa8c]">
+              <Terminal size={14} className="text-[#8be9fd]" /> 01. ABSTRACT
+            </div>
+            <div className="p-4 rounded border-l-2 border-[#8be9fd] bg-[#21222c]">
+              <p className="leading-relaxed text-sm font-light opacity-90 text-justify text-[#f8f8f2]">
+                {PERSONAL_INFO.bio}
+              </p>
+            </div>
+          </section>
+
+          {/* Projects */}
+          <section>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Code size={14} className="text-[#8be9fd]" /> 02. PROJECTS
+            </div>
+            <div className="space-y-6">
+              {PROJECTS_DATA.slice(0, 3).map((project, idx) => (
+                <div key={project.id} className="relative pl-6 border-l border-[#44475a]">
+                  <div className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-[#8be9fd]' : 'bg-[#6272a4]'}`}></div>
+
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                      <h4 className="font-bold text-lg text-[#f8f8f2] font-mono">{project.title}</h4>
+                      <span className="text-xs font-mono opacity-70 text-[#6272a4]">{project.details?.duration}</span>
+                    </div>
+                    <div className="text-xs font-bold mb-3 font-mono text-[#ff79c6]">{project.details?.role}</div>
+
+                    <ul className="text-sm space-y-2 leading-relaxed opacity-90">
+                      <li className="flex items-start">
+                        <span className="text-[#ff79c6] font-bold mr-2">&gt;</span>
+                        <span className="text-[#f8f8f2]">
+                          <strong className="text-[#50fa7b]">{project.details?.features?.[0]}:</strong>{' '}
+                          {project.details?.solution}
+                        </span>
+                      </li>
+                      {project.details?.features?.slice(1).map((feature, fIdx) => (
+                        <li key={fIdx} className="flex items-start">
+                          <span className="text-[#ff79c6] font-bold mr-2">&gt;</span>
+                          <span className="text-[#f8f8f2]">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Work History */}
+          <section>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Briefcase size={14} className="text-[#8be9fd]" /> 03. WORK_HISTORY
+            </div>
+            <div className="space-y-6">
+              {EXPERIENCE_DATA.map((exp, idx) => (
+                <div key={idx} className="relative pl-6 border-l border-[#44475a]">
+                  <div className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-[#ff79c6]' : 'bg-[#6272a4]'}`}></div>
+
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                      <h4 className="font-bold text-lg text-[#f8f8f2] font-mono">{exp.company}</h4>
+                      <span className="text-xs font-mono opacity-70 text-[#6272a4]">{exp.period}</span>
+                    </div>
+                    <div className="text-xs font-bold mb-2 font-mono text-[#ff79c6]">{exp.role}</div>
+                    <p className="text-sm opacity-90 leading-relaxed text-[#f8f8f2]">{exp.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Strengths */}
+          <section>
+            <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-4 font-mono text-[#f1fa8c]">
+              <Zap size={14} className="text-[#8be9fd]" /> 04. STRENGTHS
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#ff79c6] font-bold text-sm mb-2 font-mono">System-Oriented</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
+                  Prefers building reusable systems and tools over one-off scripts. Cares about architecture.
+                </p>
+              </div>
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#50fa7b] font-bold text-sm mb-2 font-mono">Cross-Disciplinary</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
+                  Can talk with artists and engineers, translating between visual language and technical constraints.
+                </p>
+              </div>
+              <div className="p-4 bg-[#21222c] border border-[#44475a] rounded">
+                <h3 className="text-[#8be9fd] font-bold text-sm mb-2 font-mono">Self-Learner</h3>
+                <p className="text-xs text-[#f8f8f2] opacity-90 leading-relaxed">
+                  Constantly dissecting new tech (HardMesh, ZBrush, HDRP) and applying it to practical prototypes.
+                </p>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+
+      {/* Floating Print Button */}
+      <button
+        onClick={handlePrint}
+        className="fixed bottom-8 right-8 bg-[#8be9fd] hover:bg-[#50fa7b] text-[#282a36] p-4 rounded-full shadow-2xl shadow-[#8be9fd]/30 transition-all hover:scale-110 print:hidden z-50"
+        title="Print CV / Save as PDF"
+      >
+        <Printer size={24} />
+      </button>
+
+      {/* Print Styles */}
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .max-w-6xl, .max-w-6xl * {
+            visibility: visible;
+          }
+          .max-w-6xl {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+/**
+ * ================================================================================
  * 🛑 VIEW RENDERING AREA
  * ================================================================================
  */
@@ -318,6 +642,7 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [showResume, setShowResume] = useState(false); // 🌟 New State for Resume View
   const [contactMode, setContactMode] = useState('email');
   const [formData, setFormData] = useState({ email: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
@@ -346,6 +671,7 @@ const App = () => {
   };
 
   useEffect(() => { if (selectedProject) window.scrollTo(0, 0); }, [selectedProject]);
+  useEffect(() => { if (showResume) window.scrollTo(0, 0); }, [showResume]);
   useEffect(() => { if (contactMode === 'chat') chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatHistory, contactMode]);
 
   // 🌟 KEYBOARD NAVIGATION FOR LIGHTBOX
@@ -460,12 +786,14 @@ const App = () => {
                            <div className="relative">
                              <video 
                                 src={mediaItem.url} 
-                                className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                                // 🔥 Changed: Increased scale to 110, added brightness effect, and added poster support
+                                className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 group-hover:brightness-110 transition-all duration-500"
                                 muted
                                 preload="metadata"
+                                poster={mediaItem.poster} // 🌟 Added Poster
                              />
-                             <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-all">
-                                <div className="w-12 h-12 rounded-full bg-cyan-500/80 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform">
+                             <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-all duration-500">
+                                <div className="w-12 h-12 rounded-full bg-cyan-500/80 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                    <Play fill="white" className="text-white ml-1" size={20} />
                                 </div>
                              </div>
@@ -476,10 +804,11 @@ const App = () => {
                              <img 
                                src={mediaItem.url} 
                                alt={mediaItem.caption || `Gallery Image ${idx}`} 
-                               className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+                               // 🔥 Changed: Increased scale to 110 and added brightness effect
+                               className="w-full h-auto object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-500"
                                loading="lazy"
                              />
-                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
+                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500" />
                            </div>
                          )}
                          
@@ -578,6 +907,8 @@ const App = () => {
     );
   };
 
+  // 🌟 CONDITIONAL RENDERING
+  if (showResume) return <ResumeView onClose={() => setShowResume(false)} />;
   if (selectedProject) return renderDetailView();
 
   return (
@@ -598,16 +929,14 @@ const App = () => {
                 <button key={item} onClick={() => scrollToSection(item.toLowerCase() === 'about' ? 'hero' : item.toLowerCase())} className="text-slate-400 hover:text-white transition-colors uppercase tracking-wide">{item}</button>
               ))}
               
-              {/* 🌟 CV / RESUME LINK BUTTON */}
-              <a 
-                href="/cv.html" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              {/* 🌟 SWITCH TO RESUME VIEW BUTTON */}
+              <button 
+                onClick={() => setShowResume(true)} 
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wider ml-4 group"
               >
                 <FileText size={14} className="group-hover:scale-110 transition-transform"/>
                 Resume
-              </a>
+              </button>
 
             </div>
             <button className="md:hidden p-2 text-slate-400 hover:text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}><span className="sr-only">Open menu</span><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg></button>
@@ -619,9 +948,9 @@ const App = () => {
                {['About', 'Portfolio', 'Experience', 'Contact'].map((item) => (
                 <button key={item} onClick={() => scrollToSection(item.toLowerCase() === 'about' ? 'hero' : item.toLowerCase())} className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 w-full text-left">{item}</button>
               ))}
-              <a href="/cv.html" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 rounded-md text-base font-medium text-cyan-400 hover:text-white hover:bg-slate-800 w-full text-left flex items-center gap-2">
+              <button onClick={() => { setShowResume(true); setIsMenuOpen(false); }} className="block px-3 py-2 rounded-md text-base font-medium text-cyan-400 hover:text-white hover:bg-slate-800 w-full text-left flex items-center gap-2">
                 <FileText size={16} /> Resume
-              </a>
+              </button>
             </div>
           </div>
         )}
@@ -629,19 +958,36 @@ const App = () => {
 
       <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 min-h-[600px]">
         <div className="flex-1 space-y-6 text-center md:text-left z-10">
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-medium border border-cyan-500/20"><Sparkles size={14} className="mr-2" />Tech Art & Game Development</div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">I am <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{PERSONAL_INFO.name}</span></h1>
-          <h2 className="text-xl sm:text-2xl text-slate-400 font-light">{PERSONAL_INFO.title}</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto md:mx-0 leading-relaxed">{PERSONAL_INFO.bio}</p>
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-4">
-            <button onClick={() => scrollToSection('portfolio')} className="px-8 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-200 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-white/10">View Projects</button>
-            <button onClick={() => scrollToSection('contact')} className="px-8 py-3 rounded-full bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all">Contact Me</button>
-          </div>
-          <div className="flex items-center justify-center md:justify-start gap-6 pt-4 text-slate-500">
-            <a href={PERSONAL_INFO.socials.github} className="hover:text-white transition-colors"><Github size={24} /></a>
-            <a href={PERSONAL_INFO.socials.linkedin} className="hover:text-blue-400 transition-colors"><Linkedin size={24} /></a>
-            <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:text-cyan-400 transition-colors"><Mail size={24} /></a>
-          </div>
+          <RevealOnScroll delay={100}>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-medium border border-cyan-500/20"><Sparkles size={14} className="mr-2" />Tech Art & Game Development</div>
+          </RevealOnScroll>
+          
+          <RevealOnScroll delay={200}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">I am <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{PERSONAL_INFO.name}</span></h1>
+          </RevealOnScroll>
+          
+          <RevealOnScroll delay={300}>
+            <h2 className="text-xl sm:text-2xl text-slate-400 font-light">{PERSONAL_INFO.title}</h2>
+          </RevealOnScroll>
+
+          <RevealOnScroll delay={400}>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto md:mx-0 leading-relaxed">{PERSONAL_INFO.bio}</p>
+          </RevealOnScroll>
+
+          <RevealOnScroll delay={500}>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-4">
+              <button onClick={() => scrollToSection('portfolio')} className="px-8 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-200 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-white/10">View Projects</button>
+              <button onClick={() => scrollToSection('contact')} className="px-8 py-3 rounded-full bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all">Contact Me</button>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll delay={600}>
+            <div className="flex items-center justify-center md:justify-start gap-6 pt-4 text-slate-500">
+              <a href={PERSONAL_INFO.socials.github} className="hover:text-white transition-colors"><Github size={24} /></a>
+              <a href={PERSONAL_INFO.socials.linkedin} className="hover:text-blue-400 transition-colors"><Linkedin size={24} /></a>
+              <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:text-cyan-400 transition-colors"><Mail size={24} /></a>
+            </div>
+          </RevealOnScroll>
         </div>
         
         {/* 🌟 Hero Visual: Central Hub Neural Network */}
@@ -668,8 +1014,12 @@ const App = () => {
       <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2"><Layers className="text-cyan-500" /> Selected Works</h2>
-            <p className="text-slate-400">Click on any project to view the full breakdown.</p>
+            <RevealOnScroll>
+              <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2"><Layers className="text-cyan-500" /> Selected Works</h2>
+            </RevealOnScroll>
+            <RevealOnScroll delay={200}>
+              <p className="text-slate-400">Click on any project to view the full breakdown.</p>
+            </RevealOnScroll>
           </div>
           <div className="flex p-1 bg-slate-900 rounded-lg border border-slate-800 overflow-x-auto scrollbar-hide">
             {CATEGORIES.map((cat) => (
@@ -680,41 +1030,45 @@ const App = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
-            <div 
-              key={project.id} 
-              onClick={() => setSelectedProject(project)} 
-              className="group card-shimmer bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-400 transition-all duration-300 ease-out hover:-translate-y-3 hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col h-full cursor-pointer relative"
-            >
-              <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative overflow-hidden p-6 flex items-center justify-center`}>
-                 <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-all"></div>
-                 {/* Icon Scale & Rotate */}
-                 <div className="bg-slate-950/30 backdrop-blur-sm p-4 rounded-full transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-500 border border-white/10 relative z-10 shadow-lg">
-                    {project.category === 'Game Dev' && <Gamepad2 size={32} className="text-white" />}
-                    {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
-                    {project.category === '3D Art' && <Box size={32} className="text-white" />}
-                    {project.category === 'Tools' && <Terminal size={32} className="text-white" />}
-                 </div>
-                 <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/50 backdrop-blur rounded text-xs text-white font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-20">View Details →</div>
-              </div>
-              
-              <div className="p-6 flex flex-col flex-grow relative z-20 bg-slate-900 group-hover:bg-slate-800/50 transition-colors">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider">{project.category}</span>
-                    <h3 className="text-xl font-bold text-white mt-1 group-hover:text-cyan-300 transition-colors">{project.title}</h3>
+            // 🌟 Added RevealOnScroll with staggered delay and h-full to maintain grid layout
+            <RevealOnScroll key={project.id} delay={index * 100} className="h-full">
+              <div 
+                onClick={() => setSelectedProject(project)} 
+                className="group card-shimmer bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-400 transition-all duration-300 ease-out hover:-translate-y-3 hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col h-full cursor-pointer relative"
+              >
+                <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative overflow-hidden p-6 flex items-center justify-center`}>
+                  <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-all"></div>
+                  {/* Icon Scale & Rotate */}
+                  <div className="bg-slate-950/30 backdrop-blur-sm p-4 rounded-full transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-500 border border-white/10 relative z-10 shadow-lg">
+                      {project.category === 'Game Dev' && <Gamepad2 size={32} className="text-white" />}
+                      {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
+                      {project.category === '3D Art' && <Box size={32} className="text-white" />}
+                      {project.category === 'Tools' && <Terminal size={32} className="text-white" />}
                   </div>
+                  <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/50 backdrop-blur rounded text-xs text-white font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-20">View Details →</div>
                 </div>
-                <p className="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mt-auto">{project.tags.map(tag => <span key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded border border-slate-700 font-mono">{tag}</span>)}</div>
+                
+                <div className="p-6 flex flex-col flex-grow relative z-20 bg-slate-900 group-hover:bg-slate-800/50 transition-colors">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider">{project.category}</span>
+                      <h3 className="text-xl font-bold text-white mt-1 group-hover:text-cyan-300 transition-colors">{project.title}</h3>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mt-auto">{project.tags.map(tag => <span key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded border border-slate-700 font-mono">{tag}</span>)}</div>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           ))}
         </div>
       </section>
 
       <section id="experience" className="py-20 bg-slate-900/30 border-y border-slate-800/50">
          <div className="max-w-3xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-white mb-12">Work Experience</h2>
+            <RevealOnScroll>
+              <h2 className="text-3xl font-bold text-center text-white mb-12">Work Experience</h2>
+            </RevealOnScroll>
             <div className="space-y-12 border-l-2 border-slate-800 pl-8 ml-4">
                 {EXPERIENCE_DATA.map((exp, idx) => (
                   <div key={idx} className="relative group hover:pl-2 transition-all duration-300">
@@ -730,8 +1084,12 @@ const App = () => {
 
       <section id="contact" className="py-24 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold text-white mb-6">Let's Build Something Amazing</h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">Have a question? You can email me directly, or chat with my AI assistant to learn more about my work instantly.</p>
+          <RevealOnScroll>
+            <h2 className="text-4xl font-bold text-white mb-6">Let's Build Something Amazing</h2>
+          </RevealOnScroll>
+          <RevealOnScroll delay={200}>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">Have a question? You can email me directly, or chat with my AI assistant to learn more about my work instantly.</p>
+          </RevealOnScroll>
         </div>
         <div className="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col">
           <div className="flex border-b border-slate-800">
