@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowen Zhou - Dark CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- PURE DARK THEME VARIABLES --- */
+        :root {
+            --bg: #09090b;          /* Pure Dark Black */
+            --panel: #18181b;       /* Card Background */
+            --border: #3f3f46;      /* Subtle Border */
+            --text: #ffffff;        /* Pure White Text */
+            --keyword: #ff79c6;     /* Neon Pink */
+            --string: #f1fa8c;      /* Neon Yellow */
+            --class: #8be9fd;       /* Neon Cyan */
+            --func: #50fa7b;        /* Neon Green */
+            --comment: #d4d4d8;     /* Light Grey */
+            --accent-dim: rgba(255, 255, 255, 0.1);
+        }
+
+        /* BASE STYLES */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Outer background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* PAGE CONTAINER (Responsive A4) */
+        .page-container {
+            width: 100%;
+            max-width: 210mm; /* A4 Width Cap */
+            min-height: 297mm; /* A4 Height Min */
+            background-color: var(--bg);
+            color: var(--text);
+            box-shadow: 0 0 50px rgba(255,255,255,0.05);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: visible; 
+            margin: 20px auto;
+            
+            /* FORCE DARK PRINTING */
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4, .code-font { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Lists bullets */
+        .tech-bullet::before {
+            content: "›"; 
+            color: var(--func);
+            font-weight: bold;
+            margin-right: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* --- NEW LAYOUT V5 --- */
+        /* 1. Header: Avatar + Name in one row */
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        /* 2. Info Grid: Full width below header */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 Columns Balanced */
+            gap: 30px 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .section-title {
+            color: var(--keyword);
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 1;
+        }
+
+        /* PHOTO STYLING (Square) */
+        .avatar-frame {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            padding: 4px;
+            background-color: var(--panel);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 850px) {
+            body { padding: 0; background-color: var(--bg); }
+            .page-container {
+                margin: 0;
+                box-shadow: none;
+                padding: 20px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* Stack Header */
+            .header-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            /* Stack Info Grid */
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            /* Adjust Header size */
+            h1 { font-size: 2.5rem !important; line-height: 1.1; }
+            .header-class-def { flex-direction: column; gap: 5px; font-size: 1rem !important; justify-content: center; }
+            
+            .attributes-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- PRINT STYLES --- */
+        @media print {
+            body { background: none; margin: 0; padding: 0; }
+            .page-container {
+                margin: 0;
+                width: 100%;
+                min-height: 100vh;
+                box-shadow: none;
+                border: none;
+                padding: 40px;
+                background-color: #09090b !important;
+                color: #ffffff !important;
+            }
+            .no-print { display: none !important; }
+            
+            /* Restore Desktop Layouts for Print */
+            .header-row { flex-direction: row !important; text-align: left !important; }
+            .info-grid { grid-template-columns: 1fr 1fr !important; }
+            .attributes-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+            .header-class-def { flex-direction: row !important; justify-content: flex-start !important; }
+            
+            [contenteditable]:empty:before { content: "" !important; }
+        }
+
+        /* EDITING INTERACTION */
+        [contenteditable]:hover {
+            background-color: var(--accent-dim);
+            cursor: text;
+            outline: 1px dashed var(--keyword);
+            border-radius: 4px;
+        }
+        [contenteditable]:focus {
+            background-color: var(--panel);
+            outline: 2px solid var(--keyword);
+            color: var(--text);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Control Bar
+    <div class="no-print fixed top-6 right-6 z-50">
+        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold font-mono text-sm shadow-[0_0_15px_rgba(79,70,229,0.5)] transition-all flex items-center gap-2">
+            <i class="fa-solid fa-print"></i> PRINT DARK PDF
+        </button>
+        <div class="text-[10px] text-gray-500 mt-2 text-right font-mono">
+            *Ensure "Background graphics" is checked
+        </div>
+    </div> -->
+
+    <!-- ================= CV CONTAINER ================= -->
+    <div class="page-container">
+        
+        <!-- 1. NEW HEADER (Avatar + Name in one Row) -->
+        <div class="header-row">
+            
+            <!-- Avatar -->
+            <div class="avatar-frame">
+                <img src="./avatar/avatar.jpg" alt="Profile Photo">
+            </div>
+
+            <!-- Name Block -->
+            <div class="flex flex-col justify-center">
+                <h1 class="text-5xl font-bold tracking-tight mb-2 code-font uppercase" style="color: var(--text)" >ZHOU BOWEN</h1>
+                <div class="header-class-def flex flex-wrap items-center gap-3 text-lg code-font">
+                    <div class="flex gap-2">
+                        <span style="color: var(--keyword)">class</span>
+                        <span style="color: var(--class)" class="font-bold" >UnityDeveloper</span>
+                        <span style="color: var(--text)">:</span>
+                    </div>
+                    <span style="color: var(--func)" >TechnicalGeneralist</span>
+                </div>
+                <div class="mt-2 text-xs font-mono opacity-60" style="color: var(--comment)">
+                    // Status: Open to Work
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 2. INFO GRID (Full Width below header) -->
+        <div class="info-grid">
+            
+            <!-- Cell 1: Contact -->
+            <div>
+                <div class="section-title">// CONTACT_INFO</div>
+                <div class="flex flex-col gap-1.5 font-mono text-xs">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot w-4 text-center" style="color: var(--class)"></i>
+                        <span >Turku, Finland</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-envelope w-4 text-center" style="color: var(--class)"></i>
+                        <span >[zhoubowen.skyhouse@gmail.com]</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-phone w-4 text-center" style="color: var(--class)"></i>
+                        <span >[+358 415710055]</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-brands fa-linkedin w-4 text-center" style="color: var(--class)"></i>
+                         <a href="https://www.linkedin.com/in/bowen-zhou-87b616251" target="_blank" class="hover-link">linkedin.com/in/bowen-zhou</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-brands fa-artstation w-4 text-center" style="color: var(--class)"></i>
+                        <a href="https://dreamzhou.artstation.com" target="_blank" class="hover-link">dreamzhou.artstation.com</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-globe w-4 text-center" style="color: var(--class)"></i>
+                        <a href="https://www.zhou.studio" target="_blank" class="hover-link">wwww.zhou.studio</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cell 2: Tech Stack -->
+            <div>
+                <div class="section-title">// TECH_STACK</div>
+                <div class="flex flex-wrap gap-2 text-xs font-mono">
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >C#</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >Unity</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >FSM/AI</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >ShaderGraph</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >Blender</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >ZBrush</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >Git</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >Unreal</span>
+                    <span class="px-2 py-1 border rounded" style="border-color: var(--border); color: var(--string)" >3D Photogrammetry</span>
+                </div>
+            </div>
+
+            <!-- Cell 3: Education -->
+            <div>
+                <div class="section-title">// EDUCATION</div>
+                <div class="space-y-2 font-mono text-xs">
+                    <div>
+                        <div class="font-bold" style="color: var(--text)" >Finland Turku Univ. of Applied Science</div>
+                        <div style="color: var(--func)" class="mt-0.5" >B.Eng. Information and Communication Tech (2025)</div>
+                    </div>
+                    <div>
+                        <div class="font-bold" style="color: var(--text)" >China Shanghai Maritime Univ.</div>
+                        <div style="color: var(--func)" class="mt-0.5" >B.Eng. Mechatronics Engineering (2014)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cell 4: Languages -->
+            <div>
+                <div class="section-title">// LANGUAGES</div>
+                <ul class="space-y-1.5 font-mono text-xs">
+                    <li class="flex justify-between"><span>Chinese</span> <span style="color: var(--comment)">Native</span></li>
+                    <li class="flex justify-between"><span>English</span> <span style="color: var(--comment)">Fluent</span></li>
+                    <li class="flex justify-between"><span>Finnish</span> <span style="color: var(--comment)">Basic</span></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Profile Abstract -->
+        <section class="mb-8">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2 code-font" style="color: var(--string)">
+                <i class="fa-solid fa-terminal" style="color: var(--class)"></i> 01. About Me
+            </div>
+            <div class="p-4 rounded border-l-4" style="background-color: var(--panel); border-color: var(--class);">
+                <p class="leading-relaxed text-sm font-light text-justify"  style="color: var(--text)">
+                    I’m a Unity developer with a strong 3D art background.
+                    On the programming side I focus on building event-driven, data-driven systems in Unity. I use C# with ScriptableObject-based data models, state machines and loosely coupled services for gameplay, UI and AI.
+                    I also create custom editor tools and small frameworks to speed up workflows and cut repetitive tasks.Because I’ve done 3D modelling and texturing myself, I understand artists’ constraints and can design pipelines and shaders that actually work in production
+                </p>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT (Projects) -->
+        <section class="flex-grow">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-4 code-font" style="color: var(--string)">
+                <i class="fa-solid fa-code-branch" style="color: var(--class)"></i> 02. PROJECTS
+            </div>
+
+            <!-- Project 1 -->
+            <div class="mb-6 relative pl-5 border-l" style="border-color: var(--border)">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full" style="background-color: var(--class)"></div>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-lg code-font" style="color: var(--text)" >VINCE – Virtual Integration Home</h4>
+                    <span class="text-xs code-font" style="color: var(--comment)" >Bachelor’s Thesis | 2025–present</span>
+                </div>
+                <div class="text-xs font-bold mb-2 code-font" style="color: var(--keyword)" >Unity Developer & Tech Designer</div>
+                <div class="text-sm leading-relaxed opacity-100 space-y-1.5">
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--string)">› Challenge:</span>
+                        <span  style="color: var(--text)">Managing a large set of modular body meshes and color variations while keeping the app fast on mobile and avoiding the typical heavy architecture of avatar systems.</span>
+                    </div>
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--func)">› Solution:</span>
+                        <span  style="color: var(--text)">Built a full customization pipeline: automatic preset/SO generators, a centralized database, a unified shared-material system, an RGBA mask shader for recoloring,
+                           and an event-driven runtime architecture. Added randomization, real-time switching, consistent data saving/loading, and UI tools to support test users—resulting in a highly efficient customizable
+                            avatar for the VINCE integration app.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="mb-6 relative pl-5 border-l" style="border-color: var(--border)">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full" style="background-color: var(--comment)"></div>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-lg code-font" style="color: var(--text)" >AI Enemy System (Prototype)</h4>
+                    <span class="text-xs code-font" style="color: var(--comment)" >Personal Project | 2024</span>
+                </div>
+                <div class="text-xs font-bold mb-2 code-font" style="color: var(--keyword)" >Solo Developer</div>
+                <div class="text-sm leading-relaxed opacity-100 space-y-1.5">
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--string)">› Challenge:</span>
+                        <span  style="color: var(--text)">Building a reusable state machine handling complex behaviors (patrol, chase, wariness) efficiently.</span>
+                    </div>
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--func)">› Solution:</span>
+                        <span  style="color: var(--text)">Implemented generic FSM with concrete states. Created layered perception system with FOV/sphere casts and throttled updates.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="mb-6 relative pl-5 border-l" style="border-color: var(--border)">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full" style="background-color: var(--comment)"></div>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-lg code-font" style="color: var(--text)" >Dialogue System</h4>
+                    <span class="text-xs code-font" style="color: var(--comment)" >Personal Project | 2023</span>
+                </div>
+                <div class="text-xs font-bold mb-2 code-font" style="color: var(--keyword)" >Solo Developer</div>
+                <div class="text-sm leading-relaxed opacity-100 space-y-1.5">
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--string)">› Challenge:</span>
+                        <span  style="color: var(--text)">Decoupling dialogue logic from game state while allowing complex branching and quest hooks.</span>
+                    </div>
+                    <div class="flex gap-2 items-baseline">
+                        <span class="font-bold font-mono whitespace-nowrap min-w-[6rem] shrink-0" style="color: var(--func)">› Solution:</span>
+                        <span  style="color: var(--text)">Built decoupled event system connecting dialogue to gold, shops, and quest logic using ScriptableObject definitions.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work History -->
+        <section class="flex-grow">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-4 code-font" style="color: var(--func)">
+                <i class="fa-solid fa-briefcase"></i> 03. WORK_HISTORY
+            </div>
+
+            <div class="mb-4 relative pl-5 border-l" style="border-color: var(--border)">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full" style="background-color: var(--keyword)"></div>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-base code-font" style="color: var(--text)" >Shanghai Demu Network Co., Ltd</h4>
+                    <span class="text-xs code-font" style="color: var(--comment)" >2019 – Present</span>
+                </div>
+                <div class="text-xs font-bold mb-1 code-font" style="color: var(--keyword)" >Founder / Technical Generalist</div>
+                <p class="text-xs opacity-90 leading-relaxed" >
+                    Founded studio focused on 3D digital content. Coordinated client requirements and provided technical training in 3D tools.
+                </p>
+            </div>
+
+            <div class="mb-2 relative pl-5 border-l" style="border-color: var(--border)">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full" style="background-color: var(--keyword)"></div>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-base code-font" style="color: var(--text)" >Previous Experience</h4>
+                    <span class="text-xs code-font" style="color: var(--comment)" >2014 – 2019</span>
+                </div>
+                <ul class="text-xs space-y-1 leading-relaxed opacity-90">
+                    <li class="flex items-start"><span class="tech-bullet"></span><span ><strong>Freelance 3D Artist (2018-19):</strong> Produced assets for clients, optimized for real-time.</span></li>
+                    <li class="flex items-start"><span class="tech-bullet"></span><span ><strong>3D Product Designer (2014-18):</strong> Interactive concepts & technical training.</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Attributes -->
+        <section class="mt-6 pt-6 border-t" style="border-color: var(--border)">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-3 code-font" style="color: var(--string)">
+                <i class="fa-solid fa-bolt"></i> 04. STRENGTHS
+            </div>
+            <div class="attributes-grid">
+                <div class="p-3 rounded border" style="border-color: var(--border); background-color: var(--panel)">
+                    <h5 class="font-bold text-xs mb-1 code-font" style="color: var(--keyword)">System-Oriented</h5>
+                    <p class="text-[10px] opacity-80 leading-relaxed" >Prefers building reusable systems and tools over one-off scripts.</p>
+                </div>
+                <div class="p-3 rounded border" style="border-color: var(--border); background-color: var(--panel)">
+                    <h5 class="font-bold text-xs mb-1 code-font" style="color: var(--keyword)">Cross-Disciplinary</h5>
+                    <p class="text-[10px] opacity-80 leading-relaxed" >Can talk with artists and engineers, translating between languages.</p>
+                </div>
+                <div class="p-3 rounded border" style="border-color: var(--border); background-color: var(--panel)">
+                    <h5 class="font-bold text-xs mb-1 code-font" style="color: var(--keyword)">Self-Learner</h5>
+                    <p class="text-[10px] opacity-80 leading-relaxed" >Constantly dissecting new tech，improve myself.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
