@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video, Printer, Briefcase } from 'lucide-react';
-
+import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video, Printer, Briefcase, MousePointer2, Activity } from 'lucide-react';
 /**
  * ================================================================================
  * 🔧 CONFIGURATION AREA
@@ -27,7 +26,7 @@ const PERSONAL_INFO = {
 // 📧 Email Service Configuration
 const FORMSPREE_ENDPOINT = ""; 
 
-const CATEGORIES = ['All', 'Game Dev', 'Shaders', '3D Art', 'Tools'];
+const CATEGORIES = ['All', 'Game Dev', 'Shaders','Simulator', '3D Art', 'Tools'];
 
 // 📝 UPDATED EXPERIENCE DATA FROM USER IMAGE
 const EXPERIENCE_DATA = [
@@ -76,7 +75,7 @@ const PROJECTS_DATA = [
     color: "from-cyan-500 to-blue-600",
     details: {
       role: "Unity Developer & Tech Designer",
-      duration: "2024–2025",
+      duration: "2025.9-2025.11",
       challenge: "Creating an efficient avatar system that allows for runtime customization without performance penalties on mobile hardware.",
       solution: "Designed a ScriptableObject database and mask-based shader workflow (RGBA) for efficient recoloring and reduced draw calls. Built a mobile-friendly editor with dynamic lists.",
       features: ["Modular Avatar System", "Mask-based Shader Workflow", "Mobile Optimized UI", "User Research Integration"],
@@ -88,9 +87,8 @@ const PROJECTS_DATA = [
           caption: 'Avatar Customization Demo' 
         },
         { type: 'image', url: '/projects/vince/image1.png', caption: 'Main Menu UI' },
-        { type: 'image', url: '/projects/vince/image2.png', caption: 'Main Menu UI' },
-        { type: 'image', url: '/projects/vince/image3.png', caption: 'Main Menu UI' },
-        { type: 'image', url: 'https://picsum.photos/600/800?random=102', caption: 'Mobile Vertical Layout' }, 
+        { type: 'image', url: '/projects/vince/image2.png', caption: 'Stylized shader' },
+        { type: 'image', url: '/projects/vince/image3.png', caption: 'DataBase setting' },
       ]
     }
   },
@@ -137,22 +135,21 @@ const PROJECTS_DATA = [
   {
     id: 4,
     title: "Visualize Drone Swarm Algorithm",
-    category: "Shaders",
+    category: "Simulator",
     description: "A highly optimized ray-marching shader for volumetric clouds. Written in HLSL.",
-    tags: ["HLSL", "Shader Graph", "Compute Shaders", "Optimization"],
+    tags: ["Visualization", "Simulator", "Algorithm", "Research"],
     color: "from-indigo-500 to-purple-500",
     details: {
-      role: "Technical Artist",
+      role: "Algorithm designer and Developer",
       duration: "1 Month",
-      challenge: "Rendering volumetric clouds in real-time on mid-range hardware without dropping below 60fps.",
-      solution: "Implemented temporal reprojection and half-resolution rendering. Used 3D noise textures generated in Substance Designer for shape definition.",
+      challenge: "Coordinating multiple drones to efficiently cover a search area without overlap or missed zones.",
+      solution: "Partitioned grid algorithm that divides the area by drone count, assigns systematic scan patterns (horizontal/spiral), with real-time coverage tracking and GPU trajectory rendering.",
       features: ["Ray-marching with light scattering", "Weather map support", "Zero garbage collection allocation"],
       media: [
         { type: 'video', url: '/projects/drone/video1.mp4', caption: 'Visualize Drone Swarm Algorithm Demo' },
-        { type: 'image', url: 'https://picsum.photos/1200/600?random=401', caption: 'Sunset Lighting' },
-        { type: 'image', url: 'https://picsum.photos/800/800?random=402', caption: 'Noise Texture Generation' },
-        { type: 'image', url: 'https://picsum.photos/800/500?random=403', caption: 'Performance Profiler' },
-      ]
+        { type: 'image', url: '/projects/drone/image1.png', caption: 'Spiral patten' },
+        { type: 'image', url: '/projects/drone/image2.png', caption: 'Grid patten' },
+       ]
     }
   },
   {
@@ -183,14 +180,17 @@ const PROJECTS_DATA = [
     color: "from-orange-500 to-red-500",
     details: {
       role: "3D Artist",
-      duration: "4 Weeks",
-      challenge: "Creating a highly detailed mech that is rigged for animation and optimized for game engines.",
-      solution: "Used a boolean workflow in Blender for hard surface forms. Baked high-poly normals onto a low-poly mesh with weighted normals for perfect shading.",
-      features: ["40k Tris (Game Ready)", "2 x 4K Texture Sets", "Custom IK Rig"],
+      duration: "Free time",
+      challenge: "Creating a highly detailed Sci-Fi model",
+      solution: "Design and make the model by blender,render in Marmoset 3.",
+
       media: [
-        { type: 'image', url: 'https://picsum.photos/600/900?random=601', caption: 'Full Body Render' }, // Tall Portrait
-        { type: 'image', url: 'https://picsum.photos/800/600?random=602', caption: 'Wireframe View' },
-        { type: 'image', url: 'https://picsum.photos/800/600?random=603', caption: 'Texture Maps' },
+        { type: 'image', url: '/projects/hardmesh/1.jpg', caption: 'Sci-Fi Computer' }, // Tall Portrait
+        { type: 'image', url: '/projects/hardmesh/2.jpg', caption: 'Sci-Fi Cannon' },
+        { type: 'image', url: '/projects/hardmesh/3.jpg', caption: 'Sci-Fi Gun' },
+        { type: 'image', url: '/projects/hardmesh/4.jpg', caption: 'Sci-Fi Gun' },
+        { type: 'image', url: '/projects/hardmesh/5.jpg', caption: 'Sci-Fi Machine Leg' },
+        { type: 'image', url: '/projects/hardmesh/6.jpg', caption: 'Sci-Fi Cannon' },
       ]
     }
   }
@@ -756,6 +756,7 @@ const App = () => {
                 {selectedProject.category === 'Shaders' && <Sparkles size={120} />}
                 {selectedProject.category === '3D Art' && <Box size={120} />}
                 {selectedProject.category === 'Tools' && <Terminal size={120} />}
+                {selectedProject.category === 'Tools' && <Activity size={120} />}
              </div>
              <div className="absolute bottom-8 left-8 md:left-12 right-8">
                 <span className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-black/30 backdrop-blur-md border border-white/10 rounded-full text-cyan-400">{selectedProject.category}</span>
@@ -1044,6 +1045,7 @@ const App = () => {
                       {project.category === 'Shaders' && <Sparkles size={32} className="text-white" />}
                       {project.category === '3D Art' && <Box size={32} className="text-white" />}
                       {project.category === 'Tools' && <Terminal size={32} className="text-white" />}
+                      {project.category === 'Simulator' && <Activity size={32} className="text-white" />}
                   </div>
                   <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/50 backdrop-blur rounded text-xs text-white font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-20">View Details →</div>
                 </div>
