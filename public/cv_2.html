@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowen Zhou - Obsidian Pro CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fonts: Manrope (Modern Geometric), Inter (Clean Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-body: #0f172a;      /* Slate 900 */
+            --bg-card: #1e293b;      /* Slate 800 */
+            --border: #334155;       /* Slate 700 */
+            --text-primary: #f8fafc; /* Slate 50 */
+            --text-secondary: #94a3b8; /* Slate 400 */
+            --accent: #38bdf8;       /* Sky 400 */
+            --accent-glow: rgba(56, 189, 248, 0.15);
+        }
+
+        /* BASE STYLES */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617; /* Deepest Slate */
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* PAGE CONTAINER */
+        .page-container {
+            width: 100%;
+            max-width: 210mm;
+            min-height: 297mm;
+            background-color: var(--bg-body);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding: 48px; /* More breathing room */
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+            margin: 40px auto;
+            
+            /* FORCE DARK PRINTING */
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+
+        /* --- COMPONENTS --- */
+        
+        /* 1. Header Area */
+        .header-layout {
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+        }
+        
+        .avatar-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px; /* Modern squircle */
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .header-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .name-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* 2. Grid System */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Slightly wider for skills */
+            gap: 40px;
+        }
+
+        /* 3. Info Cards */
+        .info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+        .contact-item:hover { color: var(--accent); }
+        .contact-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        /* 4. Skill Capsules */
+        .skill-group { margin-bottom: 12px; }
+        .skill-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .skill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-pill {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* 5. Project Cards */
+        .project-card {
+            background-color: transparent;
+            margin-bottom: 32px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            position: relative;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            left: -6px; top: 6px;
+            width: 10px; height: 10px;
+            background-color: var(--bg-body);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+        
+        .cs-block {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            border: 1px solid transparent;
+        }
+        .cs-label {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 8px;
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body { background: none; margin: 0; padding: 0; }
+            .page-container {
+                margin: 0;
+                width: 100%;
+                min-height: 100vh;
+                box-shadow: none;
+                padding: 40px;
+                /* Force background colors */
+                background-color: #0f172a !important;
+                color: #f8fafc !important;
+            }
+            .no-print { display: none !important; }
+            
+            /* Print Color Overrides for exact match */
+            .bg-slate-900 { background-color: #0f172a !important; }
+            .bg-slate-800 { background-color: #1e293b !important; }
+            .border-slate-700 { border-color: #334155 !important; }
+            
+            .cs-block {
+                background-color: #1e293b !important;
+                border: 1px solid #334155 !important;
+            }
+            
+            .contact-icon {
+                background-color: #1e293b !important;
+                color: #38bdf8 !important; 
+                -webkit-print-color-adjust: exact;
+            }
+            
+            /* Ensure layout holds */
+            .header-layout { display: flex !important; flex-direction: row !important; }
+            .meta-grid { display: grid !important; grid-template-columns: 1fr 1.2fr !important; }
+            
+            [contenteditable]:empty:before { content: "" !important; }
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .page-container { padding: 24px; height: auto; }
+            .header-layout { flex-direction: column; align-items: center; text-align: center; }
+            .header-info { padding-top: 16px; align-items: center; }
+            .meta-grid { grid-template-columns: 1fr; gap: 32px; }
+            .name-title { font-size: 2.5rem; }
+            .project-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+        }
+
+        /* EDITING */
+        [contenteditable]:hover {
+            background-color: rgba(255,255,255,0.05);
+            outline: none;
+            border-radius: 4px;
+            cursor: text;
+        }
+        [contenteditable]:focus {
+            background-color: rgba(255,255,255,0.1);
+            outline: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Control Bar -->
+    <div class="no-print fixed top-6 right-6 z-50">
+        <button onclick="window.print()" class="bg-sky-500 hover:bg-sky-400 text-slate-900 px-6 py-3 rounded-lg font-bold font-sans text-sm shadow-xl transition-all flex items-center gap-2">
+            <i class="fa-solid fa-file-pdf"></i> EXPORT PDF
+        </button>
+    </div>
+
+    <!-- ================= CV CONTAINER ================= -->
+    <div class="page-container">
+        
+        <!-- 1. HEADER SECTION -->
+        <header class="header-layout">
+            <div class="avatar-box">
+                <img src="./avatar/avatar.jpg" alt="Profile">
+            </div>
+            <div class="header-info">
+                <h1 class="name-title" contenteditable="true">BOWEN ZHOU</h1>
+                <div class="role-badge">
+                    <span contenteditable="true">3D Digitization Specialist</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    <span contenteditable="true" class="text-slate-400 font-normal">Technical Artist</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. META GRID (Contact + Skills) -->
+        <div class="meta-grid">
+            
+            <!-- Left: Contact & Info -->
+            <div class="info-card">
+                <div class="section-header">
+                    <i class="fa-solid fa-address-card text-sky-400"></i>
+                    <h2 class="section-title">Contact</h2>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <span contenteditable="true">Turku, Finland</span>
+                    </div>
+                    <a href="mailto:zhoubowen.skyhouse@gmail.com" class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <span contenteditable="true">[zhoubowen.skyhouse@gmail.com]</span>
+                    </a>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                        <span contenteditable="true">[+358 415710055]</span>
+                    </div>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon"><i class="fa-brands fa-linkedin"></i></div>
+                        <span contenteditable="true">linkedin.com/in/bowen-zhou-skyhouse</span>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-globe"></i></div>
+                        <span contenteditable="true">www.zhou.studio</span>
+                    </a>
+                </div>
+
+                <!-- Education (Compact) -->
+                <div class="mt-4">
+                    <div class="section-header" style="border:none; margin-bottom:10px;">
+                        <h2 class="section-title text-slate-500">Education</h2>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">Turku Univ. Applied Sci</div>
+                            <div class="text-xs text-sky-400">B.Eng. Information and Communication Tech (2025)</div>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">Shanghai Maritime Univ.</div>
+                            <div class="text-xs text-slate-500">B.Eng. Mechatronics Engineering (2014)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Skills & Tech -->
+            <div class="info-card">
+                <div class="section-header">
+                    <i class="fa-solid fa-microchip text-sky-400"></i>
+                    <h2 class="section-title">Technical Expertise</h2>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-label">Scanning & Photogrammetry</div>
+                    <div class="skill-container">
+                        <span class="skill-pill" contenteditable="true">LiDAR</span>
+                        <span class="skill-pill" contenteditable="true">RealityCapture</span>
+                        <span class="skill-pill" contenteditable="true">Geomagic Design X</span>
+                        <span class="skill-pill" contenteditable="true">CloudCompare</span>
+                        <span class="skill-pill" contenteditable="true">Agisoft Metashape</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-label">3D & Engineering</div>
+                    <div class="skill-container">
+                        <span class="skill-pill" contenteditable="true">ZBrush</span>
+                        <span class="skill-pill" contenteditable="true">Blender</span>
+                        <span class="skill-pill" contenteditable="true">Reverse Engineering</span>
+                        <span class="skill-pill" contenteditable="true">Retopology</span>
+                        <span class="skill-pill" contenteditable="true">PBR Texturing</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-label">Development</div>
+                    <div class="skill-container">
+                        <span class="skill-pill" contenteditable="true">Unity 3D</span>
+                        <span class="skill-pill" contenteditable="true">C#</span>
+                        <span class="skill-pill" contenteditable="true">Python (Automation)</span>
+                        <span class="skill-pill" contenteditable="true">WebGL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. MAIN CONTENT (Projects & Abstract) -->
+        <div class="flex-grow">
+            
+            <!-- Abstract -->
+            <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700/50 mb-10">
+                <p class="text-sm leading-relaxed text-slate-300 text-justify" contenteditable="true">
+                    Founder of a specialized 3D digitization studio in China with extensive experience in <strong>Digital Heritage</strong> and <strong>Industrial Metrology</strong>. Proven track record of delivering high-fidelity scanning solutions for museums, government archives, and commercial brands. Expert in bridging the physical and digital worlds using LiDAR, aerial photogrammetry, and VR/Web3D technologies. Combining mechatronics engineering precision with artistic sensibility.
+                </p>
+            </div>
+
+            <!-- Projects -->
+            <div class="section-header">
+                <i class="fa-solid fa-briefcase text-sky-400"></i>
+                <h2 class="section-title">Professional Projects</h2>
+            </div>
+
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 class="text-lg font-bold text-slate-50" contenteditable="true">Cultural Heritage Digitization</h3>
+                    <span class="text-xs font-semibold text-slate-500 bg-slate-900 px-2 py-1 rounded" contenteditable="true">2019–2023 | Founder</span>
+                </div>
+                <div class="text-xs font-semibold text-sky-400 mb-3" contenteditable="true">Museums & Archives</div>
+                
+                <div class="cs-block">
+                    <div class="mb-2">
+                        <span class="cs-label">CHALLENGE</span>
+                        <span class="text-slate-300" contenteditable="true">Digitizing fragile cultural relics and historical documents with sub-millimeter precision without physical contact.</span>
+                    </div>
+                    <div>
+                        <span class="cs-label">SOLUTION</span>
+                        <span class="text-slate-300" contenteditable="true">Implemented a non-contact workflow using cross-polarized photogrammetry and structured light scanning. Developed an optimized retopology pipeline to create archival-grade assets.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 class="text-lg font-bold text-slate-50" contenteditable="true">Historical Architecture Reconstruction</h3>
+                    <span class="text-xs font-semibold text-slate-500 bg-slate-900 px-2 py-1 rounded" contenteditable="true">2020–2022 | Tech Director</span>
+                </div>
+                <div class="text-xs font-semibold text-sky-400 mb-3" contenteditable="true">Government Projects</div>
+                
+                <div class="cs-block">
+                    <div class="mb-2">
+                        <span class="cs-label">CHALLENGE</span>
+                        <span class="text-slate-300" contenteditable="true">Capturing large-scale historical buildings with complete exterior and interior detail for digital restoration.</span>
+                    </div>
+                    <div>
+                        <span class="cs-label">SOLUTION</span>
+                        <span class="text-slate-300" contenteditable="true">Deployed a fusion workflow combining aerial drone photogrammetry (for rooftops/facades) and ground-based LiDAR (for interiors). Managed complex point cloud registration.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 class="text-lg font-bold text-slate-50" contenteditable="true">Interactive Web3D Experiences</h3>
+                    <span class="text-xs font-semibold text-slate-500 bg-slate-900 px-2 py-1 rounded" contenteditable="true">2021–2023 | Tech Artist</span>
+                </div>
+                <div class="text-xs font-semibold text-sky-400 mb-3" contenteditable="true">Commercial Clients</div>
+                
+                <div class="cs-block">
+                    <div class="mb-2">
+                        <span class="cs-label">CHALLENGE</span>
+                        <span class="text-slate-300" contenteditable="true">Displaying high-fidelity scanned products on web browsers and VR headsets without performance latency.</span>
+                    </div>
+                    <div>
+                        <span class="cs-label">SOLUTION</span>
+                        <span class="text-slate-300" contenteditable="true">Created a "Scan-to-Web" pipeline involving high-to-low poly baking (Normal/AO/Roughness maps) and texture atlas optimization using Unity WebGL.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4. FOOTER (Strengths) -->
+        <div class="grid grid-cols-3 gap-6 pt-6 border-t border-slate-800">
+            <div>
+                <h4 class="text-xs font-bold text-white mb-2 uppercase">Hardware-Software Hybrid</h4>
+                <p class="text-xs text-slate-400 leading-relaxed" contenteditable="true">Deep understanding of scanning sensors (LiDAR/Optical) combined with advanced software processing skills.</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-white mb-2 uppercase">Precision-Oriented</h4>
+                <p class="text-xs text-slate-400 leading-relaxed" contenteditable="true">Obsessed with mesh topology and surface accuracy for reverse engineering applications.</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-white mb-2 uppercase">Pipeline Automation</h4>
+                <p class="text-xs text-slate-400 leading-relaxed" contenteditable="true">Capable of optimizing scan-to-model workflows for large-scale archiving projects.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
