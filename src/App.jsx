@@ -658,7 +658,9 @@ const App = () => {
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [authFields, setAuthFields] = useState({ username: '', password: '', error: '' });
   const [projectForm, setProjectForm] = useState({ title: '', category: '', description: '', tags: '', image: '' });
+  const [editingProjectId, setEditingProjectId] = useState(null);
   const [pageForm, setPageForm] = useState({ title: '', slug: '', content: '', coverImage: '' });
+  const [editingPageId, setEditingPageId] = useState(null);
   const [chatHistory, setChatHistory] = useState([
     { role: 'ai', text: `Hi there! I'm ${PERSONAL_INFO.name}'s AI assistant. Ask me anything about his skills, experience, or projects! ✨` }
   ]);
@@ -754,24 +756,48 @@ const App = () => {
     e.preventDefault();
     if (!projectForm.title || !projectForm.category) return;
 
-    const newProject = {
-      id: Date.now(),
-      title: projectForm.title,
-      category: projectForm.category,
-      description: projectForm.description || '暂无描述。',
-      tags: projectForm.tags ? projectForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
-      color: 'from-cyan-500 to-blue-600',
-      details: {
-        role: 'Administrator',
-        duration: '自定义项目',
-        challenge: projectForm.description,
-        solution: '通过后台面板快速创建。',
-        features: projectForm.tags ? projectForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
-        media: projectForm.image ? [{ type: 'image', url: projectForm.image, caption: projectForm.title }] : [],
-      },
-    };
+    const tags = projectForm.tags ? projectForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [];
+    const existingProject = projects.find((p) => p.id === editingProjectId);
 
-    setProjects((prev) => [...prev, newProject]);
+    if (existingProject) {
+      const updated = {
+        ...existingProject,
+        title: projectForm.title,
+        category: projectForm.category,
+        description: projectForm.description || existingProject.description,
+        tags,
+        details: {
+          ...existingProject.details,
+          challenge: projectForm.description || existingProject.details?.challenge,
+          features: tags.length ? tags : existingProject.details?.features,
+          media: projectForm.image
+            ? [{ type: 'image', url: projectForm.image, caption: projectForm.title }]
+            : existingProject.details?.media || [],
+        },
+      };
+      setProjects((prev) => prev.map((p) => (p.id === editingProjectId ? updated : p)));
+    } else {
+      const newProject = {
+        id: Date.now(),
+        title: projectForm.title,
+        category: projectForm.category,
+        description: projectForm.description || '暂无描述。',
+        tags,
+        color: 'from-cyan-500 to-blue-600',
+        details: {
+          role: 'Administrator',
+          duration: '自定义项目',
+          challenge: projectForm.description,
+          solution: '通过后台面板快速创建。',
+          features: tags,
+          media: projectForm.image ? [{ type: 'image', url: projectForm.image, caption: projectForm.title }] : [],
+        },
+      };
+
+      setProjects((prev) => [...prev, newProject]);
+    }
+
+    setEditingProjectId(null);
     setProjectForm({ title: '', category: '', description: '', tags: '', image: '' });
   };
 
@@ -779,16 +805,74 @@ const App = () => {
     e.preventDefault();
     if (!pageForm.title || !pageForm.content) return;
     const slug = pageForm.slug || pageForm.title.toLowerCase().replace(/\s+/g, '-');
-    const newPage = {
-      id: Date.now(),
-      title: pageForm.title,
-      slug,
-      content: pageForm.content,
-      coverImage: pageForm.coverImage,
-    };
+    const existingPage = customPages.find((page) => page.id === editingPageId);
 
-    setCustomPages((prev) => [...prev, newPage]);
+    if (existingPage) {
+      const updated = {
+        ...existingPage,
+        title: pageForm.title,
+        slug,
+        content: pageForm.content,
+        coverImage: pageForm.coverImage || existingPage.coverImage,
+      };
+      setCustomPages((prev) => prev.map((page) => (page.id === editingPageId ? updated : page)));
+    } else {
+      const newPage = {
+        id: Date.now(),
+        title: pageForm.title,
+        slug,
+        content: pageForm.content,
+        coverImage: pageForm.coverImage,
+      };
+
+      setCustomPages((prev) => [...prev, newPage]);
+    }
+
+    setEditingPageId(null);
     setPageForm({ title: '', slug: '', content: '', coverImage: '' });
+  };
+
+  const handleEditProject = (project) => {
+    setEditingProjectId(project.id);
+    setProjectForm({
+      title: project.title,
+      category: project.category,
+      description: project.description || project.details?.challenge || '',
+      tags: project.tags?.join(', ') || '',
+      image: '',
+    });
+  };
+
+  const handleDeleteProject = (id) => {
+    setProjects((prev) => prev.filter((p) => p.id !== id));
+    if (editingProjectId === id) {
+      setEditingProjectId(null);
+      setProjectForm({ title: '', category: '', description: '', tags: '', image: '' });
+    }
+    if (selectedProject?.id === id) {
+      setSelectedProject(null);
+    }
+  };
+
+  const handleEditPage = (page) => {
+    setEditingPageId(page.id);
+    setPageForm({
+      title: page.title,
+      slug: page.slug,
+      content: page.content,
+      coverImage: '',
+    });
+  };
+
+  const handleDeletePage = (id) => {
+    setCustomPages((prev) => prev.filter((page) => page.id !== id));
+    if (editingPageId === id) {
+      setEditingPageId(null);
+      setPageForm({ title: '', slug: '', content: '', coverImage: '' });
+    }
+    if (selectedPage?.id === id) {
+      setSelectedPage(null);
+    }
   };
 
   const handleContactSubmit = async (e) => {
@@ -1361,7 +1445,21 @@ const App = () => {
             ) : (
               <div className="p-6 space-y-8">
                 <div>
-                  <h3 className="text-white font-bold mb-3">快速添加新项目</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-white font-bold">{editingProjectId ? '编辑项目' : '快速添加新项目'}</h3>
+                    {editingProjectId && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingProjectId(null);
+                          setProjectForm({ title: '', category: '', description: '', tags: '', image: '' });
+                        }}
+                        className="text-sm text-slate-400 hover:text-white"
+                      >
+                        取消编辑
+                      </button>
+                    )}
+                  </div>
                   <form onSubmit={handleAddProject} className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-xl">
                     <div className="space-y-2">
                       <label className="text-slate-400 text-sm">标题</label>
@@ -1385,13 +1483,51 @@ const App = () => {
                       {projectForm.image && <img src={projectForm.image} alt="预览" className="mt-2 h-24 rounded-lg object-cover border border-slate-800" />}
                     </div>
                     <div className="flex items-end justify-end md:justify-start">
-                      <button type="submit" className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold">保存项目</button>
+                      <button type="submit" className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold">{editingProjectId ? '更新项目' : '保存项目'}</button>
                     </div>
                   </form>
+                  <div className="mt-4 bg-slate-950 border border-slate-800 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-slate-200 font-semibold">已创建的项目</h4>
+                      <span className="text-xs text-slate-500">点击编辑或删除</span>
+                    </div>
+                    {projects.length === 0 ? (
+                      <p className="text-slate-500 text-sm">暂无项目。</p>
+                    ) : (
+                      <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+                        {projects.map((project) => (
+                          <div key={project.id} className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-lg px-3 py-2">
+                            <div>
+                              <div className="text-white text-sm font-semibold">{project.title}</div>
+                              <div className="text-xs text-slate-500">{project.category}</div>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <button onClick={() => handleEditProject(project)} className="px-2 py-1 rounded bg-slate-800 text-cyan-400 hover:text-white">编辑</button>
+                              <button onClick={() => handleDeleteProject(project.id)} className="px-2 py-1 rounded bg-slate-800 text-red-400 hover:text-white">删除</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>
-                  <h3 className="text-white font-bold mb-3">新建作品页面</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-white font-bold">{editingPageId ? '编辑作品页面' : '新建作品页面'}</h3>
+                    {editingPageId && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingPageId(null);
+                          setPageForm({ title: '', slug: '', content: '', coverImage: '' });
+                        }}
+                        className="text-sm text-slate-400 hover:text-white"
+                      >
+                        取消编辑
+                      </button>
+                    )}
+                  </div>
                   <form onSubmit={handleAddPage} className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-xl">
                     <div className="space-y-2">
                       <label className="text-slate-400 text-sm">页面标题</label>
@@ -1411,9 +1547,33 @@ const App = () => {
                       {pageForm.coverImage && <img src={pageForm.coverImage} alt="预览" className="mt-2 h-24 rounded-lg object-cover border border-slate-800" />}
                     </div>
                     <div className="flex items-end justify-end md:justify-start">
-                      <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold">发布页面</button>
+                      <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold">{editingPageId ? '更新页面' : '发布页面'}</button>
                     </div>
                   </form>
+                  <div className="mt-4 bg-slate-950 border border-slate-800 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-slate-200 font-semibold">已创建的页面</h4>
+                      <span className="text-xs text-slate-500">点击编辑或删除</span>
+                    </div>
+                    {customPages.length === 0 ? (
+                      <p className="text-slate-500 text-sm">暂无页面。</p>
+                    ) : (
+                      <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+                        {customPages.map((page) => (
+                          <div key={page.id} className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-lg px-3 py-2">
+                            <div>
+                              <div className="text-white text-sm font-semibold">{page.title}</div>
+                              <div className="text-xs text-slate-500">/{page.slug}</div>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <button onClick={() => handleEditPage(page)} className="px-2 py-1 rounded bg-slate-800 text-cyan-400 hover:text-white">编辑</button>
+                              <button onClick={() => handleDeletePage(page.id)} className="px-2 py-1 rounded bg-slate-800 text-red-400 hover:text-white">删除</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
