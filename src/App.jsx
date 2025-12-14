@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video, Printer, Briefcase, MousePointer2, Activity } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Terminal, ChevronDown, Send, User, Layers, Sparkles, Box, Cpu, Gamepad2, ArrowLeft, X, Image as ImageIcon, Loader2, CheckCircle, MessageSquare, Bot, RefreshCw, Zap, MapPin, Phone, FileText, ChevronLeft, ChevronRight, Play, Video, Printer, Briefcase, MousePointer2, Activity, Shield } from 'lucide-react';
 /**
  * ================================================================================
  * 🔧 CONFIGURATION AREA
@@ -27,6 +27,11 @@ const PERSONAL_INFO = {
 const FORMSPREE_ENDPOINT = ""; 
 
 const CATEGORIES = ['All', 'Game Dev', 'Shaders','Simulator', '3D Art', 'Tools'];
+
+const ADMIN_CREDENTIALS = {
+  username: 'admin',
+  password: 'letmein',
+};
 
 // 📝 UPDATED EXPERIENCE DATA FROM USER IMAGE
 const EXPERIENCE_DATA = [
@@ -65,7 +70,7 @@ const EDUCATION_DATA = [
 ];
 
 // 🛠️ MOCK DATA FOR GALLERY (Replace URLs with your local paths)
-const PROJECTS_DATA = [
+const DEFAULT_PROJECTS = [
   {
     id: 1,
     title: "VINCE – Virtual Integration Home",
@@ -208,7 +213,7 @@ const generateSystemPrompt = () => {
     Your goal is to help recruiters and visitors understand ${PERSONAL_INFO.name}'s skills and experience.
     Here is ${PERSONAL_INFO.name}'s Resume Data:
     - Work Experience: ${JSON.stringify(EXPERIENCE_DATA)}
-    - Projects: ${JSON.stringify(PROJECTS_DATA.map(p => ({ title: p.title, category: p.category, description: p.description, tags: p.tags, tech: p.details?.features })))}
+    - Projects: ${JSON.stringify(DEFAULT_PROJECTS.map(p => ({ title: p.title, category: p.category, description: p.description, tags: p.tags, tech: p.details?.features })))}
   `;
 };
 
@@ -509,7 +514,7 @@ const ResumeView = ({ onClose }) => {
               <Code size={14} className="text-[#8be9fd]" /> 02. PROJECTS
             </div>
             <div className="space-y-6">
-              {PROJECTS_DATA.slice(0, 3).map((project, idx) => (
+              {projects.slice(0, 3).map((project, idx) => (
                 <div key={project.id} className="relative pl-6 border-l border-[#44475a]">
                   <div className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-[#8be9fd]' : 'bg-[#6272a4]'}`}></div>
 
@@ -642,10 +647,18 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [projects, setProjects] = useState(DEFAULT_PROJECTS);
+  const [customPages, setCustomPages] = useState([]);
+  const [selectedPage, setSelectedPage] = useState(null);
   const [showResume, setShowResume] = useState(false); // 🌟 New State for Resume View
   const [contactMode, setContactMode] = useState('email');
   const [formData, setFormData] = useState({ email: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('admin-session') === 'true');
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
+  const [authFields, setAuthFields] = useState({ username: '', password: '', error: '' });
+  const [projectForm, setProjectForm] = useState({ title: '', category: '', description: '', tags: '', image: '' });
+  const [pageForm, setPageForm] = useState({ title: '', slug: '', content: '', coverImage: '' });
   const [chatHistory, setChatHistory] = useState([
     { role: 'ai', text: `Hi there! I'm ${PERSONAL_INFO.name}'s AI assistant. Ask me anything about his skills, experience, or projects! ✨` }
   ]);
@@ -657,10 +670,28 @@ const App = () => {
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
 
   const chatEndRef = useRef(null);
+  const filteredProjects = activeCategory === 'All'
+    ? projects
+    : projects.filter(p => p.category === activeCategory);
 
-  const filteredProjects = activeCategory === 'All' 
-    ? PROJECTS_DATA 
-    : PROJECTS_DATA.filter(p => p.category === activeCategory);
+  useEffect(() => {
+    const storedProjects = localStorage.getItem('portfolio-projects');
+    const storedPages = localStorage.getItem('portfolio-pages');
+    if (storedProjects) setProjects(JSON.parse(storedProjects));
+    if (storedPages) setCustomPages(JSON.parse(storedPages));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('portfolio-projects', JSON.stringify(projects));
+  }, [projects]);
+
+  useEffect(() => {
+    localStorage.setItem('portfolio-pages', JSON.stringify(customPages));
+  }, [customPages]);
+
+  useEffect(() => {
+    localStorage.setItem('admin-session', isAdmin ? 'true' : 'false');
+  }, [isAdmin]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -685,6 +716,80 @@ const App = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, currentMediaIndex]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (
+      authFields.username === ADMIN_CREDENTIALS.username &&
+      authFields.password === ADMIN_CREDENTIALS.password
+    ) {
+      setIsAdmin(true);
+      setAdminModalOpen(false);
+      setAuthFields({ username: '', password: '', error: '' });
+    } else {
+      setAuthFields((prev) => ({ ...prev, error: '账号或密码不正确。' }));
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    setAdminModalOpen(false);
+  };
+
+  const handleProjectImageUpload = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setProjectForm((prev) => ({ ...prev, image: reader.result }));
+    reader.readAsDataURL(file);
+  };
+
+  const handlePageCoverUpload = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setPageForm((prev) => ({ ...prev, coverImage: reader.result }));
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddProject = (e) => {
+    e.preventDefault();
+    if (!projectForm.title || !projectForm.category) return;
+
+    const newProject = {
+      id: Date.now(),
+      title: projectForm.title,
+      category: projectForm.category,
+      description: projectForm.description || '暂无描述。',
+      tags: projectForm.tags ? projectForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
+      color: 'from-cyan-500 to-blue-600',
+      details: {
+        role: 'Administrator',
+        duration: '自定义项目',
+        challenge: projectForm.description,
+        solution: '通过后台面板快速创建。',
+        features: projectForm.tags ? projectForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
+        media: projectForm.image ? [{ type: 'image', url: projectForm.image, caption: projectForm.title }] : [],
+      },
+    };
+
+    setProjects((prev) => [...prev, newProject]);
+    setProjectForm({ title: '', category: '', description: '', tags: '', image: '' });
+  };
+
+  const handleAddPage = (e) => {
+    e.preventDefault();
+    if (!pageForm.title || !pageForm.content) return;
+    const slug = pageForm.slug || pageForm.title.toLowerCase().replace(/\s+/g, '-');
+    const newPage = {
+      id: Date.now(),
+      title: pageForm.title,
+      slug,
+      content: pageForm.content,
+      coverImage: pageForm.coverImage,
+    };
+
+    setCustomPages((prev) => [...prev, newPage]);
+    setPageForm({ title: '', slug: '', content: '', coverImage: '' });
+  };
 
   const handleContactSubmit = async (e) => {
     e.preventDefault(); setFormStatus('submitting');
@@ -908,9 +1013,45 @@ const App = () => {
     );
   };
 
+  const renderPageView = () => {
+    if (!selectedPage) return null;
+
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+          <button
+            onClick={() => setSelectedPage(null)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 transition-all"
+          >
+            <ArrowLeft size={16} /> 返回作品页
+          </button>
+
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            {selectedPage.coverImage && (
+              <img
+                src={selectedPage.coverImage}
+                alt={selectedPage.title}
+                className="w-full h-64 object-cover"
+              />
+            )}
+
+            <div className="p-8 space-y-4">
+              <h2 className="text-3xl font-bold text-white">{selectedPage.title}</h2>
+              <div className="text-slate-400 text-sm">自定义链接：{selectedPage.slug}</div>
+              <div className="prose prose-invert max-w-none whitespace-pre-line leading-relaxed text-slate-200">
+                {selectedPage.content}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // 🌟 CONDITIONAL RENDERING
   if (showResume) return <ResumeView onClose={() => setShowResume(false)} />;
   if (selectedProject) return renderDetailView();
+  if (selectedPage) return renderPageView();
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white animate-in fade-in">
@@ -926,17 +1067,25 @@ const App = () => {
           <div className="flex justify-between items-center h-16">
             <div className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">{PERSONAL_INFO.name}.</div>
             <div className="hidden md:flex space-x-8 text-sm font-medium items-center">
-              {['About', 'Portfolio', 'Experience', 'Contact'].map((item) => (
+              {['About', 'Portfolio', 'Pages', 'Experience', 'Contact'].map((item) => (
                 <button key={item} onClick={() => scrollToSection(item.toLowerCase() === 'about' ? 'hero' : item.toLowerCase())} className="text-slate-400 hover:text-white transition-colors uppercase tracking-wide">{item}</button>
               ))}
               
               {/* 🌟 SWITCH TO RESUME VIEW BUTTON */}
-              <button 
-                onClick={() => setShowResume(true)} 
+              <button
+                onClick={() => setShowResume(true)}
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wider ml-4 group"
               >
                 <FileText size={14} className="group-hover:scale-110 transition-transform"/>
                 Resume
+              </button>
+
+              <button
+                onClick={() => setAdminModalOpen(true)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wider ml-2 transition-all ${isAdmin ? 'bg-green-500/20 text-green-200 border-green-500/50' : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700'}`}
+              >
+                <Shield size={14} />
+                {isAdmin ? 'Admin 面板' : '后台登录'}
               </button>
 
             </div>
@@ -946,11 +1095,14 @@ const App = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-slate-900 border-b border-slate-800">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-               {['About', 'Portfolio', 'Experience', 'Contact'].map((item) => (
+               {['About', 'Portfolio', 'Pages', 'Experience', 'Contact'].map((item) => (
                 <button key={item} onClick={() => scrollToSection(item.toLowerCase() === 'about' ? 'hero' : item.toLowerCase())} className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 w-full text-left">{item}</button>
               ))}
               <button onClick={() => { setShowResume(true); setIsMenuOpen(false); }} className="block px-3 py-2 rounded-md text-base font-medium text-cyan-400 hover:text-white hover:bg-slate-800 w-full text-left flex items-center gap-2">
                 <FileText size={16} /> Resume
+              </button>
+              <button onClick={() => { setAdminModalOpen(true); setIsMenuOpen(false); }} className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 w-full text-left flex items-center gap-2">
+                <Shield size={16} /> {isAdmin ? 'Admin 面板' : '后台登录'}
               </button>
             </div>
           </div>
@@ -1066,6 +1218,53 @@ const App = () => {
         </div>
       </section>
 
+      <section id="pages" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <RevealOnScroll>
+              <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2"><FileText className="text-cyan-500" /> 自定义作品页面</h2>
+            </RevealOnScroll>
+            <RevealOnScroll delay={200}>
+              <p className="text-slate-400">在后台登录后，可以在这里创建专属的图文作品页。</p>
+            </RevealOnScroll>
+          </div>
+          <div className="flex items-center gap-3 text-sm text-slate-400 bg-slate-900 px-4 py-2 rounded-full border border-slate-800">
+            <Shield size={16} className="text-green-400" />
+            {isAdmin ? '已登录管理员，可以创建新的页面。' : '需要管理员登录才能新增页面。'}
+          </div>
+        </div>
+
+        {customPages.length === 0 ? (
+          <div className="bg-slate-900 border border-dashed border-slate-800 rounded-2xl p-12 text-center text-slate-400">
+            <p className="text-lg mb-2">还没有自定义页面。</p>
+            <p className="text-sm">点击导航栏的“后台登录”进入管理面板，立刻创建你的第一篇作品记录。</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {customPages.map((page) => (
+              <RevealOnScroll key={page.id} className="h-full">
+                <div
+                  onClick={() => setSelectedPage(page)}
+                  className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-400 transition-all duration-300 cursor-pointer h-full flex flex-col"
+                >
+                  {page.coverImage ? (
+                    <img src={page.coverImage} alt={page.title} className="h-40 w-full object-cover" />
+                  ) : (
+                    <div className="h-40 w-full bg-slate-800 flex items-center justify-center text-slate-500">无封面</div>
+                  )}
+                  <div className="p-6 flex flex-col gap-3 flex-grow">
+                    <div className="text-xs uppercase text-cyan-400 tracking-wide">/{page.slug}</div>
+                    <h3 className="text-xl font-bold text-white">{page.title}</h3>
+                    <p className="text-slate-400 text-sm flex-grow leading-relaxed max-h-24 overflow-hidden">{page.content}</p>
+                    <div className="text-sm text-slate-500">点击查看详情</div>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
+        )}
+      </section>
+
       <section id="experience" className="py-20 bg-slate-900/30 border-y border-slate-800/50">
          <div className="max-w-3xl mx-auto px-4">
             <RevealOnScroll>
@@ -1124,6 +1323,117 @@ const App = () => {
           </div>
         </div>
       </section>
+
+      {adminModalOpen && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-800">
+              <div className="flex items-center gap-2 text-white font-bold text-lg">
+                <Shield className="text-cyan-400" size={20} />
+                管理后台
+              </div>
+              <div className="flex items-center gap-3">
+                {isAdmin && (
+                  <button onClick={handleLogout} className="px-3 py-2 text-sm bg-slate-800 rounded-lg text-slate-200 hover:bg-slate-700 border border-slate-700">退出登录</button>
+                )}
+                <button onClick={() => setAdminModalOpen(false)} className="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-lg border border-slate-700"><X size={18} /></button>
+              </div>
+            </div>
+
+            {!isAdmin ? (
+              <form onSubmit={handleLogin} className="p-6 space-y-4">
+                <p className="text-slate-300 text-sm">使用默认账号 <code className="px-2 py-1 bg-slate-800 rounded">admin / letmein</code> 登录，开始上传图片和创建作品页面。</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-slate-400 text-sm mb-1 block">用户名</label>
+                    <input value={authFields.username} onChange={(e) => setAuthFields({ ...authFields, username: e.target.value, error: '' })} className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+                  </div>
+                  <div>
+                    <label className="text-slate-400 text-sm mb-1 block">密码</label>
+                    <input type="password" value={authFields.password} onChange={(e) => setAuthFields({ ...authFields, password: e.target.value, error: '' })} className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-lg text-white" />
+                  </div>
+                </div>
+                {authFields.error && <div className="text-red-400 text-sm">{authFields.error}</div>}
+                <div className="flex justify-end">
+                  <button type="submit" className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold">登录</button>
+                </div>
+              </form>
+            ) : (
+              <div className="p-6 space-y-8">
+                <div>
+                  <h3 className="text-white font-bold mb-3">快速添加新项目</h3>
+                  <form onSubmit={handleAddProject} className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">标题</label>
+                      <input value={projectForm.title} onChange={(e) => setProjectForm({ ...projectForm, title: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" required />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">分类</label>
+                      <input value={projectForm.category} onChange={(e) => setProjectForm({ ...projectForm, category: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" placeholder="例如 Game Dev" required />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-slate-400 text-sm">简介</label>
+                      <textarea value={projectForm.description} onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" rows={3} placeholder="一句话描述项目" />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-slate-400 text-sm">标签（逗号分隔）</label>
+                      <input value={projectForm.tags} onChange={(e) => setProjectForm({ ...projectForm, tags: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" placeholder="Unity, Shader" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">封面图片</label>
+                      <input type="file" accept="image/*" onChange={(e) => handleProjectImageUpload(e.target.files?.[0])} className="w-full text-slate-300" />
+                      {projectForm.image && <img src={projectForm.image} alt="预览" className="mt-2 h-24 rounded-lg object-cover border border-slate-800" />}
+                    </div>
+                    <div className="flex items-end justify-end md:justify-start">
+                      <button type="submit" className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold">保存项目</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-bold mb-3">新建作品页面</h3>
+                  <form onSubmit={handleAddPage} className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">页面标题</label>
+                      <input value={pageForm.title} onChange={(e) => setPageForm({ ...pageForm, title: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" required />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">自定义链接</label>
+                      <input value={pageForm.slug} onChange={(e) => setPageForm({ ...pageForm, slug: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" placeholder="留空则自动生成" />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-slate-400 text-sm">正文内容</label>
+                      <textarea value={pageForm.content} onChange={(e) => setPageForm({ ...pageForm, content: e.target.value })} className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" rows={4} placeholder="支持直接输入多行文本" required />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-sm">封面图片</label>
+                      <input type="file" accept="image/*" onChange={(e) => handlePageCoverUpload(e.target.files?.[0])} className="w-full text-slate-300" />
+                      {pageForm.coverImage && <img src={pageForm.coverImage} alt="预览" className="mt-2 h-24 rounded-lg object-cover border border-slate-800" />}
+                    </div>
+                    <div className="flex items-end justify-end md:justify-start">
+                      <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold">发布页面</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
+                  <h4 className="text-slate-200 font-semibold mb-3">当前内容概览</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                    <div>
+                      <div className="font-bold text-white">项目数量：{projects.length}</div>
+                      <p className="text-slate-500 mt-1">最新：{projects[projects.length - 1]?.title}</p>
+                    </div>
+                    <div>
+                      <div className="font-bold text-white">自定义页面：{customPages.length}</div>
+                      <p className="text-slate-500 mt-1">最新：{customPages[customPages.length - 1]?.title || '暂无'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <footer className="py-8 text-center text-slate-600 text-sm border-t border-slate-800 bg-slate-950"><p>© {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.</p></footer>
     </div>
