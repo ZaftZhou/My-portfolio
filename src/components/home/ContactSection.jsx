@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Github, Linkedin, MapPin, Copy, Check } from "lucide-react";
 import { PERSONAL_INFO } from "@/lib/siteData";
 import RevealOnScroll from "@/components/animations/RevealOnScroll";
+import Footer from "@/components/layout/Footer";
 
 export default function ContactSection() {
     const [copied, setCopied] = useState(false);
@@ -162,6 +163,8 @@ export default function ContactSection() {
                     by {PERSONAL_INFO.name} © {new Date().getFullYear()}
                 </p>
             </RevealOnScroll>
+
+            <Footer />
         </section>
     );
 }

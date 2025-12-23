@@ -1,10 +1,9 @@
 "use client";
 
 import { EXPERIENCE_DATA, EDUCATION_DATA } from "@/lib/siteData";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 
-// Helper to group items by year
 function getTimelineData() {
     const items = [
         ...EXPERIENCE_DATA.map(e => ({
@@ -19,7 +18,6 @@ function getTimelineData() {
         }))
     ];
 
-    // Group by year
     const groups = {};
     items.forEach(item => {
         if (!groups[item.year]) groups[item.year] = { year: item.year, experience: [], education: [] };
@@ -30,7 +28,7 @@ function getTimelineData() {
     return Object.values(groups).sort((a, b) => b.year - a.year);
 }
 
-export default function ExperienceTimeline() {
+export default function ExperienceTimeline({ onNavigate }) {
     const timelineGroups = getTimelineData();
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -45,7 +43,17 @@ export default function ExperienceTimeline() {
     });
 
     return (
-        <section id="journey" className="py-24 px-6 md:px-12 max-w-7xl mx-auto relative overflow-hidden">
+        <section id="journey" className="py-24 px-6 md:px-12 max-w-7xl mx-auto relative overflow-visible">
+            {/* Top Navigation - Fixed to Frame */}
+            <div className="fixed top-0 left-0 w-full p-6 md:p-12 z-50 pointer-events-none flex justify-between items-start">
+                <button
+                    onClick={() => onNavigate && onNavigate(2)}
+                    className="pointer-events-auto flex items-center gap-2 text-prime-600 hover:text-prime-900 transition-colors font-bold text-sm uppercase tracking-wide group bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-prime-200"
+                >
+                    <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Selected Work
+                </button>
+            </div>
+
             {/* Background Rail Track - subtle opacity */}
             <div className="absolute inset-0 pointer-events-none flex justify-center opacity-[0.04]">
                 <div className="w-24 h-full border-x-2 border-dashed border-prime-900 bg-prime-200/50" />
@@ -72,8 +80,7 @@ export default function ExperienceTimeline() {
                 </motion.div>
             </div>
 
-            <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-32">
-                {/* Central Hand-Drawn Timeline Line */}
+            <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-32 mb-32">
                 <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 md:-translate-x-1/2 z-0 hidden md:block">
                     <svg className="w-1 h-full overflow-visible" preserveAspectRatio="none">
                         <motion.path
@@ -91,6 +98,16 @@ export default function ExperienceTimeline() {
                     <TimelineRow key={group.year} group={group} index={index} />
                 ))}
             </div>
+
+            {/* Bottom Navigation - Fixed to Frame */}
+            <div className="fixed bottom-0 right-0 w-full p-6 md:p-12 z-50 pointer-events-none flex justify-end items-end">
+                <button
+                    onClick={() => onNavigate && onNavigate(4)}
+                    className="pointer-events-auto flex items-center gap-2 text-prime-900 hover:text-sketch-coral transition-colors font-black text-lg uppercase tracking-wider group bg-white/90 backdrop-blur-md px-6 py-3 rounded-xl shadow-lg border-2 border-white transform rotate-2 hover:rotate-0 hover:scale-105"
+                >
+                    Next: Contact <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+            </div>
         </section>
     );
 }
@@ -98,19 +115,16 @@ export default function ExperienceTimeline() {
 function TimelineRow({ group, index }) {
     return (
         <div className="col-span-1 md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-0 relative">
-            {/* Center Node (Mobile: Left aligned) */}
             <div className="md:col-start-6 md:col-span-2 flex justify-start md:justify-center relative z-10 order-1 md:order-2 pl-8 md:pl-0">
                 <TimelineNode year={group.year} />
             </div>
 
-            {/* Left Column: Experience */}
             <div className="md:col-span-5 flex flex-col items-end order-2 md:order-1 pr-0 md:pr-12 pl-8 md:pl-0">
                 {group.experience.map((exp, i) => (
                     <TimelineCard key={i} item={exp} side="left" index={index + i} />
                 ))}
             </div>
 
-            {/* Right Column: Education */}
             <div className="md:col-span-5 flex flex-col items-start order-3 md:order-3 pl-8 md:pl-12">
                 {group.education.map((edu, i) => (
                     <TimelineCard key={i} item={edu} side="right" index={index + i} />
@@ -129,9 +143,7 @@ function TimelineNode({ year }) {
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
             className="relative"
         >
-            {/* Glow effect behind node */}
             <div className="absolute inset-0 bg-sketch-yellow blur-md opacity-30 scale-150 rounded-full" />
-
             <div className="bg-white border-2 border-prime-900 rounded-full px-5 py-2 shadow-[2px_2px_0_rgba(0,0,0,0.1)] relative z-10 flex items-center gap-2 transform -rotate-2">
                 <span className="font-marker text-xl text-prime-900">{year}</span>
                 <span className="text-lg">📍</span>
@@ -142,8 +154,6 @@ function TimelineNode({ year }) {
 
 function TimelineCard({ item, side, index }) {
     const isExp = item.category === 'experience';
-
-    // Stacked paper randomization
     const rotation = isExp ? -1.2 : 1.2;
     const yOffset = index % 2 === 0 ? 0 : 12;
 
@@ -156,45 +166,23 @@ function TimelineCard({ item, side, index }) {
             className="relative w-full max-w-md group mb-8 md:mb-0"
             style={{ marginTop: yOffset }}
         >
-            {/* Connector Line (visible on Desktop) */}
             <svg
-                className={`hidden md:block absolute top-8 w-12 h-2 z-0 ${side === 'left' ? '-right-12' : '-left-12'
-                    }`}
+                className={`hidden md:block absolute top-8 w-12 h-2 z-0 ${side === 'left' ? '-right-12' : '-left-12'}`}
             >
-                <line
-                    x1="0" y1="50%" x2="100%" y2="50%"
-                    stroke="#2d251d"
-                    strokeWidth="1.5"
-                    strokeDasharray="4 2"
-                />
+                <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#2d251d" strokeWidth="1.5" strokeDasharray="4 2" />
                 <circle cx={side === 'left' ? "100%" : "0"} cy="50%" r="3" fill="#2d251d" />
             </svg>
 
-            {/* Shadow Layer (Stacked Paper) */}
-            <div
-                className="absolute inset-0 bg-prime-300 rounded-[14px] transform translate-y-2 translate-x-1 rotate-1 opacity-40 z-0 transition-transform group-hover:translate-y-3 group-hover:rotate-2"
-            />
+            <div className="absolute inset-0 bg-prime-300 rounded-[14px] transform translate-y-2 translate-x-1 rotate-1 opacity-40 z-0 transition-transform group-hover:translate-y-3 group-hover:rotate-2" />
 
-            {/* Main Card */}
-            <div className={`
-                relative bg-white border-2 border-prime-900 rounded-[14px] p-6 z-10
-                transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg
-                ${isExp ? 'corner-peel' : ''}
-            `}>
-                {/* Decoration: Tape */}
-                <div
-                    className={`tape ${index % 2 === 0 ? 'tape-top' : 'tape-corner'}`}
-                    style={{ left: index % 3 === 0 ? '20%' : 'auto', right: index % 3 !== 0 ? '20%' : 'auto' }}
-                />
+            <div className={`relative bg-white border-2 border-prime-900 rounded-[14px] p-6 z-10 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg ${isExp ? 'corner-peel' : ''}`}>
+                <div className={`tape ${index % 2 === 0 ? 'tape-top' : 'tape-corner'}`} style={{ left: index % 3 === 0 ? '20%' : 'auto', right: index % 3 !== 0 ? '20%' : 'auto' }} />
 
-                {/* Header: Role & Company */}
                 <div className="mb-4 pr-8">
                     <div className="flex justify-between items-start">
                         <h4 className="font-marker text-lg text-prime-900 leading-tight">
                             {item.role || item.degree}
                         </h4>
-
-                        {/* Icon Badge */}
                         <div className="text-xl opacity-80" title={isExp ? "Experience" : "Education"}>
                             {isExp ? '📁' : '🎓'}
                         </div>
@@ -204,7 +192,6 @@ function TimelineCard({ item, side, index }) {
                     </p>
                 </div>
 
-                {/* Impact Line */}
                 {item.impact && (
                     <div className="mb-4 relative">
                         <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-full ${isExp ? 'bg-orange-200' : 'bg-blue-200'}`} />
@@ -214,7 +201,6 @@ function TimelineCard({ item, side, index }) {
                     </div>
                 )}
 
-                {/* Bullet Highlights */}
                 {item.highlights && (
                     <ul className="space-y-1.5">
                         {item.highlights.map((point, k) => (
@@ -226,18 +212,9 @@ function TimelineCard({ item, side, index }) {
                     </ul>
                 )}
 
-                {/* Stamp Badge */}
                 <div
-                    className={`
-                        absolute top-[-10px] right-[-10px] 
-                        border-2 border-prime-900 rounded bg-white px-2 py-1 
-                        font-marker text-xs transform rotate-12 shadow-sm
-                        group-hover:rotate-6 transition-transform
-                    `}
-                    style={{
-                        color: isExp ? '#ea580c' : '#0284c7',
-                        borderColor: isExp ? '#ea580c' : '#0284c7'
-                    }}
+                    className="absolute top-[-10px] right-[-10px] border-2 border-prime-900 rounded bg-white px-2 py-1 font-marker text-xs transform rotate-12 shadow-sm group-hover:rotate-6 transition-transform"
+                    style={{ color: isExp ? '#ea580c' : '#0284c7', borderColor: isExp ? '#ea580c' : '#0284c7' }}
                 >
                     {item.stamp || 'CN'}
                 </div>

@@ -1,59 +1,86 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FileText, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/siteData';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'Devlog', path: '/devlog' },
     { name: 'Lab', path: '/lab' },
     { name: 'Experience', path: '/experience' },
-    { name: 'Contact', path: '/contact' },
+    // Contact is usually an anchor on home, but let's keep it as separate page or anchor logic if needed
+    // For now keeping it consistent with previous nav
+    { name: 'Contact', path: '/#contact' },
   ];
 
   return (
-    <nav className="fixed top-0 w-full glass z-50">
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'
+        }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
+          {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent tracking-tighter hover:scale-105 transition-transform"
+            className="font-marker text-2xl text-prime-900 tracking-tight hover:rotate-[-2deg] transition-transform"
           >
-            {PERSONAL_INFO.name.toUpperCase()}.
+            {PERSONAL_INFO.name}.
           </Link>
 
-          <div className="hidden lg:flex space-x-10 text-[10px] font-black items-center uppercase tracking-[0.2em]">
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.path}
-                className={`transition-all duration-300 relative group overflow-hidden ${pathname === item.path ? 'text-cyan-400' : 'text-slate-400 hover:text-white'
+                className={`font-sketch text-lg relative group ${pathname === item.path ? 'text-prime-900' : 'text-prime-600 hover:text-prime-900'
                   }`}
               >
                 {item.name}
-                <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-cyan-400 transform origin-left transition-transform duration-300 ${pathname === item.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                  }`} />
+                {/* Hand-drawn underline SVG */}
+                <span className="absolute -bottom-1 left-0 w-full h-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full stroke-sketch-coral stroke-2 fill-none">
+                    <path d="M0 5 Q 50 10, 100 5" vectorEffect="non-scaling-stroke" />
+                  </svg>
+                </span>
               </Link>
             ))}
 
+            {/* Resume Ticket Button */}
             <Link
               href="/resume"
-              className="flex items-center gap-2 px-6 py-2.5 rounded-full glass border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all group shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+              className="ml-4 relative group"
             >
-              <FileText size={14} className="group-hover:rotate-12 transition-transform" />
-              <span className="text-[10px] font-black">RESUME</span>
+              <div className="relative bg-sketch-yellow border-2 border-prime-900 text-prime-900 px-6 py-2 font-marker text-sm transform transition-transform group-hover:-translate-y-1 group-hover:shadow-[4px_4px_0_#2d251d]">
+                {/* Ticket Holes */}
+                <div className="absolute top-1/2 -left-1.5 w-3 h-3 bg-white border-r-2 border-prime-900 rounded-full -translate-y-1/2" />
+                <div className="absolute top-1/2 -right-1.5 w-3 h-3 bg-white border-l-2 border-prime-900 rounded-full -translate-y-1/2" />
+
+                RESUME
+              </div>
             </Link>
           </div>
 
+          {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-slate-400 hover:text-white"
+            className="lg:hidden p-2 text-prime-900 hover:bg-prime-100 rounded-lg transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -61,27 +88,26 @@ function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden glass border-t border-white/5 animate-in slide-in-from-top-4 duration-300">
-          <div className="px-4 pt-4 pb-8 space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.path}
-                onClick={() => setIsMenuOpen(false)}
-                className="block px-4 py-3 rounded-xl text-xs font-black tracking-widest text-slate-400 hover:text-white hover:bg-white/5 uppercase transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+        <div className="lg:hidden absolute top-20 left-0 w-full bg-white border-b-2 border-prime-900 shadow-xl p-4 flex flex-col gap-4 animate-in slide-in-from-top-4">
+          {navItems.map((item) => (
             <Link
-              href="/resume"
+              key={item.name}
+              href={item.path}
               onClick={() => setIsMenuOpen(false)}
-              className="px-6 py-4 rounded-xl glass border border-cyan-500/20 text-cyan-400 flex items-center justify-center gap-3 font-black text-xs tracking-widest uppercase"
+              className="font-sketch text-xl text-prime-700 hover:text-prime-900 py-2 border-b border-prime-100"
             >
-              <FileText size={18} /> Resume
+              {item.name}
             </Link>
-          </div>
+          ))}
+          <Link
+            href="/resume"
+            onClick={() => setIsMenuOpen(false)}
+            className="bg-sketch-yellow border-2 border-prime-900 text-prime-900 text-center py-3 font-marker mt-2"
+          >
+            Access Resume
+          </Link>
         </div>
       )}
     </nav>

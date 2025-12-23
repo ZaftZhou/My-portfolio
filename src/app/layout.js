@@ -28,12 +28,15 @@ export const metadata = {
   description: "Unity3D Developer & Technical Artist based in Finland",
 };
 
+import Navbar from "@/components/layout/Navbar";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} ${permanentMarker.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} ${permanentMarker.variable} antialiased flex flex-col min-h-screen`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
