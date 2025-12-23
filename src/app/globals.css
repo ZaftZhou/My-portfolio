@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-prime-50: #f0f9ff;
+  --color-prime-100: #e0f2fe;
+  --color-prime-200: #bae6fd;
+  --color-prime-300: #7dd3fc;
+  --color-prime-400: #38bdf8;
+  --color-prime-500: #0ea5e9;
+  --color-prime-600: #0284c7;
+  --color-prime-700: #0369a1;
+  --color-prime-800: #075985;
+  --color-prime-900: #0c4a6e;
+  --color-prime-950: #020617;
+
+  --color-accent-cyan: #22d3ee;
+  --color-accent-indigo: #6366f1;
+  --color-accent-violet: #8b5cf6;
+
+  --font-geist-sans: var(--font-geist-sans);
+  --font-geist-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #020617;
+  --foreground: #cbd5e1;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card {
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(30, 41, 59, 0.5);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(34, 211, 238, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .neon-text {
+    background: linear-gradient(to right, #22d3ee, #3b82f6, #6366f1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.5));
+  }
+
+  .neon-border {
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+  }
+}
+
+::selection {
+  background-color: rgba(34, 211, 238, 0.3);
+  color: #99f6e4;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1e293b;
+  border-radius: 9999px;
+  transition: background-color 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #334155;
+}

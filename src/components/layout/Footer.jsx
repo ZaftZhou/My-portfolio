@@ -1,10 +1,19 @@
 import React from 'react';
-import { PERSONAL_INFO } from '../../data/siteData';
+import { PERSONAL_INFO } from '@/lib/siteData';
 
 function Footer() {
   return (
-    <footer className="py-8 text-center text-slate-600 text-sm border-t border-slate-800 bg-slate-950">
-      <p>© {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.</p>
+    <footer className="py-20 text-center border-t border-white/5 bg-prime-950">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="mb-8">
+          <span className="text-2xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent tracking-tighter opacity-50">
+            {PERSONAL_INFO.name.toUpperCase()}.
+          </span>
+        </div>
+        <p className="text-slate-600 text-[10px] font-black tracking-[0.3em] uppercase opacity-40">
+          © {new Date().getFullYear()} {PERSONAL_INFO.name}. ALL RIGHTS RESERVED. / DATA-DRIVEN ARTISTRY
+        </p>
+      </div>
     </footer>
   );
 }
