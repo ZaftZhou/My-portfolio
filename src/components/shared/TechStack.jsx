@@ -1,5 +1,5 @@
 import React from 'react';
-import { TECH_STACK } from '../../data/siteData';
+import { TECH_STACK } from '@/lib/siteData';
 
 function TechStack() {
   return (

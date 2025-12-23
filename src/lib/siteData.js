@@ -31,19 +31,28 @@ export const EXPERIENCE_DATA = [
     role: "Founder / Technical Generalist",
     company: "Shanghai Demoon Network Co., Ltd",
     period: "2019 - Present",
-    description: "Founded studio focused on 3D digital content. Coordinated client requirements and provided technical training in 3D tools. Shifted focus towards interactive media and Unity."
+    impact: "Founded studio & led production for 20+ interactive 3D projects.",
+    highlights: ["Unity Technical Art", "Pipeline Architecture", "Team Mentoring"],
+    type: "experience",
+    stamp: "CN"
   },
   {
     role: "Freelance 3D Artist",
     company: "Self-Employed",
     period: "2018 - 2019",
-    description: "Produced assets for clients, optimized for real-time engines."
+    impact: "Delivered high-quality assets for games & real-time visualization.",
+    highlights: ["Environment Modeling", "PBR Texturing", "Asset Optimization"],
+    type: "experience",
+    stamp: "CN"
   },
   {
     role: "3D Product Designer",
     company: "Previous Experience",
     period: "2014 - 2018",
-    description: "Designed interactive concepts and conducted technical training."
+    impact: "Designed interactive concepts & conducted technical training.",
+    highlights: ["3D Visualization", "Technical Training", "Design Prototyping"],
+    type: "experience",
+    stamp: "CN"
   }
 ];
 
@@ -51,13 +60,21 @@ export const EXPERIENCE_DATA = [
 export const EDUCATION_DATA = [
   {
     school: "Turku University of Applied Sciences",
-    degree: "Bachelor of Engineering, Information Technology",
-    year: "2020 - 2024"
+    degree: "Bachelor of Engineering, IT",
+    year: "2020 - 2024",
+    impact: "Specialized in Embedded Systems & Game Technologies.",
+    highlights: ["Information Technology", "Game Engine Arch", "Embedded Sys"],
+    type: "education",
+    stamp: "FI"
   },
   {
     school: "University of Science & Technology",
     degree: "Bachelor of Engineering, Mechatronics",
-    year: "2016 - 2020"
+    year: "2016 - 2020",
+    impact: "Foundation in engineering principles & system design.",
+    highlights: ["Mechatronics", "Control Systems", "C/C++ Programming"],
+    type: "education",
+    stamp: "CN"
   }
 ];
 
