@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GY Gallery - 3D Artifacts Showcase</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .gallery a {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            aspect-ratio: 16/10;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery a:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery a::after {
+            content: 'View 3D Model →';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: #fff;
+            padding: 40px 15px 15px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery a:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>3D Artifacts Gallery</h1>
+    <div class="gallery">
+        <a href="./1/scene.html"><img src="./img/1.jpg" alt="Artifact 1"></a>
+        <a href="./2/scene.html"><img src="./img/2.jpg" alt="Artifact 2"></a>
+        <a href="./3/scene.html"><img src="./img/3.jpg" alt="Artifact 3"></a>
+        <a href="./4/scene.html"><img src="./img/4.jpg" alt="Artifact 4"></a>
+        <a href="./5/scene.html"><img src="./img/5.jpg" alt="Artifact 5"></a>
+        <a href="./6/scene.html"><img src="./img/6.jpg" alt="Artifact 6"></a>
+        <a href="./7/scene.html"><img src="./img/7.jpg" alt="Artifact 7"></a>
+        <a href="./8/scene.html"><img src="./img/8.jpg" alt="Artifact 8"></a>
+        <a href="./9/scene.html"><img src="./img/9.jpg" alt="Artifact 9"></a>
+        <a href="./10/scene.html"><img src="./img/10.jpg" alt="Artifact 10"></a>
+        <a href="./11/scene.html"><img src="./img/11.jpg" alt="Artifact 11"></a>
+        <a href="./12/scene.html"><img src="./img/12.jpg" alt="Artifact 12"></a>
+        <a href="./13/scene.html"><img src="./img/13.jpg" alt="Artifact 13"></a>
+        <a href="./14/scene.html"><img src="./img/14.jpg" alt="Artifact 14"></a>
+        <a href="./15/scene.html"><img src="./img/15.jpg" alt="Artifact 15"></a>
+        <a href="./16/scene.html"><img src="./img/16.jpg" alt="Artifact 16"></a>
+        <a href="./17/scene.html"><img src="./img/17.jpg" alt="Artifact 17"></a>
+        <a href="./18/scene.html"><img src="./img/18.jpg" alt="Artifact 18"></a>
+        <a href="./19/scene.html"><img src="./img/19.jpg" alt="Artifact 19"></a>
+        <a href="./20/scene.html"><img src="./img/20.jpg" alt="Artifact 20"></a>
+        <a href="./21/scene.html"><img src="./img/21.jpg" alt="Artifact 21"></a>
+        <a href="./22/scene.html"><img src="./img/22.jpg" alt="Artifact 22"></a>
+        <a href="./23/scene.html"><img src="./img/23.jpg" alt="Artifact 23"></a>
+        <a href="./24/scene.html"><img src="./img/24.jpg" alt="Artifact 24"></a>
+        <a href="./25/scene.html"><img src="./img/25.jpg" alt="Artifact 25"></a>
+        <a href="./26/scene.html"><img src="./img/26.jpg" alt="Artifact 26"></a>
+        <a href="./27/scene.html"><img src="./img/27.jpg" alt="Artifact 27"></a>
+        <a href="./28/scene.html"><img src="./img/28.jpg" alt="Artifact 28"></a>
+        <a href="./29/scene.html"><img src="./img/29.jpg" alt="Artifact 29"></a>
+        <a href="./30/scene.html"><img src="./img/30.jpg" alt="Artifact 30"></a>
+    </div>
+</body>
+
+</html>

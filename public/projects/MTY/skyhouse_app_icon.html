@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Nordic App Icon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #eef1f5;
+            color: #2d3436;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #636e72;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .showcase {
+            display: flex;
+            gap: 80px;
+            align-items: center;
+        }
+
+        /* APP ICON CONTAINER */
+        .app-icon {
+            width: 240px;
+            height: 240px;
+            background: #ffffff;
+            border-radius: 52px;
+            /* iOS Squircle approximation */
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.08),
+                0 1px 3px rgba(0, 0, 0, 0.05),
+                inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+            /* Inner border for definition */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-icon:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.12),
+                0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* SVG STYLES */
+        svg {
+            width: 160px;
+            /* Internal content size */
+            height: 160px;
+            overflow: visible;
+        }
+
+        /* LABEL */
+        .label {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #b2bec3;
+            text-align: center;
+        }
+
+        /* Dark Mode Preview */
+        .dark-mode {
+            background: #1e272e;
+            border-radius: 52px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Nordic Restrained / V1</h1>
+
+    <div class="showcase">
+
+        <!-- Light Mode Icon -->
+        <div class="col">
+            <div class="app-icon">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Premium Gradients -->
+                        <linearGradient id="moonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#f1c40f" /> <!-- Muted Gold -->
+                            <stop offset="100%" stop-color="#f39c12" />
+                        </linearGradient>
+
+                        <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#fff" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- STAR FIELD (Subtle background) -->
+                    <!-- 3 Main Stars + Micro Dots -->
+                    <g fill="#b2bec3" opacity="0.4">
+                        <!-- Main Stars (Diamond Shape) -->
+                        <path d="M20 20 L21 22 L23 23 L21 24 L20 26 L19 24 L17 23 L19 22 Z" transform="scale(0.8)" />
+                        <path d="M80 15 L81 17 L83 18 L81 19 L80 21 L79 19 L77 18 L79 17 Z" transform="scale(0.6)" />
+                        <path d="M15 70 L16 72 L18 73 L16 74 L15 76 L14 74 L12 73 L14 72 Z" transform="scale(0.5)" />
+
+                        <!-- Micro Dots -->
+                        <circle cx="50" cy="10" r="0.5" />
+                        <circle cx="85" cy="40" r="0.5" />
+                        <circle cx="10" cy="40" r="0.8" />
+                        <circle cx="30" cy="80" r="0.5" />
+                        <circle cx="70" cy="85" r="0.6" />
+                    </g>
+
+                    <!-- CONTENT GROUP (Centered) -->
+                    <g transform="translate(50, 55)"> <!-- Center roughly in 100x100 box -->
+
+                        <!-- 1. BALLOONS (2 Count, Blue/Grey) -->
+                        <g transform="translate(0, -32)">
+                            <!-- Strings (Ultra thin) -->
+                            <line x1="-6" y1="0" x2="0" y2="15" stroke="#ced6e0" stroke-width="0.3" />
+                            <line x1="6" y1="0" x2="0" y2="15" stroke="#ced6e0" stroke-width="0.3" />
+
+                            <!-- Balloon Left (Grey Blue) -->
+                            <circle cx="-6" cy="0" r="8" fill="#a4b0be" />
+                            <!-- Highlight -->
+                            <circle cx="-8" cy="-2" r="2" fill="#fff" opacity="0.2" />
+
+                            <!-- Balloon Right (Light Blue) -->
+                            <circle cx="6" cy="-2" r="8" fill="#74b9ff" />
+                            <!-- Highlight -->
+                            <circle cx="4" cy="-4" r="2" fill="#fff" opacity="0.2" />
+                        </g>
+
+                        <!-- 2. HOUSE (Geometric Purity) -->
+                        <g transform="translate(-12, -16)">
+                            <!-- Body (White Cube) -->
+                            <rect x="2" y="10" width="20" height="14" fill="#f7f9fa" />
+
+                            <!-- Roof (Dark Triangle) -->
+                            <path d="M0 10 L12 0 L24 10 Z" fill="#2f3542" />
+
+                            <!-- Window (4-Pane, Warm Yellow) -->
+                            <g transform="translate(7, 13)">
+                                <rect x="0" y="0" width="10" height="8" fill="#f1c40f" />
+                                <!-- Window Frame/Mullions -->
+                                <line x1="5" y1="0" x2="5" y2="8" stroke="#f7f9fa" stroke-width="1" />
+                                <line x1="0" y1="4" x2="10" y2="4" stroke="#f7f9fa" stroke-width="1" />
+                            </g>
+                        </g>
+
+                        <!-- 3. MOON (Sharp Tray) -->
+                        <!-- Thinner, sharper tips -->
+                        <path d="M-20 12 C -20 28, 20 28, 20 12 C 20 20, -20 20, -20 12 Z" fill="url(#moonGrad)" />
+
+                    </g>
+
+                </svg>
+            </div>
+            <div class="label">App Icon (Light)</div>
+        </div>
+
+        <!-- Dark Mode Icon -->
+        <div class="col">
+            <div class="app-icon dark-mode">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="moonGradDark" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#f1c40f" />
+                            <stop offset="100%" stop-color="#f39c12" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- STAR FIELD (Brighter in dark mode) -->
+                    <g fill="#fff" opacity="0.6">
+                        <path d="M20 20 L21 22 L23 23 L21 24 L20 26 L19 24 L17 23 L19 22 Z" transform="scale(0.8)" />
+                        <circle cx="50" cy="10" r="0.5" />
+                        <circle cx="85" cy="40" r="0.5" />
+                        <circle cx="70" cy="85" r="0.6" />
+                    </g>
+
+                    <g transform="translate(50, 55)">
+                        <!-- Balloons -->
+                        <g transform="translate(0, -32)">
+                            <line x1="-6" y1="0" x2="0" y2="15" stroke="#57606f" stroke-width="0.3" />
+                            <line x1="6" y1="0" x2="0" y2="15" stroke="#57606f" stroke-width="0.3" />
+                            <circle cx="-6" cy="0" r="8" fill="#747d8c" /> <!-- Darker Grey -->
+                            <circle cx="6" cy="-2" r="8" fill="#3742fa" /> <!-- Deeper Blue -->
+                        </g>
+
+                        <!-- House -->
+                        <g transform="translate(-12, -16)">
+                            <rect x="2" y="10" width="20" height="14" fill="#dfe4ea" />
+                            <path d="M0 10 L12 0 L24 10 Z" fill="#a4b0be" />
+                            <!-- Lighter roof for contrast on dark? Or keep dark? Let's try lighter Grey Roof -->
+
+                            <g transform="translate(7, 13)">
+                                <rect x="0" y="0" width="10" height="8" fill="#ffa502" /> <!-- Richer Orange/Yellow -->
+                                <line x1="5" y1="0" x2="5" y2="8" stroke="#2f3542" stroke-width="0.5" />
+                                <line x1="0" y1="4" x2="10" y2="4" stroke="#2f3542" stroke-width="0.5" />
+                            </g>
+                        </g>
+
+                        <!-- Moon -->
+                        <path d="M-20 12 C -20 28, 20 28, 20 12 C 20 20, -20 20, -20 12 Z" fill="url(#moonGradDark)" />
+                    </g>
+                </svg>
+            </div>
+            <div class="label">App Icon (Dark)</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Ventilator Display</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="./css/main.css" type="text/css">
+	<style>
+		#reset {
+			transform: scale(0.7);
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			opacity: 0.6;
+			transition: 0.25s;
+			cursor: pointer;
+			display: none;
+		}
+	</style>
+	<script src="./js/libs/jquery.js"></script>
+	<script src="./js/libs/TweenMax.min.js"></script>
+</head>
+
+<body>
+	<div style="display: none;">
+		<ul class="icon">
+			<li>
+				<span id="reset1" class="svg">
+					<svg class="svg-icon">
+						<use xlink:href="#icon-i_reset">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+								class="icon" viewBox="0 0 1024 1024" id="icon-i_reset">
+								<path
+									d="M259.2 288l160 128L256 457.6zM512 512c-19.2 0-32-12.8-32-32v-96c0-16 12.8-32 32-32 16 0 32 12.8 32 32v96c0 19.2-12.8 32-32 32z"
+									p-id="2083"></path>
+								<path
+									d="M489.6 467.2c9.6-16 28.8-19.2 44.8-9.6l86.4 54.4c16 9.6 19.2 28.8 9.6 44.8-9.6 16-28.8 19.2-44.8 9.6L499.2 512c-16-9.6-19.2-32-9.6-44.8z"
+									p-id="2084"></path>
+								<path
+									d="M512 224c-134.4 0-243.2 102.4-256 233.6l67.2-16v-3.2C342.4 352 419.2 288 512 288c105.6 0 192 86.4 192 192s-86.4 192-192 192c-73.6 0-137.6-41.6-169.6-102.4l-64 12.8C316.8 672 406.4 736 512 736c140.8 0 256-115.2 256-256s-115.2-256-256-256z"
+									p-id="2085"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li>
+			<li>
+				<span id="rotate" class="svg">
+					<svg class="svg-icon">
+						<use xlink:href="#icon-i_rotate">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+								class="icon" viewBox="0 0 1024 1024" id="icon-i_rotate">
+								<path
+									d="M288 416h64v32H288v-32z m64 0h32v160h-32v-160z m-64 128h64v32H288v-32z m0-64h64v32H288v-32z m128-32h32v128h-32v-128z m32 32h64v32h-64v-32z m32 32h32v64h-32v-64z m-32 32h32v32h-32v-32z m-32-128h96v32h-96v-32z m128 32h32v128h-32v-128z m0-32h96v32h-96v-32z m64 32h32v128h-32v-128z m-32 96h32v32h-32v-32z m95.456-128H736v64h-64.544v-64z"
+									p-id="2678"></path>
+								<path
+									d="M291.2 304a602.528 602.528 0 0 1 228.736-64 417.504 417.504 0 0 1 208 64l-41.6 42.656A281.792 281.792 0 0 0 520 304a451.488 451.488 0 0 0-208 64 91.296 91.296 0 0 1-24-32 45.44 45.44 0 0 1 3.2-32z"
+									p-id="2679"></path>
+								<path d="M608 384l160-128v128h-160z" p-id="2680"></path>
+								<path
+									d="M748.8 688a602.528 602.528 0 0 1-228.736 64 417.472 417.472 0 0 1-208-64l41.6-42.656a281.792 281.792 0 0 0 166.4 42.656 451.552 451.552 0 0 0 208-64 36.96 36.96 0 0 1 24.032 32 63.232 63.232 0 0 1-3.296 32z"
+									p-id="2681"></path>
+								<path d="M448 608l-159.744 128.32L288 608h160z" p-id="2682"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li>
+			<li>
+				<span id="hotspot" class="svg">
+					<img src="./image/hotspot.png" width="22" height="22" />
+				</span>
+			</li>
+		</ul>
+	</div>
+	<div id="buttonContainer">
+		<div class="side" id="sideL">
+			<img draggable="false" class="btn_img" src="./image/left.png">
+			<div>Left</div>
+		</div>
+		<div class="side" id="sideM">
+			<img draggable="false" class="btn_img" src="./image/info.png">
+			<div>Hotspots</div>
+		</div>
+		<div class="side" id="navigate">
+			<img draggable="false" class="btn_img" src="./image/navigate.png">
+			<div>Demo</div>
+		</div>
+		<div class="side" id="sideR">
+			<img draggable="false" class="btn_img" src="./image/right.png">
+			<div>Right</div>
+		</div>
+
+	</div>
+
+	<div id="buttonContainer2">
+		<span class="rightSide" id="up">
+			<img class="btn_img" src="./image/side/up.png">
+		</span>
+
+		<div id="directionButtons">
+			<span class="rightSide" id="direction">
+				<img class="btn_img" title="Perspective View" src="./image/side/direction.png">
+			</span>
+
+			<span class="rightSide" id="front">
+				<img class="btn_img" title="Front View" src="./image/side/front.png">
+			</span>
+
+			<span class="rightSide" id="back">
+				<img class="btn_img" title="Back View" src="./image/side/back.png">
+			</span>
+
+			<span class="rightSide" id="left">
+				<img class="btn_img" title="Left View" src="./image/side/left.png">
+			</span>
+
+			<span class="rightSide" id="right">
+				<img class="btn_img" title="Right View" src="./image/side/right.png">
+			</span>
+		</div>
+
+	</div>
+
+	<div>
+		<div class="side" id="closex" style="transform: scale(0.7);">
+			<img draggable="false" class="btn_img" src="./image/close.png">
+		</div>
+		<div class="side" id="goBack" style="transform: scale(0.7);">
+			<img draggable="false" class="btn_img" src="./image/left.png">
+		</div>
+		<div class="side" id="reset" style="transform: scale(0.7);">
+			<img draggable="false" class="btn_img" src="./image/left.png">
+		</div>
+	</div>
+
+
+	<div id="uiscaleC">
+		<div id="Ctittle"></div>
+		<div id="Ctext"></div>
+		<!-- <div class="btnC" id="btnC_01" style="font-size: 18px;transform: translate(10px, -50px) scale(0.7);margin-right: 0px;display: none;">
+			 <img draggable="false" class="btn_imgx" id="btnC_img_01" src="Img/Icon_sc/btn_06.png">
+			  <div>看看拍出的照片有多棒！</div>
+		</div> -->
+		<div id="Cline"
+			style="transform: translate(10px, -20px) scale(1); width: 1px; margin-right: 0px; display: none;"></div>
+	</div>
+
+	<div class="annotation1">
+		<div class="line"></div>
+		<div id="meshName"></div>
+	</div>
+
+	<script>
+		var html = '<div class="loading">' +
+			'<div class="loading_t" style="margin-top: ' + (window.innerHeight / 2 - 60) + 'px;"><img src="./image/logo.png" width="183" height="40" ></div>' +
+			'<div class="progressBar">' +
+			'<div></div>' +
+			'</div>' +
+			'<div class="loading_percent">0%</div>' +
+			'</div>';
+
+		document.write(html);
+	</script>
+
+	<script type="module">
+		import * as THREE from './js/three.module.js';
+		// import Stats from './js/libs/stats.module.js';
+		// import { GUI } from './js/libs/dat.gui.module.js';
+		import { OrbitControls } from './js/controls/OrbitControls.js';
+		import { GLTFLoader } from './js/loaders/GLTFLoader.js';
+		import { RGBELoader } from './js/loaders/RGBELoader.js';
+		import { FBXLoader } from './js/loaders/FBXLoader.js';
+		import { RoughnessMipmapper } from './js/loaders/RoughnessMipmapper.js';
+
+		var camera, scene, renderer, raycaster, stats, controls, composer, container, group, copyPass;
+		var clock = new THREE.Clock();
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+
+		var groupArray = [];
+
+		var isMobile = function () {
+			if (window.navigator.userAgent.match(/(iPhone|iPod|Android|ios|SymbianOS)/i)) {
+				return true;
+			} else {
+				return false;
+			}
+		}();
+
+		var initPosition = new THREE.Vector3(-117, 39, -43);
+		if (isMobile) {
+			initPosition = new THREE.Vector3(-176, 59, -64);
+			initPosition = new THREE.Vector3(-195, 64, -72);
+		}
+
+		var meshArray = []; // 网格数组
+		var span = 70;
+
+		var isChrome = window.navigator.userAgent.indexOf("Chrome") > -1;
+		var timeDownUp = null;
+		var mouseMoving = false;
+		var spriteGroup = new THREE.Group();
+		var currentSprite;
+		var spriteToggleDistance = 60; // 相机距离sprite大于该值时, sprite显示, 否则隐藏
+		var sprite5CameraPosition = new THREE.Vector3(-55, 52, 36);
+		var sprite20CameraPosition = new THREE.Vector3(73, -10, -28);
+
+		var annotation = $('#uiscaleC');
+		var annotation1 = $('.annotation1');
+		var closeImg = $('#closex');
+		var backImg = $('#goBack');
+		var resetImg = $('#reset');
+		var leftButton = $('#sideL');
+		var rightButton = $('#sideR');
+		var navigateButton = $('#navigate');
+
+		var upButton = $('#up');
+		var directionButton = $('#direction');
+		var frontButton = $('#front');
+		var backButton = $('#back');
+		var leftButton1 = $('#left');
+		var rightButton1 = $('#right');
+		var directionButtons = $('#directionButtons');
+
+		var runAnimation = false;
+		var updateSprite = true;
+
+		var leftCameraPosition = new THREE.Vector3(-102.4, 12, -72);
+		var leftCameraTarget = new THREE.Vector3(-0.7, -2.2, -42.8);
+
+		var rightCameraPosition = new THREE.Vector3(-102.4, 4.7, 80);
+		var rightCameraTarget = new THREE.Vector3(0.9, -6.7, 51.7);
+
+		var objectModel;
+
+		var previous = 'perspective';
+
+		var l = 130;
+		var s = 1.77;
+		var a = 1;
+
+		var frontPosition = { x: -l, y: 0, z: 0 };
+		var frontPosition1 = { x: -l * a, y: 0, z: l * a };
+
+		if (isMobile) {
+			frontPosition = { x: -l * s, y: 0, z: 0 };
+			frontPosition1 = { x: -l * s * a, y: 0, z: l * s * a };
+		}
+
+		var backPosition = { x: l, y: 0, z: 0 };
+		var backPosition1 = { x: l * a, y: 0, z: -l * a };
+
+		if (isMobile) {
+			backPosition = { x: l * s, y: 0, z: 0 };
+			backPosition1 = { x: l * s * a, y: 0, z: -l * s * a };
+		}
+
+		var leftPosition = { x: 0, y: 0, z: -l };
+		var leftPosition1 = { x: -l * a, y: 0, z: -l * a };
+		if (isMobile) {
+			leftPosition = { x: 0, y: 0, z: -l * s };
+			leftPosition1 = { x: -l * s * a, y: 0, z: -l * s * a };
+		}
+
+		var rightPosition = { x: 0, y: 0, z: l };
+		var rightPosition1 = { x: l * a, y: 0, z: l * a };
+		if (isMobile) {
+			rightPosition = { x: 0, y: 0, z: l * s };
+			rightPosition1 = { x: l * s * a, y: 0, z: l * s * a };
+		}
+
+		var spriteText = {
+			sprite_1: { title: 'Graphical User Interface', text: 'Color 12.1" LCD (Liquid Crystal Display) with touchscreen' },
+			sprite_2: { title: 'LED "On/Off" Button', text: 'Turns on AC power and initiates ventilator shutdown. LED stays on continuously when AC power is connected' },
+			sprite_3: { title: 'Battery (Charged) LED', text: 'Flashes when battery is charging. Stays on continuously during battery charging. Turns off when ventilator runs on battery or when ventilator is off and AC is not connected' },
+			sprite_4: { title: 'Alarm LED', text: 'Flashes during highest priority alarms. Stays on continuously when ventilator cannot operate' },
+			sprite_5_1: { title: 'Navigation Ring', text: 'Allows user to adjust values and navigate the GUI by rotating the pointer on the touchpad' },
+			sprite_5_2: { title: '"Accept" Button', text: 'Activates selection' },
+			sprite_6: { title: 'Proximal Pressure Port', text: 'Tubing connection for monitoring patient pressure in the patient circuit' },
+			sprite_7: { title: 'Ventilator Outlet (Patient Connection)', text: 'Main connection for patient circuit. Delivers air and oxygen to patient at specified pressure' },
+			sprite_8: { title: 'Alarm Speaker (Bottom of Ventilator)' },
+
+			sprite_11: { title: 'High Pressure Oxygen Inlet Connector' },
+			sprite_12: { title: 'Host USB Port (Reserved)' },
+			sprite_13: { title: 'RS-232 Serial and Analog I/O Connector (DB-25 Female)', text: 'Connects to hospital information systems and other serial devices, and functions as an analog information interface. Connects to Respi-Link remote diagnostic system gateway for software upgrades' },
+			sprite_14: { title: 'Yellow/Green Ethernet Port LED (Reserved)' },
+			sprite_15: { title: 'Remote Alarm/Nurse Call Connector' },
+			sprite_16: { title: 'Ethernet Port (Reserved)' },
+			sprite_17: { title: 'Power Cord Connector and Lock' },
+			sprite_18: { title: 'Cooling Fan Intake and Filter Membrane' },
+			sprite_19: { title: 'Optional Accessories Label' },
+
+			sprite_1_1_1: { title: 'Air Filter Compartment Side Panel' },
+			sprite_1_1_2: { title: 'Air Filter Membrane', text: 'Recommended replacement cycle is 90 days (depending on usage)' },
+			sprite_1_2_1: { title: 'Battery Compartment Side Panel' },
+			sprite_1_2_2: { title: 'Battery Mounting Bracket', text: 'Used to secure the battery module' },
+			sprite_1_2_3: { title: 'Battery Module (Lithium Battery)', text: 'Specifications: 14.4 V, 11.0 Ah, 163 Wh, Runtime: 6-8 hours' }
+		}
+
+		var spriteHtmlText = {
+			sprite_1: '<span>Graphical User Interface</span><p>Color 12.1\" LCD (Liquid Crystal Display) with touchscreen</p>',
+			sprite_2: '<span>LED \"On/Off\" Button</span><p>Turns on AC power and initiates ventilator shutdown. LED stays on continuously when AC power is connected</p>',
+			sprite_3: '<span>Battery (Charged) LED</span><p>Flashes when battery is charging. Stays on continuously during battery charging. Turns off when ventilator runs on battery or when ventilator is off and AC is not connected</p>',
+			sprite_4: '<span>Alarm LED</span><p>Flashes during highest priority alarms. Stays on continuously when ventilator cannot operate</p>',
+			sprite_5_1: '<span>Navigation Ring</span><p>Allows user to adjust values and navigate the GUI by rotating the pointer on the touchpad</p>',
+			sprite_5_2: '<span>\"Accept\" Button</span>&nbsp;Activates selection',
+			sprite_6: '<span>Proximal Pressure Port</span><p>Tubing connection for monitoring patient pressure in the patient circuit</p>',
+			sprite_7: '<span>Ventilator Outlet (Patient Connection)</span><p>Main connection for patient circuit. Delivers air and oxygen to patient at specified pressure</p>',
+			sprite_8: '<span>Alarm Speaker (Bottom of Ventilator)</span>',
+
+			sprite_11: '<span>High Pressure Oxygen Inlet Connector</span>',
+			sprite_12: '<span>Host USB Port (Reserved)</span>',
+			sprite_13: '<span>RS-232 Serial and Analog I/O Connector (DB-25 Female)</span><p>Connects to hospital information systems and other serial devices, and functions as an analog information interface. Connects to Respi-Link remote diagnostic system gateway for software upgrades</p>',
+			sprite_14: '<span>Yellow/Green Ethernet Port LED (Reserved)</span>',
+			sprite_15: '<span>Remote Alarm/Nurse Call Connector</span>',
+			sprite_16: '<span>Ethernet Port (Reserved)</span>',
+			sprite_17: '<span>Power Cord Connector and Lock</span>',
+			sprite_18: '<span>Cooling Fan Intake and Filter Membrane</span>',
+			sprite_19: '<span>Optional Accessories Label</span>',
+
+			sprite_1_1_1: '<span>Air Filter Compartment Side Panel</span>',
+			sprite_1_1_2: '<span>Air Filter Membrane</span><p>Recommended replacement cycle is 90 days (depending on usage)</p>',
+			sprite_1_2_1: '<span>Battery Compartment Side Panel</span>',
+			sprite_1_2_2: '<span>Battery Mounting Bracket</span><p>Used to secure the battery module</p>',
+			sprite_1_2_3: '<span>Battery Module (Lithium Battery)</span><p>Specifications: 14.4 V, 11.0 Ah, 163 Wh, Runtime: 6-8 hours</p>'
+		};
+
+		var annotationWidth = {
+			sprite_1: 136,
+			sprite_6: 140,
+			sprite_8: 144,
+			sprite_5_1: 150,
+			sprite_5_2: 118,
+			sprite_11: 100,
+			sprite_12: 126,
+			sprite_15: 130,
+			sprite_16: 120,
+			sprite_17: 100,
+			sprite_18: 136,
+			sprite_19: 90,
+			sprite_1_1_1: 100,
+			sprite_1_1_2: 138,
+			sprite_1_2_1: 90
+		}
+
+		init();
+		animate();
+
+		function equals(position1, position2) {
+			return Math.round(position1.x) === Math.round(position2.x)
+				&& Math.round(position1.y) === Math.round(position2.y)
+				&& Math.round(position1.z) === Math.round(position2.z);
+		}
+
+		//1.场景
+		function initScene() {
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xe8e8e8);
+
+			window.scene = scene;
+		}
+
+		//2.透视相机
+		function initCamera() {
+			camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 10, 2000);
+			camera.position.copy(initPosition);
+
+			window.camera = camera;
+		}
+
+		//3.渲染器
+		function initRender() {
+			raycaster = new THREE.Raycaster();
+			renderer = new THREE.WebGLRenderer({
+				antialias: true
+			});
+			renderer.outputEncoding = THREE.sRGBEncoding;
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			renderer.toneMappingExposure = 1;
+			const pmremGenerator = new THREE.PMREMGenerator(renderer);
+			pmremGenerator.compileEquirectangularShader();
+
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			document.body.appendChild(renderer.domElement);
+		}
+
+		//4.事件
+		function initEvent() {
+			window.addEventListener('resize', onWindowResize, false);
+			renderer.domElement.addEventListener('mousemove', onMouseMove, false);
+			renderer.domElement.addEventListener('mousedown', onMouseDown, false);
+			renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+
+			renderer.domElement.addEventListener('touchstart', onTouchStart, false);
+			renderer.domElement.addEventListener('touchmove', onTouchMove, false);
+			renderer.domElement.addEventListener('touchend', onMouseUp, false);
+
+			// window.addEventListener('click', onClick, false);
+
+			$('#rotate').click(function () {
+				controls.autoRotate = !controls.autoRotate;
+
+				if (controls.autoRotate) {
+					$(this).addClass('active');
+				} else {
+					$(this).removeClass('active');
+				}
+
+				if (controls.autoRotate) {
+					runAnimation = true;
+					// animate();
+				} else {
+					runAnimation = false;
+				}
+			});
+
+			resetImg.click(function () {
+				resetImg.hide();
+				if (controls.autoRotate) {
+					$('#rotate').trigger('click');
+				}
+
+				directionButton.trigger('click');
+			});
+
+			$('#sideM').click(function () {
+				currentSprite = null;
+				spriteGroup.traverse(function (child) {
+					child.visible = !child.visible;
+				});
+
+				// render();
+			});
+
+			leftButton.click(function (e) {
+				e.stopPropagation();
+
+				if (leftButton.css('cursor') === 'not-allowed') {
+					return;
+				}
+
+				if (controls.autoRotate) {
+					$('#rotate').trigger('click');
+				}
+
+				if (previous !== 'front') {
+					TweenMax.to(objectModel.rotation, 1, { x: 0, y: -Math.PI / 2, z: 0 });
+					TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: 0, z: 0 });
+				}
+
+				var nameArray = ['left', 'left2', 'left3', 'sprite_1_2_1', 'sprite_1_2_2'];
+
+				var object = scene.getObjectByName('left');
+				var x0 = object.userData.x;
+				var x = x0;
+				if (object.position.x === x0) {
+					x -= span * 3;
+
+					expand(rightButton, nameArray, leftCameraPosition, leftCameraTarget);
+				} else {
+					collapse(rightButton, nameArray);
+				}
+
+				TweenMax.to(object.position, 1, { x });
+
+				var sprite_1_2_1 = scene.getObjectByName('sprite_1_2_1');
+				var z0 = sprite_1_2_1.userData.z;
+				var z = z0;
+				if (sprite_1_2_1.position.z === z0) {
+					z = -60.5;
+				}
+
+				window.sprite_1_2_1 = sprite_1_2_1;
+
+				TweenMax.to(sprite_1_2_1.position, 1, { z, });
+
+				var object2 = scene.getObjectByName('left2');
+				var x0 = object2.userData.x;
+				var x = x0;
+				if (object2.position.x === x0) {
+					x -= span * 2;
+				}
+				TweenMax.to(object2.position, 1, { x });
+
+				var sprite_1_2_2 = scene.getObjectByName('sprite_1_2_2');
+				var z0 = sprite_1_2_2.userData.z;
+				var z = z0;
+				if (sprite_1_2_2.position.z === z0) {
+					z = -49.5;
+				}
+
+				window.sprite_1_2_2 = sprite_1_2_2;
+
+				TweenMax.to(sprite_1_2_2.position, 1, { z });
+
+				var object3 = scene.getObjectByName('left3');
+				var x0 = object3.userData.x;
+				var x = x0;
+				if (object3.position.x === x0) {
+					x -= span;
+				}
+				TweenMax.to(object3.position, 1, { x });
+
+				var sprite_1_2_3 = scene.getObjectByName('sprite_1_2_3');
+				var z0 = sprite_1_2_3.userData.z;
+				var z = z0;
+				if (sprite_1_2_3.position.z === z0) {
+					z = -35.6;
+				}
+
+				window.sprite_1_2_3 = sprite_1_2_3;
+
+				TweenMax.to(sprite_1_2_3.position, 1, { z });
+			});
+
+			rightButton.click(function (e) {
+				e.stopPropagation();
+
+				if (rightButton.css('cursor') === 'not-allowed') {
+					return;
+				}
+
+				if (controls.autoRotate) {
+					$('#rotate').trigger('click');
+				}
+
+				if (previous !== 'front') {
+					TweenMax.to(objectModel.rotation, 1, { x: 0, y: -Math.PI / 2, z: 0 });
+					TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: 0, z: 0 });
+				}
+
+				var nameArray = ['right', 'right2', 'right3', 'right4', 'sprite_1_1_1', 'sprite_1_1_2'];
+
+				var object = scene.getObjectByName('right');
+				var x0 = object.userData.x;
+				var x = x0;
+				if (object.position.x === 0) {
+					x += span * 4;
+
+					expand(leftButton, nameArray, rightCameraPosition, rightCameraTarget);
+				} else {
+					collapse(leftButton, nameArray);
+				}
+
+				TweenMax.to(object.position, 1, { x });
+
+				var sprite_1_1_1 = scene.getObjectByName('sprite_1_1_1');
+				var z0 = sprite_1_1_1.userData.z;
+				var z = z0;
+				if (sprite_1_1_1.position.z === z0) {
+					z = 70.5;
+				}
+
+				TweenMax.to(sprite_1_1_1.position, 1, { z });
+
+				window.sprite_1_1_1 = sprite_1_1_1;
+
+				var object2 = scene.getObjectByName('right2');
+				var x0 = object2.userData.x;
+				var x = x0;
+				if (object2.position.x === 0) {
+					x += span * 3;
+				}
+
+				TweenMax.to(object2.position, 1, { x });
+
+				var object3 = scene.getObjectByName('right4');
+				var x0 = object3.userData.x;
+				var x = x0;
+				if (object3.position.x === 0) {
+					x += span * 2;
+				}
+
+				var sprite_1_1_2 = scene.getObjectByName('sprite_1_1_2');
+				var z0 = sprite_1_1_2.userData.z;
+				var z = z0;
+				if (sprite_1_1_2.position.z === z0) {
+					z = 48.5;
+				}
+
+				TweenMax.to(sprite_1_1_2.position, 1, { z });
+
+				window.sprite_1_1_2 = sprite_1_1_2;
+
+				TweenMax.to(object3.position, 1, { x });
+
+				var object4 = scene.getObjectByName('right3');
+				var x0 = object4.userData.x;
+				var x = x0;
+				if (object4.position.x === 0) {
+					x += span;
+				}
+
+				TweenMax.to(object4.position, 1, { x });
+			});
+
+			navigateButton.click(function () {
+				// Demo link removed - previously pointed to external server
+				alert('Demo mode - Interactive demonstration coming soon!');
+			});
+
+			upButton.click(function () {
+				var height = directionButtons.height();
+				if (height === 0) {
+					$(this).find('img').attr('src', './image/side/down.png');
+					directionButtons.height(246);
+				} else {
+					$(this).find('img').attr('src', './image/side/up.png');
+					directionButtons.height(0);
+				}
+			});
+
+			directionButton.click(function () {
+				hideAnnotation();
+
+				moveCamera(initPosition);
+
+				if (objectModel.rotation.y === Math.PI) {
+					TweenMax.to(objectModel.rotation, 1, {
+						x: 0, y: Math.PI * 3 / 2, z: 0, onComplete: function () {
+							objectModel.rotation.y = -Math.PI / 2;
+						}
+					});
+					TweenMax.to(spriteGroup.rotation, 1, {
+						x: 0, y: Math.PI * 2, z: 0, onComplete: function () {
+							spriteGroup.rotation.y = 0;
+						}
+					});
+				} else {
+					TweenMax.to(objectModel.rotation, 1, { x: 0, y: -Math.PI / 2, z: 0 });
+					TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: 0, z: 0 });
+				}
+
+				previous = 'perspective';
+			});
+
+			frontButton.click(function () {
+				hideAnnotation();
+
+				if (previous === 'front' && equals(camera.position, frontPosition)) {
+					return;
+				}
+
+				if (!equals(camera.position, frontPosition)) {
+					moveCamera(frontPosition);
+				}
+
+				if (objectModel.rotation.y === Math.PI) {
+					TweenMax.to(objectModel.rotation, 1, {
+						x: 0, y: Math.PI * 3 / 2, z: 0, onComplete: function () {
+							objectModel.rotation.y = -Math.PI / 2;
+						}
+					});
+					TweenMax.to(spriteGroup.rotation, 1, {
+						x: 0, y: Math.PI * 2, z: 0, onComplete: function () {
+							spriteGroup.rotation.y = 0;
+						}
+					});
+				} else {
+					TweenMax.to(objectModel.rotation, 1, { x: 0, y: -Math.PI / 2, z: 0 });
+					TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: 0, z: 0 });
+				}
+
+				previous = 'front';
+			});
+
+			backButton.click(function () {
+				hideAnnotation();
+
+				if (previous === 'back' && equals(camera.position, frontPosition)) {
+					return;
+				}
+
+				if (!equals(camera.position, frontPosition)) {
+					moveCamera(frontPosition);
+				}
+
+				TweenMax.to(objectModel.rotation, 1, { x: 0, y: Math.PI / 2, z: 0 });
+				TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: Math.PI, z: 0 });
+
+				previous = 'back';
+			});
+
+			leftButton1.click(function () {
+				hideAnnotation();
+
+				if (previous === 'left' && equals(camera.position, frontPosition)) {
+					return;
+				}
+
+				if (!equals(camera.position, frontPosition)) {
+					moveCamera(frontPosition);
+				}
+
+				TweenMax.to(objectModel.rotation, 1, { x: 0, y: 0, z: 0 });
+				TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: Math.PI / 2, z: 0 });
+
+				previous = 'left';
+			});
+
+			rightButton1.click(function () {
+				hideAnnotation();
+
+				if (previous === 'right' && equals(camera.position, frontPosition)) {
+					return;
+				}
+
+				if (!equals(camera.position, frontPosition)) {
+					moveCamera(frontPosition);
+				}
+
+				if (['front', 'perspective'].includes(previous)) {
+					TweenMax.to(objectModel.rotation, 1, {
+						x: 0, y: -Math.PI, z: 0, onComplete: function () {
+							objectModel.rotation.y = Math.PI;
+						}
+					});
+					TweenMax.to(spriteGroup.rotation, 1, {
+						x: 0, y: -Math.PI / 2, z: 0, onComplete: function () {
+							spriteGroup.rotation.y = Math.PI * 3 / 2;
+						}
+					});
+				} else {
+					TweenMax.to(objectModel.rotation, 1, { x: 0, y: Math.PI, z: 0 });
+					TweenMax.to(spriteGroup.rotation, 1, { x: 0, y: Math.PI * 3 / 2, z: 0 });
+				}
+
+				previous = 'right';
+			});
+
+			function moveCamera() {
+				if (arguments.length > 1) {
+					TweenMax.to(camera.position, 1, {
+						bezier: {
+							type: "soft",
+							values: Array.from(arguments),
+							autoRotate: false
+						}
+					});
+				} else {
+					var position = arguments[0];
+					TweenMax.to(camera.position, 1, { x: position.x, y: position.y, z: position.z });
+				}
+			}
+
+			closeImg.click(function () {
+				hideAnnotation();
+			});
+
+			backImg.click(function () {
+				if (rightButton.css('cursor') === 'not-allowed') {
+					leftButton.trigger('click');
+				}
+
+				if (leftButton.css('cursor') === 'not-allowed') {
+					rightButton.trigger('click');
+				}
+			});
+		}
+
+		function expand(button, nameArray, position, target) {
+			backImg.show();
+			button.css('cursor', 'not-allowed');
+			$('#buttonContainer2').hide();
+
+			updateSprite = false;
+			scene.traverse(function (child) {
+				if ((child.isSprite || child.isMesh) && !nameArray.includes(child.name)) {
+
+				}
+			});
+
+			TweenMax.to(camera.position, 1, { x: position.x, y: position.y, z: position.z });
+			TweenMax.to(controls.target, 1, { x: target.x, y: target.y, z: target.z });
+		}
+
+		function collapse(button, nameArray) {
+			backImg.hide();
+			button.css('cursor', 'pointer');
+			$('#buttonContainer2').show();
+
+			updateSprite = true;
+			scene.traverse(function (child) {
+				if ((child.isSprite || child.isMesh) && !nameArray.includes(child.name)) {
+
+				}
+			});
+
+			TweenMax.to(camera.position, 1, { x: initPosition.x, y: initPosition.y, z: initPosition.z });
+			TweenMax.to(controls.target, 1, { x: 0, y: 0, z: 0 });
+
+			previous = 'perspective';
+		}
+
+		//5.控制
+		function initControls() {
+			controls = new OrbitControls(camera, renderer.domElement);
+			controls.addEventListener('change', updateAnnotationPosition);
+
+			controls.minDistance = 50;
+			controls.maxDistance = 350;
+			controls.enableDamping = true;
+			controls.dampingFactor = 0.1;
+			controls.enablePan = false;
+			controls.update();
+		}
+
+		//6.光源
+		function initLight(array, offset) {
+			//环境光
+			scene.add(new THREE.HemisphereLight(0xffffff, 0x000000, 0.4));
+
+
+			//平行光1，设置光的颜色，强度，位置，是否投射阴影，阴影相机的各种参数
+			var dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
+			dirLight.position.set(0, 100, 0);
+			dirLight.castShadow = true;
+			scene.add(dirLight);
+
+			//光源辅助对象
+			// var helper = new THREE.DirectionalLightHelper( dirLight, 5 );
+			// scene.add( helper );
+
+			//平行光2
+
+			// var helper = new THREE.DirectionalLightHelper( dirLight4, 5 );
+			// scene.add( helper );
+		}
+
+		//7.其它
+		function initOther() {
+			//x, y, z轴辅助器
+			var axes = new THREE.AxesHelper(500);
+			// axes.position.set(100, 100, 100);
+			// scene.add(axes);
+
+			//性能检查Stats， 可以查看当前帧数
+			// stats = new Stats();
+			//document.body.appendChild( stats.dom );
+
+			loadModel('huxiji_1.glb', 0.15, new THREE.Vector3(0, 0, 0));
+		}
+
+		function loadModel(name, scale, position) {
+			var progressBar = $('.progressBar div');
+			var loadingPercent = $('.loading_percent');
+
+			const material = new THREE.MeshStandardMaterial();
+			const loader = new THREE.TextureLoader().setPath('./model/');
+
+			var mapLoaded = false;
+			var envLoaded = false;
+
+			var displayModel = function () {
+				if (mapLoaded && envLoaded && objectModel) {
+					// roughness is in G channel, metalness is in B channel
+					loader.load('MR2048.jpg', function (texture) {
+						material.roughness = 1; // attenuates roughnessMap
+						material.metalness = 1; // attenuates metalnessMap
+						material.metalnessMap = material.roughnessMap = texture;
+						material.roughnessMap.wrapS = THREE.RepeatWrapping;
+						material.metalnessMap.wrapS = THREE.RepeatWrapping;
+
+						objectModel.traverse(function (child) {
+							if (child.isMesh) {
+								child.material = material;
+								child.userData.x = child.position.x;
+
+								meshArray.push(child);
+								$('.loading').hide();
+							}
+						});
+
+						var scale = 0.147;
+						objectModel.scale.set(scale, scale, scale);
+
+						TweenMax.to(objectModel.rotation, 1.5, {
+							x: 0, y: -Math.PI / 2, z: 0, ease: Power2.easeInOut, onComplete: function () {
+								initSprite();
+								$('#buttonContainer').show();
+								$('#buttonContainer2').show();
+
+								setTimeout(function () {
+									runAnimation = false;
+								}, 100);
+							}
+						});
+
+						objectModel.position.set(0.5, -20, 0);
+						scene.add(objectModel);
+
+						// render();
+					});
+
+					// loader.load( 'Normal.jpg', function(texture) {
+					// 	material.normalMap = texture;
+					// 	material.needsUpdate = true;
+
+					// 	// render();
+					// } );
+				}
+			}
+
+			loader.load('Base.jpg', function (diffuseMap) {
+				diffuseMap.encoding = THREE.sRGBEncoding;
+				material.map = diffuseMap;
+				material.map.wrapS = THREE.RepeatWrapping;
+
+				mapLoaded = true;
+				displayModel();
+			});
+
+			new RGBELoader().setDataType(THREE.UnsignedByteType).setPath('model/').load('3.hdr', function (texture) {
+				var pmremGenerator = new THREE.PMREMGenerator(renderer);
+				pmremGenerator.compileEquirectangularShader();
+				var envMap = pmremGenerator.fromEquirectangular(texture).texture;
+
+				//scene.background = envMap;
+				scene.environment = envMap;
+
+				texture.dispose();
+				pmremGenerator.dispose();
+
+				envLoaded = true;
+				displayModel();
+			});
+
+			var fbxLoader = new FBXLoader();
+			fbxLoader.setPath('./model/');
+			fbxLoader.load('huxiji1.fbx', function (object) {
+				objectModel = object;
+				window.objectModel = objectModel;
+				displayModel();
+			}, function (xhr) {
+				loadingPercent.text((xhr.loaded / xhr.total * 100).toFixed(0) + '%');
+				progressBar.width(Math.round(xhr.loaded / xhr.total * 220));
+				// document.getElementsByTagName("title")[0].innerText = "呼吸机展示";
+			});
+		}
+
+		function initSprite() {
+			var sprite1 = createSprite(-19, 27, -21, 'sprite_1');				// 12.1英寸彩色触摸屏
+			var sprite2 = createSprite(-33, -9, -22, 'sprite_2', 4.5);			// 电源开关
+			var sprite3 = createSprite(-33, -9, -18.8, 'sprite_3', 4.5);		// 电池LED指示灯
+			var sprite4 = createSprite(-33, -9, -16.5, 'sprite_4', 4.5);		// 报警LED指示灯
+			var sprite5 = createSprite(-19, 27, 12, 'sprite_5');				// 导航环与确认按钮
+			var sprite5_1 = createSprite(-18, 29.5, 14, 'sprite_5_1', 4.5);		// 导航环
+			var sprite5_2 = createSprite(-19, 27, 12.2, 'sprite_5_2', 4.5);		// 确认按钮
+			var sprite6 = createSprite(-20, 1.8, 20.4, 'sprite_6');				// 近端压力测量管接口
+			var sprite7 = createSprite(-25, -3, 16, 'sprite_7');				// 气体输出接口
+			var sprite8 = createSprite(-21, -15, 10.5, 'sprite_8');				// 报警扬声器输出
+
+			var sprite11 = createSprite(30, -6.5, 17.8, 'sprite_11');			// O2 管接口
+			var sprite12 = createSprite(22, -12, 5.3, 'sprite_12');				// 主机USB端口(未来)
+			var sprite13 = createSprite(22, -12, -4.8, 'sprite_13');			// RS-232 串行信号输入输出端口
+			var sprite14 = createSprite(21, -12.1, -9.7, 'sprite_14', 3);		// 黄色/绿色以太网接口LED灯(未来)
+			var sprite15 = createSprite(21, -12.5, -15.8, 'sprite_15', 3);		// 护士呼叫/远程报警
+			var sprite16 = createSprite(21, -12.5, -12.7, 'sprite_16', 3);		// 以太网接口
+			var sprite17 = createSprite(33, -3, -10.6, 'sprite_17');			// 电源线接口及锁扣
+			var sprite18 = createSprite(28, -3, 4, 'sprite_18');				// 冷却风扇进气口及过滤器
+			var sprite19 = createSprite(-10.5, 28.5, -5, 'sprite_19');			// 选配件提示标贴
+			var sprite20 = createSprite(21, -12.2, -12.7, 'sprite_20');
+
+			var sprite_1_1_1 = createSprite(0, -2, 30.5, 'sprite_1_1_1');		// 空气过滤舱侧面板
+			var sprite_1_1_2 = createSprite(8, -2, 26, 'sprite_1_1_2');			// 空气过滤膜
+
+			var sprite_1_2_1 = createSprite(0, -2, -29.5, 'sprite_1_2_1');		// 电池舱侧面板
+			var sprite_1_2_2 = createSprite(0, -2, -25.5, 'sprite_1_2_2');		// 电池固定支架
+			var sprite_1_2_3 = createSprite(0, -2, -25.5, 'sprite_1_2_3');		// 电池模块（锂电池）
+
+			sprite5_1.visible = false;
+			sprite5_2.visible = false;
+
+			spriteGroup.add(sprite1);
+			spriteGroup.add(sprite2);
+			spriteGroup.add(sprite3);
+			spriteGroup.add(sprite4);
+			spriteGroup.add(sprite5_1);
+			spriteGroup.add(sprite5_2);
+			spriteGroup.add(sprite5);
+			spriteGroup.add(sprite6);
+			spriteGroup.add(sprite7);
+			spriteGroup.add(sprite8);
+
+			spriteGroup.add(sprite11);
+			spriteGroup.add(sprite12);
+			spriteGroup.add(sprite13);
+			spriteGroup.add(sprite14);
+			spriteGroup.add(sprite15);
+			spriteGroup.add(sprite16);
+			spriteGroup.add(sprite17);
+			spriteGroup.add(sprite18);
+			spriteGroup.add(sprite19);
+			spriteGroup.add(sprite20);
+			spriteGroup.add(sprite_1_1_1);
+			spriteGroup.add(sprite_1_1_2);
+			spriteGroup.add(sprite_1_2_1);
+			spriteGroup.add(sprite_1_2_2);
+			spriteGroup.add(sprite_1_2_3);
+
+			scene.add(spriteGroup);
+		}
+
+		function createSprite(x, y, z, id, scale = 6) {
+			var sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+				side: THREE.DoubleSide
+			}));
+
+			sprite.position.set(x, y, z);
+			sprite.scale.set(scale, scale, scale);
+			sprite.name = id;
+			sprite.userData.id = id;
+			sprite.userData.x = x;
+			sprite.userData.y = y;
+			sprite.userData.z = z;
+
+			let map = new THREE.TextureLoader().load('./image/spot32.png');
+			sprite.material.map = map;
+
+			return sprite;
+		}
+
+		// 初始函数，初始化各种对象
+		function init() {
+			initScene();
+			initCamera();
+			initRender();
+			initEvent();
+			initControls();
+			initLight();
+			initOther();
+		}
+
+		// 窗口缩放时自适应屏幕
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			// render();
+		}
+
+		function onTouchStart(event) {
+			if (event.touches.length === 1) {
+				// event.preventDefault();
+
+				timeDownUp = event.touches[0].clientX + event.touches[0].clientY;
+				mouseMoving = false;
+			}
+		}
+
+		function onTouchMove(event) {
+			if (event.touches.length === 1) {
+				// event.preventDefault();
+
+				if (isChrome) {
+					if (timeMove !== timeDownUp) {
+						if (event.which === 1 || event.which === 3) {
+							mouseMoving = true;
+						}
+					} else {
+						timeDownUp = null;
+					}
+				} else {
+					mouseMoving = true;
+				}
+			}
+		}
+
+		function onMouseMove(event) {
+			var timeMove = event.clientX + event.clientY;
+
+			if (isChrome) {
+				if (timeMove !== timeDownUp) {
+					if (event.which === 1 || event.which === 3) {
+						mouseMoving = true;
+					}
+				} else {
+					timeDownUp = null;
+				}
+			} else {
+				mouseMoving = true;
+			}
+		}
+
+		function onMouseDown(event) {
+			timeDownUp = event.clientX + event.clientY;
+			mouseMoving = false;
+		}
+
+		function onMouseUp(event) {
+			timeDownUp = event.clientX + event.clientY;
+
+			if (mouseMoving) {
+				mouseMoving = false;
+				return;
+			}
+
+			onClick(event);
+		}
+
+		function onClick(event) {
+			setupMouseCoords(event);
+			checkSpriteClick();
+		}
+
+		function checkSpriteClick() {
+			raycaster.setFromCamera(mouse, camera);
+			var intersects = raycaster.intersectObject(spriteGroup, true);
+			if (intersects.length) {
+				var object;
+				for (var i = 0; i < intersects.length; i++) {
+					var o = intersects[i].object;
+					if (o.visible) {
+						object = o;
+						break;
+					}
+				}
+
+				if (!object) {
+					return;
+				}
+
+				if (object.name === 'sprite_5') {
+					resetImg.show();
+
+					var position = new THREE.Vector3().copy(sprite5CameraPosition);
+					position.applyEuler(spriteGroup.rotation);
+
+					TweenMax.to(camera.position, 1, { x: position.x, y: position.y, z: position.z });
+				} else if (object.name === 'sprite_20') {
+
+					var position = new THREE.Vector3().copy(sprite20CameraPosition);
+					position.applyEuler(spriteGroup.rotation);
+
+					TweenMax.to(camera.position, 1, { x: position.x, y: position.y, z: position.z });
+				} else {
+					var { userData: { id } } = object;
+					var p = new THREE.Vector3();
+					object.getWorldPosition(p);
+
+					var position = world2Screen(p.x, p.y, p.z);
+
+					annotation1.css({ 'display': 'inline-block', 'left': (position.x + 5) + 'px', 'top': (position.y + 0) + 'px' });
+					$('#meshName').width(annotationWidth[id] || 156).html(spriteHtmlText[id]);
+
+					if (object === currentSprite) {
+						var bottom = annotation.css('bottom');
+						if (bottom === '0px') {
+							hideAnnotation();
+						} else {
+							annotation.css('bottom', 0);
+							closeImg.show();
+						}
+					} else {
+						annotation.css('bottom', 0);
+						closeImg.show();
+					}
+
+					var { title, text } = spriteText[id];
+					$('#Ctittle').text(title);
+					$('#Ctext').text(text || '');
+
+					currentSprite = object;
+				}
+			} else {
+				// hideAnnotation();
+				/*
+				var intersects = raycaster.intersectObjects( meshArray, true );
+				if (intersects.length) {
+					if (intersects[0].object.name === 'screen') {
+						window.location.href = 'http://sit.scm.x-chain.net.cn/philips-ventilator/screen';
+					}
+				}
+				*/
+			}
+		}
+
+		function setupMouseCoords(event) {
+			var x, y;
+			if (event.changedTouches) {
+				x = event.changedTouches[0].pageX;
+				y = event.changedTouches[0].pageY;
+			} else {
+				x = event.clientX;
+				y = event.clientY;
+			}
+
+			mouse.x = (x / window.innerWidth) * 2 - 1;
+			mouse.y = -(y / window.innerHeight) * 2 + 1;
+		}
+
+		function world2Screen(x, y, z) {
+			let worldVector = new THREE.Vector3(x, y, z);
+			let vector = worldVector.project(camera);
+
+			let halfWidth = window.innerWidth / 2;
+			let halfHeight = window.innerHeight / 2;
+
+			let result = {
+				x: Math.round(vector.x * halfWidth + halfWidth),
+				y: Math.round(-vector.y * halfHeight + halfHeight)
+			};
+
+			return result;
+		}
+
+		function updateAnnotationPosition() {
+			if (currentSprite) {
+				var p = new THREE.Vector3();
+				currentSprite.getWorldPosition(p);
+				var position = world2Screen(p.x, p.y, p.z);
+				annotation1.css({ 'left': (position.x + 5) + 'px', 'top': (position.y + 0) + 'px' });
+
+				setupMouseCoords({ clientX: position.x, clientY: position.y });
+
+				raycaster.setFromCamera(mouse, camera);
+				var intersects = raycaster.intersectObjects(meshArray, true);
+				if (intersects.length) {
+					var intersects2 = raycaster.intersectObject(spriteGroup, true);
+					if (intersects2.length && intersects[0].distance < intersects2[0].distance) {
+						annotation1.hide();
+						currentSprite = null;
+					}
+					//  else {
+					// 	annotation.fadeIn(500);
+					// }
+				}
+			}
+
+			var sprite5 = scene.getObjectByName('sprite_5');
+			var sprite5Position = new THREE.Vector3();
+			sprite5.getWorldPosition(sprite5Position);
+
+			var sprite5_1 = scene.getObjectByName('sprite_5_1');
+			var sprite5_2 = scene.getObjectByName('sprite_5_2');
+			var sprite14 = scene.getObjectByName('sprite_14');
+			var sprite15 = scene.getObjectByName('sprite_15');
+			var sprite16 = scene.getObjectByName('sprite_16');
+			var sprite20 = scene.getObjectByName('sprite_20');
+			var sprite20Position = new THREE.Vector3();
+			sprite20.getWorldPosition(sprite20Position);
+
+			if (sprite5 && updateSprite) {
+				if (camera.position.distanceTo(sprite5Position) > spriteToggleDistance) {
+					sprite5.visible = true;
+					sprite5_1.visible = false;
+					sprite5_2.visible = false;
+				} else {
+					sprite5.visible = false;
+					sprite5_1.visible = true;
+					sprite5_2.visible = true;
+				}
+
+				if (camera.position.distanceTo(sprite20Position) > spriteToggleDistance) {
+					sprite20.visible = true;
+					sprite14.visible = false;
+					sprite15.visible = false;
+					sprite16.visible = false;
+				} else {
+					sprite20.visible = false;
+					sprite14.visible = true;
+					sprite15.visible = true;
+					sprite16.visible = true;
+				}
+			}
+		}
+
+		function hideAnnotation() {
+			annotation.css('bottom', '-170px');
+			annotation1.hide();
+			closeImg.hide();
+			currentSprite = null;
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+			render();
+		}
+
+		function render() {
+			controls.update();
+			// stats.update();
+
+			// renderer.clear();
+			renderer.render(scene, camera);
+		}
+	</script>
+</body>
+
+</html>

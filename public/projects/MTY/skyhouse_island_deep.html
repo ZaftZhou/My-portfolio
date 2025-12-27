@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - The Tethered Island (Deep Dive)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English+SC&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: #111;
+            padding: 60px 20px;
+            color: #dcdde1;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            letter-spacing: 0.15em;
+            color: #bdc3c7;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 80px;
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .piece {
+            background: #1e2025;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .canvas-frame {
+            background: #252830;
+            padding: 10px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .canvas {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 {
+            font-family: 'IM Fell English SC', serif;
+            font-size: 1.8rem;
+            color: #ecf0f1;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #7f8c8d;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        p {
+            margin-top: 15px;
+            color: #95a5a6;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE</h1>
+    <p class="subtitle">The Tethered Island · Deep Texture Study</p>
+
+    <div class="gallery">
+
+        <!-- 1. The Charcoal Etching -->
+        <div class="piece">
+            <div class="canvas-frame">
+                <div class="canvas" style="background: #ece6d8;">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Etching/Paper Texture -->
+                            <filter id="etchingPaper">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+                                <feDiffuseLighting in="noise" lighting-color="#ece6d8" surfaceScale="1">
+                                    <feDistantLight azimuth="45" elevation="60" />
+                                </feDiffuseLighting>
+                                <feComposite operator="in" in2="SourceGraphic" />
+                            </filter>
+                            <!-- Hatching Pattern -->
+                            <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse"
+                                patternTransform="rotate(45)">
+                                <line x1="0" y1="0" x2="0" y2="4" stroke="#2c3e50" stroke-width="0.5" opacity="0.8" />
+                            </pattern>
+                            <pattern id="crossHatch" width="4" height="4" patternUnits="userSpaceOnUse"
+                                patternTransform="rotate(45)">
+                                <line x1="0" y1="0" x2="0" y2="4" stroke="#2c3e50" stroke-width="0.5" opacity="0.8" />
+                                <line x1="0" y1="0" x2="4" y2="0" stroke="#2c3e50" stroke-width="0.5" opacity="0.8" />
+                            </pattern>
+                            <!-- Rough Edge Filter -->
+                            <filter id="roughLine">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="turb" />
+                                <feDisplacementMap in2="turb" in="SourceGraphic" scale="3" xChannelSelector="R"
+                                    yChannelSelector="G" />
+                            </filter>
+                        </defs>
+
+                        <!-- Paper Grain Overlay -->
+                        <rect width="100%" height="100%" filter="url(#etchingPaper)" opacity="0.5" />
+
+                        <g transform="translate(200, 200) scale(1.2)" filter="url(#roughLine)">
+
+                            <!-- Floating Rock Base (with texture) -->
+                            <path d="M-60 20 Q -40 60 0 70 Q 50 60 70 20 Q 0 30 -60 20" fill="url(#crossHatch)"
+                                stroke="#1a1a1a" stroke-width="2" />
+
+                            <!-- Dangling Roots -->
+                            <g fill="none" stroke="#1a1a1a" stroke-width="1.5">
+                                <path d="M-20 60 C -20 80, -30 90, -25 110" stroke-dasharray="2 1" />
+                                <path d="M10 70 C 10 90, 20 120, 15 140" />
+                                <path d="M40 50 C 40 70, 50 80, 45 100" stroke-dasharray="3 1" />
+                            </g>
+
+                            <!-- The House -->
+                            <g transform="translate(0, -5)">
+                                <!-- House Fill -->
+                                <path d="M-40 25 L 0 -15 L 40 25 V 50 H -40 Z" fill="#fff" stroke="#1a1a1a"
+                                    stroke-width="2" />
+                                <!-- Shadowing on House -->
+                                <path d="M0 -15 L 40 25 L 0 25 Z" fill="url(#hatch)" />
+                                <!-- Chimney -->
+                                <rect x="20" y="0" width="10" height="15" fill="#fff" stroke="#1a1a1a"
+                                    stroke-width="2" />
+                                <!-- Window -->
+                                <rect x="-15" y="10" width="12" height="12" fill="none" stroke="#1a1a1a"
+                                    stroke-width="1.5" />
+                                <line x1="-9" y1="10" x2="-9" y2="22" stroke="#1a1a1a" stroke-width="1" />
+                                <line x1="-15" y1="16" x2="-3" y2="16" stroke="#1a1a1a" stroke-width="1" />
+                            </g>
+                        </g>
+
+                        <!-- Text -->
+                        <text x="200" y="360" text-anchor="middle" font-family="'IM Fell English SC', serif"
+                            font-size="24" fill="#1a1a1a" transform="scale(1, 1)" letter-spacing="4">The Tethered
+                            Island</text>
+                    </svg>
+                </div>
+            </div>
+            <h2>Charcoal Etching</h2>
+            <p>古董版画风格。使用复杂的线条和蚀刻纹理模拟手绘质感，强调历史的厚重与孤独的恒久。</p>
+        </div>
+
+        <!-- 2. Obsidian & Gold -->
+        <div class="piece">
+            <div class="canvas-frame">
+                <div class="canvas" style="background: #111;">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Obsidian 3D Lighting -->
+                            <filter id="obsidianLight" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="2" in="SourceAlpha" result="blur" />
+                                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1"
+                                    specularExponent="20" lighting-color="#fff" result="specular">
+                                    <fePointLight x="-500" y="-1000" z="500" />
+                                </feSpecularLighting>
+                                <feComposite in="specular" in2="SourceAlpha" operator="in" result="specular" />
+                                <feComposite in="SourceGraphic" in2="specular" operator="arithmetic" k1="0" k2="1"
+                                    k3="1" k4="0" />
+                            </filter>
+                            <!-- Gold Texture Gradient -->
+                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#bf953f" />
+                                <stop offset="50%" stop-color="#fcf6ba" />
+                                <stop offset="100%" stop-color="#aa771c" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Spotlight BG -->
+                        <radialGradient id="spotlight" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#333" />
+                            <stop offset="100%" stop-color="#000" />
+                        </radialGradient>
+                        <rect width="100%" height="100%" fill="url(#spotlight)" />
+
+                        <g transform="translate(200, 200) scale(1.1)">
+                            <!-- Gold Roots (Kintsugi) -->
+                            <g stroke="url(#goldGrad)" stroke-width="1.5" fill="none">
+                                <path d="M-20 60 Q -30 100 -20 130" />
+                                <path d="M10 70 Q 20 110 5 150" />
+                                <path d="M30 60 Q 40 90 35 120" />
+                            </g>
+
+                            <!-- Obsidian Rock Base -->
+                            <g filter="url(#obsidianLight)">
+                                <path d="M-70 20 Q -40 70 0 80 Q 50 70 80 20 Q 0 30 -70 20" fill="#000" />
+                            </g>
+                            <!-- Gold Cracks in Rock -->
+                            <path d="M-30 40 L -10 60 L 10 50" fill="none" stroke="url(#goldGrad)" stroke-width="0.8" />
+
+                            <!-- Obsidian House -->
+                            <g filter="url(#obsidianLight)" transform="translate(0, -5)">
+                                <path d="M-45 25 L 0 -20 L 45 25 V 55 H -45 Z" fill="#090909" />
+                            </g>
+
+                            <!-- Gold Outline & Details -->
+                            <g transform="translate(0, -5)">
+                                <path d="M-45 25 L 0 -20 L 45 25 V 55 H -45 Z" fill="none" stroke="url(#goldGrad)"
+                                    stroke-width="1" />
+                                <!-- Golden Window -->
+                                <rect x="-12" y="15" width="24" height="24" stroke="url(#goldGrad)" stroke-width="1"
+                                    fill="none" />
+                                <line x1="0" y1="15" x2="0" y2="39" stroke="url(#goldGrad)" stroke-width="0.8" />
+                                <line x1="-12" y1="27" x2="12" y2="27" stroke="url(#goldGrad)" stroke-width="0.8" />
+                            </g>
+                        </g>
+
+                        <text x="200" y="350" text-anchor="middle" font-family="'Cinzel', serif" font-size="18"
+                            fill="url(#goldGrad)" letter-spacing="4">OBSIDIAN & GOLD</text>
+                    </svg>
+                </div>
+            </div>
+            <h2>Obsidian & Gold</h2>
+            <p>黑曜石与金缮工艺。将脆弱升华为艺术，极黑的材质与闪耀的金根形成强烈对比，寓意“破碎中的尊贵”。</p>
+        </div>
+
+        <!-- 3. Misty Watercolor -->
+        <div class="piece">
+            <div class="canvas-frame">
+                <div class="canvas" style="background: #fff;">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Watercolor Bleed Effect -->
+                            <filter id="watercolor">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise" />
+                                <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R"
+                                    yChannelSelector="G" />
+                                <feGaussianBlur stdDeviation="3" />
+                            </filter>
+                            <filter id="paperTexture">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="2" />
+                                <feColorMatrix type="saturate" values="0" />
+                                <feComponentTransfer>
+                                    <feFuncA type="linear" slope="0.1" />
+                                </feComponentTransfer>
+                            </filter>
+                        </defs>
+
+                        <!-- Paper Texture Background -->
+                        <rect width="100%" height="100%" fill="#fff" />
+                        <rect width="100%" height="100%" filter="url(#paperTexture)" />
+
+                        <!-- Fog Clouds -->
+                        <circle cx="200" cy="200" r="100" fill="#a29bfe" opacity="0.2" filter="url(#watercolor)" />
+                        <circle cx="150" cy="180" r="80" fill="#74b9ff" opacity="0.15" filter="url(#watercolor)" />
+
+                        <g transform="translate(200, 200) scale(1.1)">
+                            <!-- Watercolor Ink Washes for Island -->
+                            <path d="M-60 30 Q 0 90 70 30" stroke="#2d3436" stroke-width="20" fill="none" opacity="0.1"
+                                filter="url(#watercolor)" />
+                            <path d="M-50 20 Q 0 80 60 20" stroke="#2c3e50" stroke-width="2" fill="none"
+                                opacity="0.6" />
+
+                            <!-- Roots fading out -->
+                            <path d="M-10 50 L -15 100" stroke="#2d3436" stroke-width="1.5" opacity="0.4"
+                                stroke-dasharray="10 5" />
+                            <path d="M20 50 L 30 120" stroke="#2d3436" stroke-width="1" opacity="0.3" />
+
+                            <!-- House (Soft Edges) -->
+                            <g transform="translate(0, -10)">
+                                <!-- Ink Wash House -->
+                                <path d="M-40 20 L 0 -20 L 40 20 V 50 H -40 Z" fill="#34495e" opacity="0.8"
+                                    filter="url(#watercolor)" transform="scale(0.95)" />
+                                <!-- Defined Lines -->
+                                <path d="M-40 20 L 0 -20 L 40 20 V 50 H -40 Z" fill="none" stroke="#2c3e50"
+                                    stroke-width="1.5" />
+                                <!-- Window reflection -->
+                                <rect x="-10" y="10" width="20" height="20" fill="#fff" opacity="0.5" />
+                            </g>
+                        </g>
+
+                        <text x="200" y="360" text-anchor="middle" font-family="'Cormorant Garamond', serif"
+                            font-style="italic" font-size="28" fill="#576574" letter-spacing="2">Misty Watercolor</text>
+                    </svg>
+                </div>
+            </div>
+            <h2>Misty Watercolor</h2>
+            <p>水彩晕染风格。像记忆中模糊的梦境，边缘不清晰，带有水的流动感和随机性，充满情绪感染力。</p>
+        </div>
+
+        <!-- 4. The Practical Mark -->
+        <div class="piece">
+            <div class="canvas-frame">
+                <div class="canvas" style="background: #ecf0f1;">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Stippling Pattern (Dots) -->
+                            <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
+                                <circle cx="1" cy="1" r="1" fill="#2c3e50" />
+                                <circle cx="4" cy="4" r="1.5" fill="#2c3e50" />
+                            </pattern>
+                        </defs>
+
+                        <g transform="translate(200, 200) scale(1.1)">
+                            <!-- Clean Vector Shape with Internal Texture -->
+
+                            <!-- Rock Base -->
+                            <path d="M-70 10 C -70 10, -40 70, 0 70 C 40 70, 70 10, 70 10 L 0 20 Z" fill="#2c3e50" />
+
+                            <!-- Roots (Stylized) -->
+                            <path d="M-30 60 V 100" stroke="#2c3e50" stroke-width="3" fill="none"
+                                stroke-linecap="round" />
+                            <path d="M0 70 V 130" stroke="#2c3e50" stroke-width="4" fill="none"
+                                stroke-linecap="round" />
+                            <path d="M30 60 V 110" stroke="#2c3e50" stroke-width="3" fill="none"
+                                stroke-linecap="round" />
+
+                            <!-- House -->
+                            <path d="M-45 10 L 0 -35 L 45 10 V 50 H -45 Z" fill="#fff" stroke="#2c3e50" stroke-width="4"
+                                stroke-linejoin="round" />
+
+                            <!-- Internal Texture for House (Stippling/Dots) -->
+                            <path d="M-45 10 L 0 -35 L 45 10" fill="url(#dots)" opacity="0.2" />
+
+                            <!-- Window -->
+                            <rect x="-15" y="0" width="30" height="30" fill="#2c3e50" />
+                            <rect x="-10" y="5" width="20" height="20" fill="#f1c40f" />
+                            <line x1="0" y1="5" x2="0" y2="25" stroke="#2c3e50" stroke-width="2" />
+                            <line x1="-10" y1="15" x2="10" y2="15" stroke="#2c3e50" stroke-width="2" />
+                        </g>
+
+                        <text x="200" y="340" text-anchor="middle" font-family="'Cinzel', serif" font-weight="700"
+                            font-size="22" fill="#2c3e50" letter-spacing="4">SKYHOUSE</text>
+                        <text x="200" y="365" text-anchor="middle" font-family="'Cormorant Garamond', serif"
+                            font-size="14" fill="#7f8c8d" letter-spacing="2">EST. 2025</text>
+                    </svg>
+                </div>
+            </div>
+            <h2>The Practical Mark</h2>
+            <p>实用徽章设计。保留了“手作感”的内部纹理（点绘），但外轮廓干净清晰，适合印刷、缩小和品牌化使用。</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

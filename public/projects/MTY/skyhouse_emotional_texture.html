@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Emotional Texture Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: #1e1e24;
+            padding: 80px 20px;
+            color: #dcdde1;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            margin-bottom: 20px;
+            font-size: 3rem;
+            letter-spacing: 0.1em;
+            color: #f5f6fa;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8fa6;
+            margin-bottom: 100px;
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 120px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .art-piece {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .art-piece:nth-child(even) {
+            direction: rtl;
+            /* Alternate layout */
+        }
+
+        .art-piece:nth-child(even) .text-content {
+            direction: ltr;
+            /* Reset text direction */
+        }
+
+        .canvas {
+            background: #2f3640;
+            padding: 2px;
+            /* Frame feel */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .canvas::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJnoiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzYz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNuKSIgb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==');
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            z-index: 10;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: radial-gradient(circle at center, #353b48 0%, #2f3640 100%);
+        }
+
+        .text-content {
+            padding: 20px;
+        }
+
+        .text-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #dcdde1;
+        }
+
+        .text-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #95a5a6;
+            margin-bottom: 30px;
+        }
+
+        .quote {
+            border-left: 2px solid #718093;
+            padding-left: 20px;
+            font-style: italic;
+            color: #718093;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .art-piece {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .art-piece:nth-child(even) {
+                direction: ltr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE</h1>
+    <p class="subtitle">Emotional Texture Edition · 意境与质感</p>
+
+    <div class="gallery">
+
+        <!-- Concept 1: The Tethered Island -->
+        <div class="art-piece">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Rough Rock Filter -->
+                        <filter id="rockTexture">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" />
+                            <feDiffuseLighting in="noise" lighting-color="#fff" surfaceScale="2">
+                                <feDistantLight azimuth="45" elevation="60" />
+                            </feDiffuseLighting>
+                            <feComposite operator="in" in2="SourceGraphic" />
+                        </filter>
+                        <!-- Glow -->
+                        <filter id="softGlow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Background Atmosphere -->
+                    <circle cx="200" cy="200" r="150" fill="url(#bgGrad1)" opacity="0.1" />
+                    <defs>
+                        <radialGradient id="bgGrad1">
+                            <stop offset="0%" stop-color="#fff" stop-opacity="0.2" />
+                            <stop offset="100%" stop-color="#1e1e24" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Floating Island -->
+                    <g transform="translate(0, -20)">
+                        <!-- Roots -->
+                        <path d="M160 260 C 160 290, 150 310, 155 330" fill="none" stroke="#5d4037" stroke-width="2" />
+                        <path d="M180 270 C 180 300, 190 340, 185 360" fill="none" stroke="#5d4037"
+                            stroke-width="2.5" />
+                        <path d="M220 260 C 220 290, 230 320, 225 340" fill="none" stroke="#5d4037" stroke-width="2" />
+                        <path d="M240 250 C 240 270, 250 280, 245 290" fill="none" stroke="#5d4037"
+                            stroke-width="1.5" />
+
+                        <!-- The Rock Base -->
+                        <path d="M130 220 Q 150 280 200 280 Q 260 280 270 220 Q 200 230 130 220" fill="#ecf0f1"
+                            filter="url(#rockTexture)" opacity="0.9" />
+                        <path d="M130 220 Q 150 280 200 280 Q 260 280 270 220 Q 200 230 130 220" fill="none"
+                            stroke="#bdc3c7" stroke-width="1" />
+
+                        <!-- House -->
+                        <path d="M160 225 L200 180 L240 225" fill="#2c3e50" stroke="#ecf0f1" stroke-width="2" />
+                        <rect x="170" y="225" width="60" height="40" fill="#34495e" stroke="#ecf0f1" stroke-width="2" />
+                        <!-- Window -->
+                        <rect x="190" y="235" width="20" height="20" fill="#f1c40f" opacity="0.8"
+                            filter="url(#softGlow)" />
+                        <line x1="200" y1="235" x2="200" y2="255" stroke="#2c3e50" stroke-width="1" />
+                        <line x1="190" y1="245" x2="210" y2="245" stroke="#2c3e50" stroke-width="1" />
+                    </g>
+
+                    <text x="200" y="380" text-anchor="middle" font-family="'Playfair Display', serif" font-size="16"
+                        letter-spacing="5" fill="#bdc3c7">UNANCHORED</text>
+                </svg>
+            </div>
+            <div class="text-content">
+                <h2>The Tethered Island</h2>
+                <h2>浮空孤岛</h2>
+                <p>一座被连根拔起的岛屿，悬浮在无法触及的虚空之中。裸露的根系在风中摇曳，诉说着对大地的眷恋，却又无可奈何地漂泊。</p>
+                <div class="quote">“即使拥有了自己的世界，也是无根的漂流。安稳，是这种自由唯一的代价。”</div>
+            </div>
+        </div>
+
+        <!-- Concept 2: The Mirage in Glass -->
+        <div class="art-piece">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Glass Reflection Filter -->
+                        <filter id="glassNoise">
+                            <feTurbulence type="turbulence" baseFrequency="0.01" numOctaves="2" result="turbulence" />
+                            <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="5" xChannelSelector="R"
+                                yChannelSelector="G" />
+                        </filter>
+                        <radialGradient id="sphereGrad" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#fff" stop-opacity="0.3" />
+                            <stop offset="100%" stop-color="#fff" stop-opacity="0.05" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- The Sphere -->
+                    <circle cx="200" cy="200" r="120" fill="url(#sphereGrad)" stroke="#bdc3c7" stroke-width="0.5" />
+                    <!-- Reflection highlight -->
+                    <path d="M140 120 Q 180 100 240 130" fill="none" stroke="#fff" stroke-width="2" opacity="0.4"
+                        stroke-linecap="round" />
+
+                    <!-- The House Inside (Slightly distorted/blurred for effect) -->
+                    <g transform="translate(0, 10)">
+                        <path d="M170 210 L200 170 L230 210 V250 H170 V210" fill="#ecf0f1" opacity="0.8" />
+                        <path d="M170 210 L200 170 L230 210" fill="#95a5a6" opacity="0.5" />
+                        <!-- Tiny silhouette inside house -->
+                        <rect x="195" y="230" width="10" height="20" fill="#2c3e50" />
+                    </g>
+
+                    <!-- Broken glass shards floating nearby -->
+                    <path d="M100 100 L110 120 L130 110 Z" fill="#fff" opacity="0.1" />
+                    <path d="M300 300 L290 280 L320 290 Z" fill="#fff" opacity="0.1" />
+
+                    <!-- Text -->
+                    <text x="200" y="360" text-anchor="middle" font-family="'Playfair Display', serif" font-size="16"
+                        letter-spacing="5" fill="#bdc3c7">FRAGILE DREAM</text>
+                </svg>
+            </div>
+            <div class="text-content">
+                <h2>The Mirage in Glass</h2>
+                <h2>镜花水月</h2>
+                <p>它被封存在完美的球体中，看起来触手可及，却被一层易碎的介质永远隔绝。它是夜空中最美的标本，但你不敢触碰，因为一碰，梦也许就碎了。</p>
+                <div class="quote">“遥不可及的并非距离，而是那一层看不见、摸得着，却无法逾越的透明墙壁。”</div>
+            </div>
+        </div>
+
+        <!-- Concept 3: The Impossible Ladder -->
+        <div class="art-piece">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Cloud Texture -->
+                        <filter id="cloudFog">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="4" result="fog" />
+                            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" in="fog"
+                                result="goo" />
+                        </filter>
+                        <linearGradient id="stairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ecf0f1" />
+                            <stop offset="100%" stop-color="#2c3e50" stop-opacity="0" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Clouds at top -->
+                    <ellipse cx="200" cy="100" rx="150" ry="40" fill="#fff" opacity="0.05" filter="url(#cloudFog)" />
+
+                    <!-- The House at top -->
+                    <path d="M260 80 L280 60 L300 80 V110 H260 V80" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" />
+                    <rect x="275" y="90" width="10" height="20" fill="#2c3e50" opacity="0.5" />
+
+                    <!-- Winding Staircase (Spiral lines) -->
+                    <!-- Top stairs (Solid) -->
+                    <path d="M260 110 L240 130" stroke="#bdc3c7" stroke-width="2" />
+                    <path d="M240 130 L220 120" stroke="#bdc3c7" stroke-width="2" />
+                    <path d="M220 120 L200 140" stroke="#bdc3c7" stroke-width="2" />
+
+                    <!-- Middle stairs (Fading) -->
+                    <path d="M200 140 L180 130" stroke="url(#stairGrad)" stroke-width="2" />
+                    <path d="M180 130 L160 150" stroke="url(#stairGrad)" stroke-width="1.5" />
+                    <path d="M160 150 L140 140" stroke="url(#stairGrad)" stroke-width="1" />
+
+                    <!-- Bottom - Disconnected pieces -->
+                    <line x1="120" y1="180" x2="100" y2="190" stroke="#2c3e50" stroke-width="1" opacity="0.5"
+                        stroke-dasharray="5 5" />
+                    <line x1="80" y1="220" x2="60" y2="230" stroke="#2c3e50" stroke-width="1" opacity="0.3"
+                        stroke-dasharray="5 5" />
+
+                    <!-- Person looking up (Tiny silhouette) -->
+                    <circle cx="80" cy="350" r="3" fill="#bdc3c7" />
+                    <rect x="78" y="353" width="4" height="10" fill="#bdc3c7" />
+
+                    <text x="200" y="380" text-anchor="middle" font-family="'Playfair Display', serif" font-size="16"
+                        letter-spacing="5" fill="#bdc3c7">DISTANT PATH</text>
+                </svg>
+            </div>
+            <div class="text-content">
+                <h2>The Impossible Ladder</h2>
+                <h2>云端阶梯</h2>
+                <p>那座房子就在云端，清晰可见。你试图攀登，却发现脚下的阶梯早已在风中消散。它不仅是物理上的高度，更是现实与理想之间那条断裂的轨迹。</p>
+                <div class="quote">“那是我想去的未来，但我弄丢了通往它的地图。”</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

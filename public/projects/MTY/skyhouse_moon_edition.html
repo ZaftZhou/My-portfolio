@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - 星月版深化设计</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #0a0a12;
+            padding: 60px 20px;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 200;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            letter-spacing: 8px;
+            color: #ffeaa7;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            margin-bottom: 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card.light {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+        }
+
+        .card h3 {
+            margin-top: 25px;
+            font-weight: 400;
+            font-size: 1rem;
+            color: #ffeaa7;
+            letter-spacing: 2px;
+        }
+
+        .card.light h3 {
+            color: #2d3436;
+        }
+
+        .card p {
+            color: #636e72;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE</h1>
+    <p class="subtitle">星月版 · 精致深化设计</p>
+
+    <div class="grid">
+
+        <!-- 1. 精致版 - 弯月托举 -->
+        <div class="card">
+            <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Moon gradient -->
+                    <linearGradient id="moonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffeaa7" />
+                        <stop offset="50%" stop-color="#f1c40f" />
+                        <stop offset="100%" stop-color="#d4a017" />
+                    </linearGradient>
+                    <!-- Glow filter -->
+                    <filter id="moonGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <!-- Star glow -->
+                    <filter id="starGlow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="1" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Background stars -->
+                <circle cx="30" cy="40" r="1" fill="#fff" filter="url(#starGlow)" />
+                <circle cx="170" cy="55" r="1.2" fill="#fff" filter="url(#starGlow)" />
+                <circle cx="45" cy="80" r="0.8" fill="#fff" opacity="0.6" />
+                <circle cx="155" cy="35" r="0.8" fill="#fff" opacity="0.6" />
+                <circle cx="100" cy="25" r="1.5" fill="#fff" filter="url(#starGlow)" />
+                <circle cx="75" cy="50" r="0.6" fill="#fff" opacity="0.5" />
+                <circle cx="130" cy="45" r="0.7" fill="#fff" opacity="0.5" />
+
+                <!-- Crescent Moon -->
+                <g filter="url(#moonGlow)">
+                    <path d="M40 130 Q 100 180 160 130" fill="none" stroke="url(#moonGrad)" stroke-width="4"
+                        stroke-linecap="round" />
+                    <!-- Moon surface details -->
+                    <circle cx="60" cy="138" r="2" fill="#d4a017" opacity="0.3" />
+                    <circle cx="140" cy="138" r="1.5" fill="#d4a017" opacity="0.3" />
+                    <circle cx="100" cy="148" r="2.5" fill="#d4a017" opacity="0.2" />
+                </g>
+
+                <!-- Detailed House -->
+                <g>
+                    <!-- Chimney -->
+                    <rect x="115" y="70" width="8" height="12" fill="#2d3436" stroke="#fff" stroke-width="1" />
+                    <!-- Smoke -->
+                    <circle cx="119" cy="65" r="2" fill="none" stroke="#636e72" stroke-width="0.5" opacity="0.5" />
+                    <circle cx="121" cy="60" r="2.5" fill="none" stroke="#636e72" stroke-width="0.5" opacity="0.3" />
+
+                    <!-- Roof -->
+                    <path d="M70 85 L100 55 L130 85" fill="#1a1a2e" stroke="#fff" stroke-width="1.5"
+                        stroke-linejoin="round" />
+                    <!-- Roof texture lines -->
+                    <line x1="85" y1="70" x2="85" y2="85" stroke="#636e72" stroke-width="0.5" opacity="0.3" />
+                    <line x1="100" y1="55" x2="100" y2="85" stroke="#636e72" stroke-width="0.5" opacity="0.3" />
+                    <line x1="115" y1="70" x2="115" y2="85" stroke="#636e72" stroke-width="0.5" opacity="0.3" />
+
+                    <!-- Main body -->
+                    <rect x="75" y="85" width="50" height="35" fill="#1a1a2e" stroke="#fff" stroke-width="1.5" />
+
+                    <!-- Window with glow -->
+                    <rect x="82" y="92" width="14" height="12" fill="#ffeaa7" opacity="0.6" rx="1" />
+                    <rect x="82" y="92" width="14" height="12" fill="none" stroke="#fff" stroke-width="1" rx="1" />
+                    <line x1="89" y1="92" x2="89" y2="104" stroke="#fff" stroke-width="0.8" />
+                    <line x1="82" y1="98" x2="96" y2="98" stroke="#fff" stroke-width="0.8" />
+
+                    <!-- Door -->
+                    <rect x="104" y="100" width="12" height="20" fill="#2d3436" stroke="#fff" stroke-width="1" rx="1" />
+                    <circle cx="113" cy="112" r="1" fill="#ffeaa7" />
+
+                    <!-- Foundation -->
+                    <line x1="70" y1="120" x2="130" y2="120" stroke="#fff" stroke-width="1.5" />
+                </g>
+
+                <!-- String connecting to moon -->
+                <path d="M100 120 Q 100 125, 100 130" stroke="#636e72" stroke-width="0.8" stroke-dasharray="2 2"
+                    opacity="0.5" />
+
+                <!-- Text -->
+                <text x="100" y="175" text-anchor="middle" font-family="Outfit" font-weight="200" font-size="14"
+                    letter-spacing="5" fill="#fff">SKYHOUSE</text>
+            </svg>
+            <h3>月托之家</h3>
+            <p>精致版 · 带烟囱与窗光</p>
+        </div>
+
+        <!-- 2. 满月版 -->
+        <div class="card">
+            <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="fullMoonGrad" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#fffde7" />
+                        <stop offset="100%" stop-color="#f1c40f" />
+                    </radialGradient>
+                    <filter id="moonGlow2" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Full moon background -->
+                <circle cx="100" cy="90" r="55" fill="url(#fullMoonGrad)" filter="url(#moonGlow2)" opacity="0.15" />
+                <circle cx="100" cy="90" r="55" fill="none" stroke="#f1c40f" stroke-width="1" opacity="0.3" />
+
+                <!-- Moon craters (subtle) -->
+                <circle cx="75" cy="75" r="8" fill="#d4a017" opacity="0.1" />
+                <circle cx="120" cy="100" r="6" fill="#d4a017" opacity="0.1" />
+                <circle cx="90" cy="110" r="5" fill="#d4a017" opacity="0.1" />
+
+                <!-- Stars -->
+                <circle cx="25" cy="35" r="1" fill="#fff" />
+                <circle cx="175" cy="45" r="1.2" fill="#fff" />
+                <circle cx="40" cy="150" r="0.8" fill="#fff" opacity="0.6" />
+                <circle cx="160" cy="140" r="0.8" fill="#fff" opacity="0.6" />
+
+                <!-- House silhouette on moon -->
+                <g>
+                    <path d="M75 95 L100 70 L125 95 V120 H75 V95" fill="#0a0a12" stroke="none" />
+                    <!-- Window glow -->
+                    <rect x="82" y="100" width="10" height="8" fill="#ffeaa7" opacity="0.8" />
+                    <rect x="108" y="100" width="10" height="8" fill="#ffeaa7" opacity="0.8" />
+                    <!-- Door -->
+                    <rect x="94" y="105" width="12" height="15" fill="#1a1a2e" />
+                    <!-- Chimney -->
+                    <rect x="110" y="78" width="6" height="10" fill="#0a0a12" />
+                </g>
+
+                <text x="100" y="170" text-anchor="middle" font-family="Outfit" font-weight="300" font-size="12"
+                    letter-spacing="4" fill="#ffeaa7">SKYHOUSE</text>
+            </svg>
+            <h3>月中剪影</h3>
+            <p>满月背景 · 房屋剪影</p>
+        </div>
+
+        <!-- 3. 新月悬浮版 -->
+        <div class="card">
+            <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="crescentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffeaa7" />
+                        <stop offset="100%" stop-color="#f39c12" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Stars field -->
+                <circle cx="30" cy="30" r="1" fill="#fff" />
+                <circle cx="170" cy="40" r="1.5" fill="#fff" />
+                <circle cx="50" cy="160" r="1" fill="#fff" />
+                <circle cx="150" cy="170" r="0.8" fill="#fff" />
+                <circle cx="20" cy="100" r="0.8" fill="#fff" opacity="0.5" />
+                <circle cx="180" cy="120" r="1" fill="#fff" opacity="0.5" />
+
+                <!-- Crescent moon (thick) -->
+                <path d="M60 140 C 100 180, 140 140, 100 140 C 80 140, 60 150, 60 140" fill="url(#crescentGrad)" />
+
+                <!-- House floating above -->
+                <g transform="translate(70, 55)">
+                    <!-- Balloon strings -->
+                    <line x1="30" y1="35" x2="20" y2="5" stroke="#b2bec3" stroke-width="0.8" />
+                    <line x1="30" y1="35" x2="30" y2="0" stroke="#b2bec3" stroke-width="0.8" />
+                    <line x1="30" y1="35" x2="40" y2="5" stroke="#b2bec3" stroke-width="0.8" />
+
+                    <!-- Small balloons -->
+                    <circle cx="20" cy="3" r="6" fill="#ff7675" opacity="0.8" />
+                    <circle cx="30" cy="-2" r="7" fill="#74b9ff" opacity="0.8" />
+                    <circle cx="40" cy="3" r="5" fill="#a29bfe" opacity="0.8" />
+
+                    <!-- Detailed house -->
+                    <path d="M15 40 L30 25 L45 40 V60 H15 V40" fill="#fff" stroke="#2d3436" stroke-width="1" />
+                    <path d="M15 40 L30 25 L45 40" fill="#e17055" stroke="#2d3436" stroke-width="1" />
+                    <!-- Window -->
+                    <rect x="20" y="45" width="8" height="6" fill="#74b9ff" stroke="#2d3436" stroke-width="0.8" />
+                    <!-- Door -->
+                    <rect x="32" y="48" width="8" height="12" fill="#ffeaa7" stroke="#2d3436" stroke-width="0.8" />
+                </g>
+
+                <!-- String to moon -->
+                <path d="M100 115 Q 100 125, 100 135" stroke="#636e72" stroke-width="0.8" stroke-dasharray="2 2" />
+
+                <text x="100" y="185" text-anchor="middle" font-family="Outfit" font-weight="200" font-size="12"
+                    letter-spacing="4" fill="#fff">SKYHOUSE</text>
+            </svg>
+            <h3>新月悬浮</h3>
+            <p>彩色气球 · 新月托底</p>
+        </div>
+
+        <!-- 4. 浅色版本 -->
+        <div class="card light">
+            <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="moonGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f1c40f" />
+                        <stop offset="100%" stop-color="#e67e22" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Subtle background circle -->
+                <circle cx="100" cy="100" r="70" fill="#f5f6fa" />
+
+                <!-- Crescent moon -->
+                <path d="M40 130 Q 100 175 160 130" fill="none" stroke="url(#moonGradLight)" stroke-width="3"
+                    stroke-linecap="round" />
+
+                <!-- Stars (gray for light mode) -->
+                <circle cx="45" cy="55" r="2" fill="#dfe6e9" />
+                <circle cx="155" cy="65" r="2.5" fill="#dfe6e9" />
+                <circle cx="100" cy="35" r="3" fill="#dfe6e9" />
+
+                <!-- Detailed house -->
+                <g>
+                    <path d="M70 85 L100 55 L130 85" fill="#fff" stroke="#2d3436" stroke-width="1.5" />
+                    <rect x="75" y="85" width="50" height="35" fill="#fff" stroke="#2d3436" stroke-width="1.5" />
+                    <rect x="82" y="92" width="12" height="10" fill="#74b9ff" stroke="#2d3436" stroke-width="1" />
+                    <rect x="106" y="92" width="12" height="10" fill="#74b9ff" stroke="#2d3436" stroke-width="1" />
+                    <rect x="94" y="102" width="12" height="18" fill="#ffeaa7" stroke="#2d3436" stroke-width="1" />
+                    <circle cx="103" cy="112" r="1.5" fill="#2d3436" />
+                    <rect x="115" y="68" width="8" height="12" fill="#fff" stroke="#2d3436" stroke-width="1" />
+                </g>
+
+                <text x="100" y="175" text-anchor="middle" font-family="Outfit" font-weight="400" font-size="13"
+                    letter-spacing="3" fill="#2d3436">SKYHOUSE</text>
+            </svg>
+            <h3>浅色适配</h3>
+            <p>适合浅色背景场景</p>
+        </div>
+
+        <!-- 5. 横版 Logo -->
+        <div class="card" style="grid-column: span 2;">
+            <svg viewBox="0 0 400 80" width="400" height="80" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="moonGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffeaa7" />
+                        <stop offset="100%" stop-color="#f1c40f" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Icon section -->
+                <g transform="translate(10, 5)">
+                    <!-- Moon arc -->
+                    <path d="M5 55 Q 35 75 65 55" fill="none" stroke="url(#moonGradH)" stroke-width="2.5"
+                        stroke-linecap="round" />
+                    <!-- Stars -->
+                    <circle cx="10" cy="20" r="1" fill="#fff" />
+                    <circle cx="60" cy="15" r="1" fill="#fff" />
+                    <circle cx="35" cy="8" r="1.2" fill="#fff" />
+                    <!-- House -->
+                    <path d="M20 35 L35 20 L50 35 V52 H20 V35" fill="#1a1a2e" stroke="#fff" stroke-width="1" />
+                    <rect x="25" y="40" width="8" height="6" fill="#ffeaa7" opacity="0.6" />
+                    <rect x="37" y="42" width="8" height="10" fill="#2d3436" stroke="#fff" stroke-width="0.8" />
+                </g>
+
+                <!-- Text -->
+                <text x="100" y="50" font-family="Outfit" font-weight="200" font-size="32" letter-spacing="8"
+                    fill="#fff">SKYHOUSE</text>
+
+                <!-- Tagline -->
+                <text x="100" y="68" font-family="Outfit" font-weight="300" font-size="10" letter-spacing="3"
+                    fill="#636e72">心之所向 · 星月为伴</text>
+            </svg>
+            <h3>横版标准</h3>
+            <p>网站头部 / 名片 / 文档水印</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

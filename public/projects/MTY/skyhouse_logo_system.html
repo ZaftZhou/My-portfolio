@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Logo System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Space+Mono:wght@400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f5f6fa;
+            color: #2d3436;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 60px;
+            color: #2d3436;
+        }
+
+        .container {
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 60px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .hover-container {
+            transform: translateY(-5px);
+        }
+
+        .label {
+            margin-top: 40px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: #b2bec3;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Construction lines overlay */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(#f0f0f0 1px, transparent 1px),
+                linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 2px;
+        }
+
+        svg {
+            z-index: 1;
+            overflow: visible;
+        }
+
+        /* Color Palette Display */
+        .palette {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- CONTROL PANEL --- */
+        .controls {
+            margin-bottom: 40px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #2d3436;
+            color: #fff;
+            border: none;
+            font-family: 'Space Mono', monospace;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- INTRO ANIMATION SEQUENCE --- */
+
+        /* Initial States (Hidden) */
+        .intro-active .house-anim-target {
+            opacity: 0;
+        }
+
+        .intro-active .moon-cradle {
+            opacity: 0;
+        }
+
+        .intro-active .balloon-wrapper {
+            opacity: 0;
+        }
+
+        .intro-active .tether {
+            opacity: 0;
+        }
+
+        .intro-active .logo-container {
+            transform: translateY(20px);
+            /* Initial grounded state */
+        }
+
+        /* 1. House Appears (Fade In + Scale) */
+        @keyframes houseAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* 2. Moon Flies Out (From Window to Base) */
+        /* Logic: Window center is roughly (100, 110). Moon base is (100, 160). */
+        @keyframes moonFlyOut {
+            0% {
+                opacity: 0;
+                transform: translate(0, -50px) scale(0.1);
+                /* Starts at window position */
+            }
+
+            20% {
+                opacity: 1;
+                transform: translate(0, -50px) scale(0.3);
+                /* Glowing orb at window */
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+                /* Settles at base */
+            }
+        }
+
+        /* 3. Balloons Rise (Scale Up + Float Up) */
+        @keyframes balloonsRise {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 4. Tether Appears (Draw in) */
+        @keyframes tetherAppear {
+            0% {
+                opacity: 0;
+                stroke-dashoffset: 20;
+            }
+
+            100% {
+                opacity: 1;
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* 5. Liftoff (Whole group floats up) */
+        @keyframes liftOff {
+            0% {
+                transform: translateY(20px);
+            }
+
+            /* Grounded */
+            100% {
+                transform: translateY(0);
+            }
+
+            /* Floating */
+        }
+
+        /* Sequencing Classes */
+        .intro-active .house-anim-target {
+            animation: houseAppear 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+        .intro-active .moon-cradle {
+            /* Pivot for rocking needs to be preserved, so we animate a wrapper or use additive transform logic carefully.
+               Here we will animate the Moon Group itself for the entrance. */
+            animation: moonFlyOut 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 1.0s;
+        }
+
+        .intro-active .balloon-wrapper {
+            animation: balloonsRise 1.0s ease-out forwards;
+            animation-delay: 2.2s;
+        }
+
+        .intro-active .tether {
+            animation: tetherAppear 0.5s ease-out forwards;
+            animation-delay: 2.8s;
+        }
+
+        .intro-active .logo-container {
+            /* The whole container lifts off at the end */
+            animation: liftOff 1.5s ease-in-out forwards;
+            animation-delay: 3.0s;
+        }
+
+
+        /* --- PASSIVE LOOPS (After Intro) --- */
+        /* These kick in or persist. For simplicity in CSS only, we use a separate class or assume they run after.
+           Problem: CSS animations override each other. 
+           Solution: Wrap content in animation containers.
+        */
+
+        .balloon-bob {
+            animation: bob 4s ease-in-out infinite;
+        }
+
+        .moon-rock {
+            animation: rock 6s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes rock {
+
+            0%,
+            100% {
+                transform: rotate(-2deg);
+            }
+
+            50% {
+                transform: rotate(2deg);
+            }
+        }
+
+        .hover-container {
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+    <script>
+        function replayIntro() {
+            const container = document.getElementById('primary-logo');
+            // Reset
+            container.classList.remove('intro-active');
+            void container.offsetWidth; // Trigger reflow
+            // Start
+            container.classList.add('intro-active');
+        }
+        window.onload = replayIntro;
+    </script>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE LOGO SYSTEM / VER 1.1</h1>
+
+    <div class="controls">
+        <button onclick="replayIntro()">▶ REPLAY STORY INTRO</button>
+    </div>
+
+    <div class="container">
+
+        <!-- PRIMARY LOGO MARK -->
+        <div class="card" id="primary-logo">
+            <div class="grid-lines"></div>
+            <svg viewBox="0 0 200 240" width="200" height="240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Unified Gradient for Moon -->
+                    <linearGradient id="moonGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#f39c12" />
+                        <!-- Deep Orange/Yellow -->
+                        <stop offset="100%" stop-color="#f1c40f" />
+                        <!-- Bright Yellow -->
+                    </linearGradient>
+                </defs>
+
+                <!-- LIFT OFF CONTAINER (Animated Group) -->
+                <g class="logo-container">
+
+                    <!-- ROTATION/TILT GROUP (Static constraint) -->
+                    <g class="hover-container" transform="translate(100, 100) rotate(4) translate(-100, -100)">
+
+                        <!-- BALLOONS (Wrapper for Entrance + Bobbing) -->
+                        <g class="balloon-wrapper">
+                            <!-- Center Balloon (Accent - Muted Teal) -->
+                            <g class="balloon-bob" style="animation-delay: 0s;">
+                                <!-- S-Curve String -->
+                                <path d="M100 35 Q 98 50, 100 70" stroke="#b2bec3" stroke-width="0.3" fill="none" />
+                                <circle cx="100" cy="35" r="14" fill="#5F9EA0" /> <!-- Cadillac Blue / Muted Teal -->
+                            </g>
+
+                            <!-- Left Balloon (Foggy Grey) -->
+                            <g class="balloon-bob" style="animation-delay: 0.5s;">
+                                <path d="M75 45 Q 85 60, 95 70" stroke="#b2bec3" stroke-width="0.3" fill="none" />
+                                <circle cx="75" cy="45" r="12" fill="#bdc3c7" />
+                            </g>
+
+                            <!-- Right Balloon (Foggy Grey) -->
+                            <g class="balloon-bob" style="animation-delay: 1.2s;">
+                                <path d="M125 45 Q 115 60, 105 70" stroke="#b2bec3" stroke-width="0.3" fill="none" />
+                                <circle cx="125" cy="45" r="12" fill="#bdc3c7" />
+                            </g>
+                        </g>
+
+                        <!-- HOUSE GROUP -->
+                        <!-- Lowered by 4px (70 -> 74) to sit deeper -->
+                        <g class="house-group" transform="translate(76, 74)">
+                            <g class="house-anim-target">
+                                <!-- House Body -->
+                                <rect x="0" y="24" width="48" height="32" fill="#dfe6e9" />
+
+                                <!-- House Roof -->
+                                <path d="M0 24 L24 0 L48 24" fill="#2d3436" />
+
+                                <!-- Window (Smaller 10px, Warmer Orange-Yellow) -->
+                                <rect x="19" y="35" width="10" height="10" fill="#ffa502" />
+                            </g>
+                        </g>
+
+                        <!-- CRESCENT BASE -->
+                        <!-- Sharper Tips, Raised slightly -->
+                        <g class="moon-cradle" transform-origin="100px 140px">
+                            <g class="moon-rock">
+                                <!-- New Path: Sharper tips -->
+                                <path d="M55 135 C 55 175, 145 175, 145 135 C 145 160, 55 160, 55 135"
+                                    fill="url(#moonGrad)" />
+                            </g>
+                        </g>
+                    </g>
+                </g>
+
+                <!-- TEXT LOCKUP -->
+                <!-- Increased Tracking +8 -->
+                <text x="100" y="235" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="600"
+                    font-size="14" letter-spacing="8" fill="#2d3436">SKYHOUSE</text>
+
+            </svg>
+            <div class="label">Primary Mark V1.2</div>
+            <div class="palette">
+                <!-- Color Logic -->
+                <div class="swatch" style="background:#5F9EA0" title="Accent Teal"></div>
+                <div class="swatch" style="background:#bdc3c7" title="Foggy Grey"></div>
+                <div class="swatch" style="background:#2d3436" title="Navy Roof"></div>
+                <div class="swatch" style="background:#ffa502" title="Warm Light"></div>
+            </div>
+        </div>
+
+        <!-- GEOMETRY BREAKDOWN -->
+        <div class="card" style="background: #2d3436;">
+            <div class="grid-lines" style="opacity: 0.1"></div>
+            <svg viewBox="0 0 200 240" width="200" height="240" xmlns="http://www.w3.org/2000/svg">
+                <g transform="translate(100, 100) rotate(4) translate(-100, -100)">
+                    <!-- Outline Only Mode -->
+                    <g stroke="#fff" fill="none" stroke-width="0.8">
+                        <!-- Balloons -->
+                        <circle cx="100" cy="35" r="14" />
+                        <circle cx="75" cy="45" r="12" />
+                        <circle cx="125" cy="45" r="12" />
+
+                        <!-- Strings -->
+                        <path d="M100 35 Q 98 50, 100 70" />
+                        <path d="M75 45 Q 85 60, 95 70" />
+                        <path d="M125 45 Q 115 60, 105 70" />
+
+                        <!-- House (Lowered) -->
+                        <g transform="translate(0, 4)">
+                            <rect x="76" y="94" width="48" height="32" />
+                            <path d="M76 94 L100 70 L124 94" />
+                            <rect x="95" y="105" width="10" height="10" />
+                        </g>
+
+                        <!-- Moon (Sharper) -->
+                        <path d="M55 135 C 55 175, 145 175, 145 135 C 145 160, 55 160, 55 135" />
+                    </g>
+
+                    <!-- Construction Guides (Cyan) -->
+                    <g stroke="#00d2d3" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.6">
+                        <!-- Center Axis -->
+                        <line x1="100" y1="20" x2="100" y2="200" />
+                        <!-- Balloon alignment -->
+                        <line x1="60" y1="45" x2="140" y2="45" />
+                        <!-- Base alignment (Updated) -->
+                        <line x1="60" y1="140" x2="140" y2="140" />
+                    </g>
+
+                    <!-- Angle Indicator -->
+                    <path d="M160 100 L160 140" stroke="#ff9ff3" stroke-width="1" />
+                    <text x="165" y="125" fill="#ff9ff3" font-family="'Space Mono'" font-size="10">4°</text>
+                </g>
+                <text x="100" y="230" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="400"
+                    font-size="12" letter-spacing="2" fill="#fff" opacity="0.5">GEOMETRY / CONSTRUCTION</text>
+            </svg>
+            <div class="label" style="opacity: 0.5">Grid System</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

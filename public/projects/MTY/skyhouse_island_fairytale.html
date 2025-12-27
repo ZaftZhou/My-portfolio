@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Fairytale & Storybook Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gloria+Hallelujah&family=Indie+Flower&family=Noto+Sans+SC:wght@300;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gaegu', cursive;
+            background: #fdf6e3;
+            padding: 60px 20px;
+            color: #586e75;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: #268bd2;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #93a1a1;
+            margin-bottom: 80px;
+            font-size: 1.2rem;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .book-page {
+            background: #fff;
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05), inset 0 0 50px rgba(0, 0, 0, 0.02);
+            position: relative;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+        }
+
+        .book-page:hover {
+            transform: rotate(1deg) translateY(-5px);
+        }
+
+        /* Binding deco */
+        .book-page::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            border-left: 1px dashed #ddd;
+        }
+
+        .canvas {
+            width: 100%;
+            aspect-ratio: 1/1;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #073642;
+        }
+
+        p {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 300;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #657b83;
+        }
+
+        svg {
+            width: 90%;
+            height: 90%;
+        }
+
+        /* Floating animation for all items */
+        @keyframes gentle-float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(0.5deg);
+            }
+        }
+
+        .floating {
+            animation: gentle-float 5s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE</h1>
+    <p class="subtitle">Storybook & Fairytale Dreams</p>
+
+    <div class="grid">
+
+        <!-- 1. Crayon Story -->
+        <div class="book-page">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Crayon Texture Filter -->
+                        <filter id="crayon">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" result="noise" />
+                            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R"
+                                yChannelSelector="G" />
+                        </filter>
+                        <!-- Shaky Line Filter -->
+                        <filter id="shaky">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+                            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+                        </filter>
+                    </defs>
+
+                    <g class="floating" filter="url(#shaky)">
+                        <!-- Crayon Base (Island) -->
+                        <path d="M100 240 Q 200 290 300 240 Q 200 250 100 240" fill="#b5bd68" filter="url(#crayon)" />
+
+                        <!-- Crayon Roots -->
+                        <g stroke="#8c6239" stroke-width="4" stroke-linecap="round" filter="url(#crayon)">
+                            <path d="M160 260 Q 155 300 160 340" fill="none" />
+                            <path d="M200 270 Q 210 320 200 370" fill="none" />
+                            <path d="M240 260 Q 245 290 235 320" fill="none" />
+                        </g>
+
+                        <!-- Crayon House -->
+                        <g transform="translate(145, 160)">
+                            <path d="M0 40 L 55 0 L 110 40 V 85 H 0 V 40" fill="#cc6666" filter="url(#crayon)" />
+                            <path d="M0 40 L 55 0 L 110 40" fill="#a54242" filter="url(#crayon)" />
+                            <!-- Yellow window light -->
+                            <rect x="40" y="50" width="30" height="25" fill="#f0c674" filter="url(#crayon)" />
+                            <line x1="55" y1="50" x2="55" y2="75" stroke="#a54242" stroke-width="2" />
+                            <line x1="40" y1="62.5" x2="70" y2="62.5" stroke="#a54242" stroke-width="2" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <h3>Crayon Story (蜡笔绘本)</h3>
+            <p>粗糙而温暖的蜡笔质感，不规则的线条带着孩童般的笨拙与真诚。那是梦里最初的颜色。</p>
+        </div>
+
+        <!-- 2. Dotted Journal -->
+        <div class="book-page">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Grid Paper Pattern -->
+                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <circle cx="1" cy="1" r="0.5" fill="#ddd" />
+                        </pattern>
+                        <!-- Washi Tape Texture -->
+                        <filter id="tape">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="2" result="noise" />
+                            <feDiffuseLighting in="noise" lighting-color="#fff" surfaceScale="1">
+                                <feDistantLight azimuth="45" elevation="60" />
+                            </feDiffuseLighting>
+                            <feComposite in2="SourceGraphic" operator="in" />
+                        </filter>
+                    </defs>
+
+                    <!-- Journal Background -->
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+
+                    <g class="floating">
+                        <!-- Washi Tape Holding The Island -->
+                        <rect x="150" y="240" width="100" height="30" fill="#81a1c1" opacity="0.6"
+                            transform="rotate(-5, 200, 255)" filter="url(#tape)" />
+
+                        <!-- Paper Cutout Island -->
+                        <path d="M120 250 Q 200 290 280 250 L 280 270 Q 200 300 120 270 Z" fill="#ebcb8b"
+                            stroke="#d08770" stroke-width="1" />
+
+                        <!-- Roots as sketched lines -->
+                        <g stroke="#4c566a" stroke-width="1" fill="none" stroke-dasharray="3 3">
+                            <path d="M170 275 C 165 310, 175 330, 170 360" />
+                            <path d="M230 275 C 235 300, 225 320, 230 350" />
+                        </g>
+
+                        <!-- Paper Cutout House -->
+                        <g transform="translate(160, 180)">
+                            <path d="M0 30 L 40 0 L 80 30 V 70 H 0 V 30" fill="#bf616a" stroke="#fff"
+                                stroke-width="2" />
+                            <!-- "Pasted" window -->
+                            <rect x="25" y="40" width="30" height="20" fill="#fff" />
+                            <text x="31" y="55" font-family="'Gloria Hallelujah'" font-size="12" fill="#bf616a">H O M
+                                E</text>
+                        </g>
+
+                        <!-- Handwritten Label -->
+                        <text x="200" y="100" text-anchor="middle" font-family="'Gloria Hallelujah', cursive"
+                            font-size="24" fill="#5e81ac">Dreaming High...</text>
+                    </g>
+                </svg>
+            </div>
+            <h3>Dotted Journal (手账贴纸)</h3>
+            <p>像是拼贴在网格笔记本上的心情。和纸胶带固定着摇欲坠的岛屿，每一处“不完美”都是生活记录的痕迹。</p>
+        </div>
+
+        <!-- 3. Glowing Tale -->
+        <div class="book-page" style="background: #1a202c;">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="houseGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#fbd38d" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#fbd38d" stop-opacity="0" />
+                        </radialGradient>
+                        <filter id="softBlur">
+                            <feGaussianBlur stdDeviation="3" />
+                        </filter>
+                    </defs>
+
+                    <g class="floating">
+                        <!-- Island Silhouette -->
+                        <path d="M120 250 Q 200 290 280 250 Q 200 260 120 250" fill="#2d3748" stroke="#4a5568"
+                            stroke-width="1" />
+
+                        <!-- Floating glowing specs (Fireflies) -->
+                        <circle cx="100" cy="280" r="2" fill="#f6ad55">
+                            <animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="300" cy="150" r="1.5" fill="#f6ad55">
+                            <animate attributeName="opacity" values="0.2;1;0.2" dur="4s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="150" cy="180" r="1" fill="#f6ad55">
+                            <animate attributeName="opacity" values="0.2;1;0.2" dur="2.5s" repeatCount="indefinite" />
+                        </circle>
+
+                        <!-- The Glowing House -->
+                        <g transform="translate(165, 190)">
+                            <!-- Glow leak -->
+                            <circle cx="35" cy="40" r="40" fill="url(#houseGlow)" filter="url(#softBlur)" />
+
+                            <path d="M0 30 L 35 0 L 70 30 V 60 H 0 V 30" fill="#1a202c" stroke="#edf2f7"
+                                stroke-width="2" />
+                            <!-- Warm window -->
+                            <rect x="25" y="32" width="20" height="18" fill="#fbd38d" />
+                        </g>
+
+                        <!-- Ethereal roots -->
+                        <g stroke="#4a5568" stroke-width="0.5" fill="none">
+                            <path d="M180 270 Q 170 320 180 370" opacity="0.4" />
+                            <path d="M220 270 Q 230 310 210 350" opacity="0.3" />
+                        </g>
+                    </g>
+
+                    <text x="200" y="360" text-anchor="middle" font-family="'Gaegu', cursive" font-size="18"
+                        fill="#a0aec0" letter-spacing="3">Once upon a time...</text>
+                </svg>
+            </div>
+            <h3 style="color: #cbd5e0;">Glowing Tale (萤火童话)</h3>
+            <p>深夜里唯一亮着灯的小屋。萤火虫在岛屿边缘起舞，虽然路途遥远且不安稳，但那点莹莹灯火却是归途的全部意义。</p>
+        </div>
+
+        <!-- 4. Pencil & Watercolor -->
+        <div class="book-page">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Watercolor Bleed -->
+                        <filter id="bleed">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+                            <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" />
+                            <feGaussianBlur stdDeviation="3" />
+                        </filter>
+                    </defs>
+
+                    <g class="floating">
+                        <!-- Watercolor Island Wash -->
+                        <path d="M120 250 Q 200 290 280 250" fill="#81e6d9" opacity="0.3" filter="url(#bleed)" />
+
+                        <!-- Pencil Shaded Island -->
+                        <path d="M120 250 Q 200 285 280 250 Q 200 265 120 250" fill="none" stroke="#718096"
+                            stroke-width="1" />
+
+                        <!-- Thin pencil roots -->
+                        <g stroke="#a0aec0" stroke-width="0.8" fill="none">
+                            <path d="M165 260 C 160 300, 150 320, 155 350" />
+                            <path d="M235 260 C 240 280, 250 310, 245 330" />
+                        </g>
+
+                        <!-- Watercolor House Wash -->
+                        <path d="M170 215 L 200 185 L 230 215 V 250 H 170 V 215" fill="#fbb6ce" opacity="0.4"
+                            filter="url(#bleed)" transform="translate(5, 5)" />
+
+                        <!-- Pencil Outlined House -->
+                        <g transform="translate(170, 190)">
+                            <path d="M0 25 L 30 0 L 60 25 V 60 H 0 V 25" fill="none" stroke="#4a5568"
+                                stroke-width="1.2" />
+                            <!-- Light hatch for shadow -->
+                            <line x1="45" y1="35" x2="60" y2="50" stroke="#718096" stroke-width="0.5" />
+                            <line x1="50" y1="30" x2="60" y2="40" stroke="#718096" stroke-width="0.5" />
+                        </g>
+                    </g>
+
+                    <text x="200" y="380" text-anchor="middle" font-family="'Indie Flower', cursive" font-size="20"
+                        fill="#718096">Sketching a fleeting dream</text>
+                </svg>
+            </div>
+            <h3>Pencil & Watercolor (淡彩速写)</h3>
+            <p>轻巧的铅笔线条勾勒出轮廓，色彩在纸间自然晕染。它像是一场还未来得及定格的梦，带着艺术家的灵动与随性。</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

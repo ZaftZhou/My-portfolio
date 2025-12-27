@@ -1,0 +1,996 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title> </title>
+  <meta http-equiv="cache-control" content="must- revalidate" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no,
+            minimum-scale=1.0, maximum-scale=1.0" />
+  <!-- <link rel="stylesheet" href="../css/noto_sans.css" />
+  <link rel="stylesheet" href="../css/noto_serif.css" /> -->
+  <link rel="stylesheet" href="../css/main.css" type="text/css" />
+  <link rel="stylesheet" href="../css/share.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/swiper.min.css" />
+  <script src="../js/libs/jquery.js"></script>
+  <script src="../js/libs/TweenMax.min.js"></script>
+  <!-- 分享插件 -->
+  <!-- <script src="../js/social-share.js"></script> -->
+  <!-- <script src="../js/qrcode.js"></script> -->
+  <!-- 分享插件 -->
+  <!-- <script src="../js/jquery-1.11.0.min.js"></script> -->
+  <!-- <script src="../js/www.js"></script> -->
+  <script src="../js/swiper.min.js"></script>
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script> 
+  <script src="../js/playSound.js"></script>
+</head>
+
+<body>
+  <!-- <audio id="word_music" loop="loop">
+    <source src="../audio/bgm.mp3" type="audio/mpeg" >
+  </audio> -->
+  <div id="resetBtn" class="button"></div>
+  <!-- <span id="musicBtn" class="button">
+    <audio id="music" loop="loop">
+        <source src="../audio/bgm.mp3" type="audio/mpeg">
+    </audio>
+  </span> -->
+    <a id="mc_play" class="stop">
+        <audio id="music" loop="loop">
+            <source src="../audio/bgm.mp3" type="audio/mpeg">
+        </audio>
+    </a>
+  
+  <div id="hotpointTitle" class="preventMoveEvent descript-post3">
+    <span id="title1"></span>
+    <span id="title2"></span>
+  </div>
+  <div id="hotpointDescript" class="preventMoveEvent">
+    <div id="hotpointSubTitle">
+      
+    </div>
+  </div>
+
+  <div id="buttonContainer">
+    <span id="tapTip">点击图标开启探索</span>
+    <div id="bottomButtons" class="swiper-container swiper-container-initialized swiper-container-horizontal">
+      <div class="swiper-wrapper" style="
+            transition-duration: 0ms;
+            transform: translate3d(-4696.67px, 0px, 0px);
+          ">
+        <div class="swiper-slide" data-swiper-slide-index="0">
+          <div class="pos1 button"></div>
+        </div>
+        <div class="swiper-slide" data-swiper-slide-index="1">
+          <div class="pos2 button"></div>
+        </div>
+        <div class="swiper-slide" data-swiper-slide-index="2">
+          <div class="pos3 button"></div>
+        </div>
+        <div class="swiper-slide" data-swiper-slide-index="3">
+          <div class="pos4 button"></div>
+        </div>
+        <div class="swiper-slide" data-swiper-slide-index="4">
+          <div class="pos5 button"></div>
+        </div>
+      </div>
+      <span id="pos-line"></span>
+    </div>
+    <div id="hotpointInfo">
+      <div id="leftIcon"></div>
+      <div id="infoContent">
+        <!-- Maison Margiela JC Plaza旗舰店 -->
+        <div id="icon-title">Maison Margiela JC Plaza旗舰店</div>
+        <div id="icon-sub-title">Maison Margiela JC Plaza Flagship Store</div>
+      </div>
+      <div id="rightIcon"></div>
+    </div>
+    <div id="shareBtn">
+      <img src="../images/icon/share-button.png" alt="" id="shareAction" />
+    </div>
+  </div>
+
+  <div id="share_mask">
+    <img src="../images/share_poster.png" alt="" />
+  </div>
+  <div class="loading_p" id="loading_m">
+    <div class="loading" style="display: flex; flex-direction: column;">
+      <div class="loading_t" style="margin-top: 60px">
+        <img src="../images/loading-logo.png" width="122" >
+      </div>
+
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1;margin-top: -50px;">
+        <div id="animation-map" style="width: 216px;">
+             <img src="../images/loading-map2.gif" style="width: 216px;"/>
+            <!-- <video autoplay="autopaly" width="216" id="loading_v" loop>
+              <source src="../video/loading-video.mp4" type="video/mp4"></source>
+              不支持 video 标签。
+            </video> -->
+        </div>
+        <div class="progressBar">
+          <!-- <div></div> -->
+        </div>
+        <div class="loading_percent">0%</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+  
+    $(function() {
+      // 将以下代码添加到js入口函数内即可
+      // 这里使用了微信自带的WeixinJSBridgeReady事件
+      document.addEventListener('WeixinJSBridgeReady', function() {
+          document.getElementById('audios').play()
+      })
+    })
+
+  </script>
+  <script type="module">
+    import * as THREE from "../js/three.module.js";
+    import Stats from "../js/libs/stats.module.js";
+    import { GUI } from "../js/libs/dat.gui.module.js";
+    import { OrbitControls } from "../js/controls/OrbitControls.js";
+    import { GLTFLoader } from "../js/loaders/GLTFLoader.js";
+    import { RGBELoader } from "../js/loaders/RGBELoader.js";
+    import { RoughnessMipmapper } from "../js/loaders/RoughnessMipmapper.js";
+    import { EffectComposer } from "../js/postprocessing/EffectComposer.js";
+    import { SSAOPass } from "../js/postprocessing/SSAOPass.js";
+    import { LightProbeGenerator } from "../js/LightProbeGenerator.js";
+
+    var camera, scene, renderer, raycaster, stats, controls, lightProbe, dirLight;
+    var clock = new THREE.Clock();
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
+    var groupArray = [];
+    var initPosition = new THREE.Vector3(0, 5, 0);
+    var modelInitPosition = initPosition; //new THREE.Vector3(0, 0, 0);
+
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
+    var meshArray = []; // 网格数组
+    var modelObject;
+
+    var spriteVector = new THREE.Vector3(-26, 12.5, -6.5);
+    var sphere; 
+    var annotationShow = false;
+
+    var positionY = -128;
+    var index = 0;
+    var annotation = $(".annotation");
+
+    var composer;
+
+    var currentHotPoint = null;
+    //相机默认位置
+    var cameraDefaultPosition = new THREE.Vector3(-62.550297603200995, 40.70761443800025, 6.895268678584495);
+
+    var iconIdx, lastCamraPos, tweenMax;
+    var materialColorMap = {};
+    var isPlayBgm = false;
+    var isAlpha = true;
+
+    init();
+    animate();
+
+    var mySwiper = new Swiper(".swiper-container", {
+      speed: 600,
+      // allowTouchMove: false,
+      slideToClickedSlide: true,
+      preventInteractionOnTransition: true,
+      centeredSlides: true,
+      slidesPerView: 4,
+      loop: true,
+      on: {
+        click: function () {
+          iconChange(parseInt(this.clickedSlide.dataset.swiperSlideIndex));
+        },
+        slideChangeTransitionStart: function(){
+          
+          iconChange(parseInt(this.realIndex));
+        },
+      },
+    });
+
+    //1.场景
+    function initScene() {
+      scene = new THREE.Scene();
+      window.scene = scene;
+    }
+
+    //2.透视相机
+    function initCamera() {
+      camera = new THREE.PerspectiveCamera(
+        40,
+        window.innerWidth / window.innerHeight,
+        10,
+        2000
+      );
+      camera.position.copy(initPosition);
+      window.camera = camera;
+    }
+
+    //3.渲染器
+    function initRender() {
+      raycaster = new THREE.Raycaster();
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.5;
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      document.body.appendChild(renderer.domElement);
+    }
+
+    
+    function startPlayMusic() {
+        if(!isPlayBgm) {
+          // console.log('播放')
+          isPlayBgm = true
+          setTimeout(() => {
+            play_music();
+          }, 200);
+        }
+    }
+
+    //4.事件
+    function initEvent() {
+      window.addEventListener("resize", onWindowResize, false);
+
+      $('#loading_m').click(function() {
+        // document.getElementById('loading_v').play()
+      })
+
+      // 全景
+      $("#resetBtn").click(function () {
+        startPlayMusic()
+        switchHotPoint(null);
+        document.getElementById("hotpointInfo").style.cssText =
+          "visibility:hidden";
+        // TweenMax.to(modelObject.position, 1.5, {
+        //   x: initPosition.x,
+        //   y: initPosition.y,
+        //   z: initPosition.z,
+        // });
+        // TweenMax.to(camera.position, 1.5, {
+        //   x: cameraDefaultPosition.x,
+        //   y: cameraDefaultPosition.y,
+        //   z: cameraDefaultPosition.z,
+        //   ease: Power2.easeInOut,
+        //   onComplete: function () {
+        //     changeState(-1);
+        //   },
+        // });
+        
+        TweenMax.to(modelObject.position, 1.5, {
+          x: initPosition.x + 10,
+          y: initPosition.y,
+          z: initPosition.z,
+        });
+        TweenMax.to(camera.position, 1.5, {
+          x: -35.46343164229353,
+          y: 149.5355049110459,
+          z: -0.5606712473879137,
+          ease: Power2.easeInOut,
+          onComplete: function () {
+            changeState(-1);
+          },
+        });
+
+        meshArray.forEach(child => {
+            if(isAlpha) {
+              child.material.transparent  = false;
+              child.material.opacity = 1
+            } else {
+              child.material.color.set(materialColorMap[child.name])
+            }
+        });
+      });
+
+      // 音乐
+      $('#mc_play').click(function() {
+        // console.log('musicBtn')
+        isPlayBgm = true
+        play_music();
+      })
+
+      // 分享按钮
+      $("#shareAction").click(function () {
+        console.log(camera.position);
+        console.log("mesh:", modelObject.position);
+        // controls.reset()
+
+        $("#share_mask").show();
+      });
+      // 分享蒙版
+      $("#share_mask").click(function () {
+        $(this).hide();
+      });
+      // 左箭头
+      $("#leftIcon").click(function () {
+        if(mySwiper.animating) return;
+
+        mySwiper.slidePrev();
+        iconChange(iconIdx == 0 ? 4 : iconIdx - 1);
+      });
+      // 右箭头
+      $("#rightIcon").click(function () {
+        if(mySwiper.animating) {
+          console.log('animating')
+          return;
+        }
+        mySwiper.slideNext();
+        iconChange(iconIdx == 4 ? 0 : iconIdx + 1);
+      });
+
+      // 触摸移动监听
+      renderer.domElement.addEventListener('touchstart', onTouchStart);
+
+      function onTouchStart(event) {
+        setTimeout(() => {
+          startPlayMusic();
+        }, 200);
+        if(mySwiper.animationing) return;
+
+        // let pos1 = modelObject.position;
+        // if(pos1.x != initPosition.x || pos1.y != 0 || pos1.z != initPosition.z) {
+        //   // 开始移动时，则模型中心轴移动到中心位置
+        //   TweenMax.to(modelObject.position, 1.5, {
+        //     x: initPosition.x,
+        //     y: 0, // initPosition.y,
+        //     z: initPosition.z,
+        //   });
+        // }
+      }
+    }
+
+    //5.控制
+    function initControls() {
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.minDistance = 20;
+      controls.maxDistance = 200;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.07;
+      controls.rotateSpeed = 0.3;
+      // controls.enablePan = true;
+      controls.update();
+    }
+
+    //6.光源
+    function initLight(array, offset) {
+      //环境光
+      // var hemiLight = new THREE.HemisphereLight(0xffffff,0x444444,0.4);
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 0.4));
+      scene.add(new THREE.AmbientLight(0x666666, 0.4));
+
+      lightProbe = new THREE.LightProbe();
+      scene.add(lightProbe);
+
+      //平行光1，设置光的颜色，强度，位置，是否投射阴影，阴影相机的各种参数
+      dirLight = new THREE.DirectionalLight(0xffffff, 1);
+      dirLight.position.set(100, 150, -100);
+      dirLight.castShadow = true;
+      dirLight.shadow.camera.top = 40;
+      dirLight.shadow.camera.bottom = -40;
+      dirLight.shadow.camera.left = -40;
+      dirLight.shadow.camera.right = 40;
+      dirLight.shadow.camera.near = 0.1;
+      dirLight.shadow.camera.far = 5000;
+      dirLight.shadow.mapSize.width = 2048;
+      dirLight.shadow.mapSize.height = 2048;
+      scene.add(dirLight);
+
+      //光源辅助对象
+      //    var helper = new THREE.DirectionalLightHelper( dirLight, 5 );
+      //    scene.add( helper );
+
+      //平行光2
+
+      // var helper = new THREE.DirectionalLightHelper( dirLight4, 5 );
+      // scene.add( helper );
+      // var dirLight3 = dirLight.clone();
+      // dirLight3.position.set(50, 80, 80);
+      // scene.add(dirLight3)
+    }
+
+    //7.其它
+    function initOther() {
+      //x, y, z轴辅助器
+      var axes = new THREE.AxesHelper(500);
+      // axes.position.set(100, 100, 100);
+      // scene.add(axes);
+
+      //性能检查Stats， 可以查看当前帧数
+      stats = new Stats();
+      // document.body.appendChild( stats.dom );
+
+      // var axesHelper = new THREE.AxesHelper( 50 );
+      // scene.add( axesHelper );
+
+      // var width = window.innerWidth;
+      // var height = window.innerHeight;
+
+      // composer = new EffectComposer(renderer);
+
+      // var ssaoPass = new SSAOPass(scene, camera, width, height);
+      // ssaoPass.kernelRadius = 1;
+      // ssaoPass.maxDistance = 0.1;
+      // ssaoPass.minDistance = 0.001;
+      // composer.addPass(ssaoPass);
+
+      loadModel("1.glb", 1, modelInitPosition);
+    }
+
+    function loadModel(name, scale, position, initScale = 1) {
+      
+          // envmap
+          const genCubeUrls = function (prefix, postfix) {
+            return [
+              prefix + "px" + postfix,
+              prefix + "nx" + postfix,
+              prefix + "py" + postfix,
+              prefix + "ny" + postfix,
+              prefix + "pz" + postfix,
+              prefix + "nz" + postfix,
+            ];
+          };
+
+          const urls = genCubeUrls("../images/hdr/", ".png");
+          
+          new THREE.CubeTextureLoader().load(urls, function (cubeTexture) {
+            cubeTexture.encoding = THREE.sRGBEncoding;
+            // scene.background = cubeTexture;
+            scene.environment = cubeTexture;
+            lightProbe.copy(LightProbeGenerator.fromCubeTexture(cubeTexture));
+            lightProbe.intensity = 0.2;
+
+            
+            var progressBar = $(".progressBar div");
+            var loadingPercent = $(".loading_percent");
+            // use of RoughnessMipmapper is optional
+            var roughnessMipmapper = new RoughnessMipmapper(renderer);
+
+            var loader = new GLTFLoader().setPath(
+              "../model/glb/"
+            );
+            
+            loader.load(name, function (gltf) {
+                $('.loading_p').remove();
+
+                var object = gltf.scene;
+                object.traverse(function (child) {
+                  if (child.isMesh) {
+                    roughnessMipmapper.generateMipmaps(child.material);
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+
+                    child.material.envMap = cubeTexture;
+                    console.log(child.name);
+
+                    materialColorMap[child.name] = child.material.color.clone()
+                    meshArray.push(child);
+                  }
+                });
+
+                new THREE.Box3()
+                  .setFromObject(object)
+                  .getCenter(object.position)
+                  .multiplyScalar(-1);
+                object.position.copy(position);
+
+                // const group = new THREE.Group();
+                // group.add(object)
+                scene.add(object);
+                // scene.add(group)
+                object.scale.set(initScale, initScale, initScale);
+
+                modelObject = object;
+                
+                window.modelObject = modelObject;
+
+                TweenMax.to(object.scale, 2, {
+                  x: scale,
+                  y: scale,
+                  z: scale,
+                  ease: Power2.easeInOut,
+                });
+                TweenMax.to(object.rotation, 0, {
+                  x: 0,
+                  y: Math.PI / 2,
+                  z: 0,
+                  ease: Power2.easeInOut,
+                  onComplete: function () {
+                    annotationShow = true;
+                  },
+                });
+                TweenMax.to(camera.position, 1.5, {
+                  x: cameraDefaultPosition.x,
+                  y: cameraDefaultPosition.y,
+                  z: cameraDefaultPosition.z,
+                  ease: Power2.easeInOut,
+                });
+
+                roughnessMipmapper.dispose();
+
+                iconChange(0, true)
+
+                // object.rotation.y = Math.PI / 2;
+                render();
+              },
+              function (xhr) {
+                var percent = ((xhr.loaded / xhr.total) * 100).toFixed(0);
+                loadingPercent.text(
+                  (percent + "%"))
+                // progressBar.width(Math.round((xhr.loaded / xhr.total) * 200));
+                
+                if(percent == 100 && isPlayBgm) {
+                  play_music();
+                }
+              }
+            );
+          });
+    }
+
+    function getText(font, message) {
+      var matLite = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0,
+      });
+
+      var shapes = font.generateShapes(message, 5);
+
+      var geometry = new THREE.ShapeBufferGeometry(shapes);
+      geometry.computeBoundingBox();
+
+      var xMid =
+        -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+      geometry.translate(xMid, 0, 0);
+
+      var text = new THREE.Mesh(geometry, matLite);
+      text.position.y = 5;
+
+      return text;
+    }
+
+    function getSizeMesh(end) {
+      var w = 0.6;
+      var h = 6;
+      var start = new THREE.Vector2(0, 0);
+      var end = new THREE.Vector2(end, 0);
+
+      var shape = new THREE.Shape()
+        .moveTo(start.x, start.y)
+        .lineTo(start.x, start.y + h)
+        .lineTo(end.x, end.y + h)
+        .lineTo(end.x, end.y)
+        .lineTo(end.x - w, end.y)
+        .lineTo(end.x - w, end.y + h - w)
+        .lineTo(start.x + w, start.y + h - w)
+        .lineTo(start.x + w, start.y)
+        .lineTo(start.x, start.y);
+      var geometry = new THREE.ShapeBufferGeometry(shape);
+      geometry.center();
+
+      return new THREE.Mesh(
+        geometry,
+        new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0,
+        })
+      );
+    }
+
+    function switchHotPoint(hotPoint) {
+      document.getElementById("tapTip").style.cssText = "visibility:hidden";
+      // document.getElementById("hotpointInfo").style.cssText =
+      //     "visibility:visible";
+      // console.log(camera.position)
+      // console.log('mesh:', modelObject.position)
+      if (currentHotPoint == hotPoint) return;
+
+      if (currentHotPoint != null) {
+        $(currentHotPoint).animate({ width: '40px', height: '40px' }, 600);
+      }
+      currentHotPoint = hotPoint;
+      if (currentHotPoint != null) {
+        $(currentHotPoint).animate({ width: '70px', height: '70px' }, 600);
+      }
+      
+    }
+
+    function initSize(boundingBox, scale, position, isFront) {
+      var offset = 10;
+
+      var width = scale * (boundingBox.max.x - boundingBox.min.x);
+      var height = scale * (boundingBox.max.y - boundingBox.min.y);
+      var depth = scale * (boundingBox.max.z - boundingBox.min.z);
+
+      var group1 = new THREE.Group();
+      group1.add(getSizeMesh(width));
+
+      var group2 = new THREE.Group();
+      group2.add(getSizeMesh(height));
+
+      var group3 = new THREE.Group();
+      group3.add(getSizeMesh(depth));
+
+      var loader = new THREE.FontLoader();
+      loader.load(
+        "../fonts/helvetiker_regular.typeface.json",
+        function (font) {
+          group1.add(getText(font, "32.00cm"));
+          group2.add(getText(font, "40.00cm"));
+          group3.add(getText(font, "38.00cm"));
+
+          if (isFront) {
+            group1.position.set(
+              position.x,
+              position.y + height / 2 + offset,
+              position.z
+            );
+          } else {
+            group1.position.set(
+              position.x,
+              position.y - offset,
+              position.z + depth / 2 + offset
+            );
+            group1.children[0].rotation.z = Math.PI;
+          }
+
+          scene.add(group1);
+          groupArray.push(group1);
+
+          if (isFront) {
+            group2.rotation.set(0, 0, Math.PI / 2);
+            group2.position.set(
+              position.x - width / 2 - offset,
+              position.y,
+              position.z
+            );
+          } else {
+            group2.rotation.set(0, -Math.PI / 2, Math.PI / 2);
+            group2.position.set(
+              position.x,
+              position.y,
+              position.z - depth / 2 - offset
+            );
+          }
+
+          scene.add(group2);
+          groupArray.push(group2);
+
+          if (isFront) {
+            group3.position.set(
+              position.x + width / 2 + offset,
+              position.y - height / 2,
+              position.z
+            );
+            group3.rotation.y = Math.PI / 2;
+            group3.children[0].rotation.x = Math.PI;
+          } else {
+            group3.position.set(
+              position.x,
+              position.y + height / 2 + offset,
+              position.z
+            );
+            group3.rotation.y = -Math.PI / 2;
+          }
+          scene.add(group3);
+          groupArray.push(group3);
+        }
+      );
+    }
+
+    // 初始函数，初始化各种对象
+    function init() {
+      initScene();
+      initCamera();
+      initRender();
+      initEvent();
+      initControls();
+      initLight();
+      initOther();
+    }
+
+    // 窗口缩放时自适应屏幕
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      // composer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+
+    function iconChange(idx, isdefault = false) {
+      if(!isdefault) {
+        startPlayMusic()
+      }
+      if (modelObject == null || mySwiper.animationing) return;
+
+      iconIdx = idx;
+      console.log("iconIdex:", idx);
+
+
+      $("#hotpointSubTitle").text("");
+      switchHotPoint($(".pos" + (idx + 1)));
+
+      let materialName = [];
+      TweenMax.killAll();
+
+
+      TweenMax.to(controls.target, 1, {x:0, y:0, z:0})
+      switch (idx) {
+        case 0:
+          materialName = ['SM_2_MM_0','SM_2_MM_1','SM_2_MM_2']
+          TweenMax.to(camera.position, 1, {
+            // x: -27.46244290202003,
+            // y: 6.140217306149882,
+            // z: -3.001950458095906,
+            x: cameraDefaultPosition.x,
+            y: cameraDefaultPosition.y,
+            z: cameraDefaultPosition.z,
+            onComplete: function () {
+              changeState(0);
+            },
+          });
+          TweenMax.to(modelObject.position, 1, {
+            // x: -5,
+            // y: -2,
+            // z: 7,
+            x: initPosition.x,
+            y: initPosition.y,
+            z: initPosition.z,
+          });
+          break;
+        case 1:
+          materialName = ['SM_4_zhenzhu', 'SM_spline']
+          TweenMax.to(modelObject.position, 1, {
+            x: -15,
+            y: 18,
+            z: 5,
+          });
+          TweenMax.to(camera.position, 1, {
+            x: 2.042618520064066,
+            y: 62.27211729020729,
+            z: 53.11491247611458,
+            onComplete: function () {
+              changeState(1);
+            },
+          });
+          break;
+        case 2:
+          materialName = ['SM_3_sichou']
+          TweenMax.to(modelObject.position, 1, {
+            x: 0,
+            y: -5,
+            z: -17.5,
+          });
+          TweenMax.to(camera.position, 1, {
+            x: -43.397111147840874,
+            y: 74.38681718737689,
+            z: 35.57765902634573,
+            onComplete: function () {
+              changeState(2);
+            },
+          });
+          break;
+        case 3:
+          materialName = ['SM_5_ywl']
+          TweenMax.to(modelObject.position, 1, {
+            x: -22,
+            y: 2,
+            z: 8,
+          });
+          TweenMax.to(camera.position, 1, {
+            x: -21.59849650622099,
+            y: 20.975885066189363,
+            z: 1.7946277152038668,
+            onComplete: function () {
+              changeState(3);
+            },
+          });
+          break;
+        case 4:
+          materialName = ['SM_1_Lion_0', 'SM_1_Lion_1', 'SM_1_Lion_2', 'SM_1_Lion']
+          TweenMax.to(modelObject.position, 1, {
+            x: -1,
+            y: 0,
+            z: modelInitPosition.z - 1,
+          });
+
+          TweenMax.to(camera.position, 1, {
+            x: -47.25205271117619,
+            y: 14.107887271582472,
+            z: -30.519383574023603,
+            onComplete: function () {
+              changeState(4);
+            },
+          });
+
+          break;
+        default:
+          break;
+      }
+
+      
+      if(materialName.length > 0) {
+        meshArray.forEach(child => {
+            if(child.name === 'SM_ditu') return;
+            if(materialName.indexOf(child.name) >= 0) {
+              if(isAlpha) {
+                child.material.transparent  = false;
+                child.material.opacity = 1
+              } else {
+                child.material.color.set(materialColorMap[child.name])
+              }
+              
+            } else {
+              if(isAlpha) {
+                child.material.transparent  = true;
+                child.material.opacity =0.5
+              } else {
+                child.material.color.set('#808080')
+              }
+            }
+        });
+        
+      }
+      
+    }
+
+    function changeState(idx) {
+      if (idx >= 0) {
+      // <!-- 0，3，4，2，1 -->
+        var iconArray = [
+          {
+            descTitle: "JC Plaza旗舰店",
+            descTitle2: "Maison Margiela Flagship Store",
+            descSubTitle:
+              '建筑师Anne Holtrop的石膏柱<br/>为全球首家零售体验店铺垫基石',
+            title: "Maison Margiela JC Plaza旗舰店",
+            subTitle: "Maison Margiela JC Plaza Flagship Store",
+          },
+          {
+            descTitle: "东方明珠塔",
+            descTitle2: "Oriental Pearl Tower",
+            descSubTitle:
+              "珍珠意象, 生于海上<br/>化为宇宙星系",
+            title: "东方明珠塔",
+            subTitle: "Oriental Pearl Tower",
+          },
+          {
+            descTitle: "黄浦江",
+            descTitle2: "Huangpu River",
+            descSubTitle:
+              "一条流动的纱带<br/>跨越生生不息的城市",
+            title: "黄浦江",
+            subTitle: "Huangpu River",
+          },
+          {
+            descTitle: "自然博物馆",
+            descTitle2: "Natural History Museum",
+            descSubTitle:
+              "一枚古生代的鹦鹉螺化石<br/>见证万物变迁",
+            title: "自然博物馆",
+            subTitle: "Nature Museum",
+          },
+          {
+            descTitle: "静安寺",
+            descTitle2: "Jing'An Temple",
+            descSubTitle:
+              "古刹狮生四面<br/>各司一方",
+            title: "静安寺",
+            subTitle: "Jing'An Temple",
+          },
+        ];
+        
+        $("#title1").text(iconArray[idx]["descTitle"]);
+        $("#title2").text(iconArray[idx]["descTitle2"]);
+        $("#hotpointSubTitle").html(iconArray[idx]["descSubTitle"]);
+        $("#icon-title").text(iconArray[idx]["title"]);
+        $("#icon-sub-title").text(iconArray[idx]["subTitle"]);
+        $("#hotpointDescript").show();
+        document.getElementById("hotpointInfo").style.cssText =
+          "visibility:visible";
+      } else {
+        $("#hotpointTitle").text("");
+        $("#hotpointDescript").hide();
+      }
+      
+      modelFloating(false)
+    }
+
+    // 是否浮动
+    let isFloating = false
+
+    function animate() {
+      render();
+
+      requestAnimationFrame(animate); //循环执行animate函数
+    }
+
+    function render() {
+      // 灯光旋转
+      lightRorate();
+      
+      if(lastCamraPos) {
+        let angle = lastCamraPos.angleTo(camera.position);
+        if(angle.toFixed(2) != 0) {
+          isFloating = false
+          // 停止浮动
+          modelFloating(true)
+        } else {
+          // 开始浮动
+          if(!isFloating) {
+            isFloating = true
+            setTimeout(() => {
+              modelFloating(false)
+            }, 1000);
+          }
+        }
+      }
+
+      lastCamraPos = camera.position.clone();
+      
+      var delta = clock.getDelta();
+      controls.update(delta);
+      stats.update();
+
+      renderer.clear();
+      // composer.render(delta);
+      renderer.render(scene, camera);
+    }
+
+    var angle = 0;
+    function lightRorate() {
+      // 每次执行渲染函数redner时候，角度累加0.005
+      angle += 0.002;
+      // 圆周运动网格模型x坐标计算  绕转半径400
+      var x = 100 * Math.sin(angle);
+      // 圆周运动网格模型y坐标计算  绕转半径400
+      var z = 100 * Math.cos(angle);
+      dirLight.position.x = x;
+      dirLight.position.z = z;
+
+    }
+
+    // 模型上下浮动
+    function modelFloating(isPause) {
+      if(modelObject) {
+        if(isPause && tweenMax ) {
+          // console.log('暂停')
+          tweenMax.pause()
+        } else {
+          // console.log('开始')
+          // modelObject.position.y -= 0.5
+          var objectY = modelObject.position.y;
+          tweenMax = TweenMax.to(modelObject.position, 2, 
+          { y: objectY + 0.3, ease: Power0.easeInOut,
+            onComplete:function() {
+              this.reverse()
+          }, onReverseComplete:function() {
+            this.play()
+          }})
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

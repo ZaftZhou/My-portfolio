@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - The Brand Story</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700&family=Outfit:wght@200;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: #f0f2f5;
+            color: #2d3436;
+            height: 100vh;
+            overflow: hidden;
+            /* Cinematic view */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 2s ease;
+        }
+
+        /* ATMOSPHERE STATES */
+        body.state-dream {
+            background: #fdfbf7;
+        }
+
+        /* Warm Dawn */
+        body.state-reality {
+            background: #dfe6e9;
+        }
+
+        /* Cold Grey */
+        body.state-unstable {
+            background: #b2bec3;
+        }
+
+        /* Stormy Grey */
+        body.state-final {
+            background: #f5f6fa;
+        }
+
+        /* Calm */
+
+        /* MAIN STAGE */
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        svg {
+            width: 300px;
+            height: 400px;
+            overflow: visible;
+            transition: transform 1s ease;
+        }
+
+        /* TEXT CONTAINER */
+        .narrative {
+            height: 20vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            opacity: 1;
+            transition: opacity 1s;
+        }
+
+        .line {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #636e72;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 1s ease-out;
+            position: absolute;
+            /* Stacked */
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .line.active {
+            opacity: 1;
+            transform: translateY(0);
+            color: #2d3436;
+        }
+
+        .line.exit {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .line strong {
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* BUTTONS */
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #b2bec3;
+            color: #636e72;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            border-color: #2d3436;
+            color: #2d3436;
+        }
+
+        button.active {
+            background: #2d3436;
+            color: #fff;
+            border-color: #2d3436;
+        }
+
+        /* --- ANIMATION GRAPH --- */
+
+        /* 1. Base Idle (The Logo System core) */
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes rock {
+
+            0%,
+            100% {
+                transform: rotate(-1deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
+        }
+
+        .balloon-group {
+            animation: bob 4s ease-in-out infinite;
+        }
+
+        .moon-cradle {
+            animation: rock 6s ease-in-out infinite;
+            transform-origin: 100px 200px;
+        }
+
+        /* 2. STATE MODIFIERS */
+
+        /* STATE: DREAM (Float High) */
+        .state-dream .lift-group {
+            transform: translateY(-20px);
+            transition: transform 2s ease-out;
+        }
+
+        .state-dream .house-group {
+            filter: drop-shadow(0 0 10px rgba(253, 203, 110, 0.5));
+            /* Glow */
+            transition: filter 2s;
+        }
+
+        /* STATE: REALITY (Tension/Strain) */
+        .state-reality .lift-group {
+            transform: translateY(10px);
+            /* Pulled down */
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Elastic */
+        }
+
+        .state-reality .tether {
+            stroke: #2d3436;
+            /* Darker/Strained */
+            stroke-width: 0.8;
+            transition: all 0.5s;
+        }
+
+        /* Stretch the balloons up while house is pulled down */
+        .state-reality .balloon-group {
+            transform: translateY(-10px);
+            /* Pulling up against weight */
+            transition: transform 0.5s;
+        }
+
+        /* STATE: UNSTABLE (Wind/Chaos) */
+        @keyframes windTilt {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(4deg);
+            }
+
+            50% {
+                transform: rotate(-2deg);
+            }
+
+            75% {
+                transform: rotate(2deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .state-unstable .lift-group {
+            animation: windTilt 4s ease-in-out infinite;
+            transform-origin: 100px 50px;
+            /* Pivot at balloons */
+        }
+
+        .state-unstable .tether {
+            /* Wiggle? */
+        }
+
+        /* STATE: FINAL (Balance) */
+        .state-final .lift-group {
+            transform: translateY(0);
+            animation: none;
+            transition: transform 2s;
+        }
+    </style>
+</head>
+
+<body class="state-dream">
+
+    <!-- THE STAGE -->
+    <div class="stage">
+        <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Soft Glow -->
+                <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#fff" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+                </radialGradient>
+            </defs>
+
+            <!-- Main Interactive Group -->
+            <g class="lift-group">
+
+                <!-- 1. Balloons (The Dream) -->
+                <g class="balloon-group" transform="translate(100, 80)">
+                    <!-- Strings -->
+                    <path class="tether" d="M -15 0 L 0 40" stroke="#b2bec3" stroke-width="0.5" fill="none" />
+                    <path class="tether" d="M 0 -5 L 0 40" stroke="#b2bec3" stroke-width="0.5" fill="none" />
+                    <path class="tether" d="M 15 0 L 0 40" stroke="#b2bec3" stroke-width="0.5" fill="none" />
+
+                    <!-- Balloons -->
+                    <!-- System Colors: Blue, Grey, Accent -->
+                    <circle cx="-15" cy="0" r="14" fill="#a4b0be" />
+                    <circle cx="0" cy="-5" r="16" fill="#74b9ff" />
+                    <circle cx="15" cy="0" r="14" fill="#dfe6e9" />
+                </g>
+
+                <!-- 2. The House (The Self) -->
+                <g class="house-group" transform="translate(76, 120)">
+                    <rect x="0" y="24" width="48" height="36" fill="#f5f6fa" stroke="none" />
+                    <path d="M0 24 L24 0 L48 24" fill="#2d3436" />
+                    <!-- The Window -->
+                    <rect x="18" y="34" width="12" height="12" fill="#ffeaa7" />
+                </g>
+
+                <!-- 3. The Moon (The Reality/Base) -->
+                <g class="moon-cradle" transform="translate(100, 180)">
+                    <!-- Glow -->
+                    <circle cx="0" cy="0" r="50" fill="url(#moonGlow)" opacity="0.3" />
+                    <!-- Crescent -->
+                    <path d="M-50 -10 Q 0 40, 50 -10 C 50 10, 0 55, -50 -10 Z" fill="#fdcb6e" />
+                </g>
+
+            </g>
+        </svg>
+    </div>
+
+    <!-- NARRATIVE TEXT -->
+    <div class="narrative">
+        <div class="line active" id="line1">
+            <strong>Skyhouse</strong><br>
+            喻为飞在空中的房子
+        </div>
+        <div class="line" id="line2">
+            遥远却又是自己想要的家<br>
+            是梦想也是自己想要的未来
+        </div>
+        <div class="line" id="line3">
+            但又因为现实它显得遥不可及<br>
+            <!-- (Tension triggers here) -->
+        </div>
+        <div class="line" id="line4">
+            即使有了，在空中并不安稳<br>
+            <!-- (Instability triggers here) -->
+        </div>
+        <div class="line" id="line5">
+            它不仅是一个图标<br>
+            <strong>它是我们在风中守护的梦</strong>
+        </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button onclick="setPhase(1)" id="btn1">1. DREAM</button>
+        <button onclick="setPhase(2)" id="btn2">2. REALITY</button>
+        <button onclick="setPhase(3)" id="btn3">3. UNSTABLE</button>
+        <button onclick="setPhase(4)" id="btn4">4. ACCEPTANCE</button>
+    </div>
+
+    <script>
+        const body = document.body;
+        const lines = [
+            document.getElementById('line1'),
+            document.getElementById('line2'),
+            document.getElementById('line3'),
+            document.getElementById('line4'),
+            document.getElementById('line5')
+        ];
+        const buttons = [
+            document.getElementById('btn1'),
+            document.getElementById('btn2'),
+            document.getElementById('btn3'),
+            document.getElementById('btn4')
+        ];
+
+        function resetLines() {
+            lines.forEach(l => {
+                l.classList.remove('active');
+                l.classList.add('exit');
+                setTimeout(() => l.classList.remove('exit'), 1000); // Cleanup exit class
+            });
+            buttons.forEach(b => b.classList.remove('active'));
+        }
+
+        function setPhase(phase) {
+            resetLines();
+            body.className = ''; // Reset classes
+
+            if (phase === 1) {
+                // Dream
+                body.classList.add('state-dream');
+                lines[0].classList.add('active'); // Title
+                setTimeout(() => {
+                    lines[0].classList.remove('active');
+                    lines[0].classList.add('exit');
+                    lines[1].classList.add('active'); // "Distant but desired"
+                }, 3000);
+                buttons[0].classList.add('active');
+            }
+            else if (phase === 2) {
+                // Reality (Tension)
+                body.classList.add('state-reality');
+                lines[2].classList.add('active'); // "Unreachable due to reality"
+                buttons[1].classList.add('active');
+            }
+            else if (phase === 3) {
+                // Unstable (Wind)
+                body.classList.add('state-unstable');
+                lines[3].classList.add('active'); // "Unstable in the air"
+                buttons[2].classList.add('active');
+            }
+            else if (phase === 4) {
+                // Acceptance
+                body.classList.add('state-final');
+                lines[4].classList.add('active'); // Final Conclusion
+                buttons[3].classList.add('active');
+            }
+        }
+
+        // Auto-play introduction
+        setTimeout(() => setPhase(1), 500);
+
+    </script>
+</body>
+
+</html>
