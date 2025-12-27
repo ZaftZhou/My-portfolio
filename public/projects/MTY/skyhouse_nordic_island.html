@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Nordic Sky Island Evolution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600&family=Montserrat:wght@200;400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            padding: 80px 20px;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-weight: 100;
+            font-size: 3rem;
+            letter-spacing: 0.3em;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            text-transform: uppercase;
+            letter-spacing: 0.6em;
+            color: #95afc0;
+            font-size: 0.9rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .island-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            transition: all 0.4s ease;
+        }
+
+        .island-card:hover {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .canvas {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #fdfdfd;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .info h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+        }
+
+        .info p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #7f8c8d;
+            max-width: 320px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        svg {
+            width: 90%;
+            height: 90%;
+        }
+
+        /* Nordic Colors */
+        :root {
+            --sage: #95afc0;
+            --ice: #dcdde1;
+            --snow: #f1f2f6;
+            --deep-blue: #2f3640;
+            --warm-gray: #fdfdfd;
+        }
+
+        @keyframes float-gentle {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .anim-float {
+            animation: float-gentle 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>SKYHOUSE</h1>
+        <p class="subtitle">Nordic Sky Island Refinement</p>
+    </header>
+
+    <div class="gallery">
+
+        <!-- 1. The Floating Crag -->
+        <div class="island-card">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="rockShadow">
+                            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.05" />
+                        </filter>
+                    </defs>
+                    <g class="anim-float">
+                        <!-- Layered Rock Island -->
+                        <path d="M100 240 L 200 280 L 300 240 L 250 210 L 150 210 Z" fill="#95afc0" opacity="0.4" />
+                        <path d="M100 240 L 200 300 L 300 240" fill="#95afc0" filter="url(#rockShadow)" />
+                        <path d="M100 240 L 200 280 L 200 300 Z" fill="#7d96a8" /> <!-- Side face -->
+                        <path d="M200 280 L 300 240 L 200 300 Z" fill="#a8c1d2" /> <!-- Side light face -->
+
+                        <!-- House -->
+                        <g transform="translate(160, 155)">
+                            <path d="M0 30 L 40 0 L 80 30 V 65 H 0 V 30" fill="#fff" stroke="#f1f2f6"
+                                stroke-width="1" />
+                            <rect x="30" y="35" width="20" height="20" fill="#f8f9fa" />
+                        </g>
+
+                        <!-- Subtle Roots -->
+                        <g stroke="#95afc0" stroke-width="1" opacity="0.3">
+                            <line x1="180" y1="290" x2="175" y2="350" />
+                            <line x1="220" y1="285" x2="225" y2="330" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>The Floating Crag (云端岩层)</h2>
+                <p>将极简底座进化为多层叠放的几何岩石，通过微妙的面光处理展现北欧冰岩的冷冽与分量感。</p>
+            </div>
+        </div>
+
+        <!-- 2. Ethereal Mist -->
+        <div class="island-card">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="mistGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fff" stop-opacity="1" />
+                            <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+                        </linearGradient>
+                    </defs>
+                    <g class="anim-float">
+                        <!-- Island (Mostly hidden by mist) -->
+                        <path d="M110 250 Q 200 300 290 250 Q 200 260 110 250" fill="#95afc0" />
+
+                        <!-- House -->
+                        <g transform="translate(165, 175)">
+                            <path d="M0 25 L 35 0 L 70 25 V 60 H 0 V 25" fill="#fff" />
+                            <rect x="25" y="30" width="20" height="20" fill="#f1f2f6" />
+                        </g>
+
+                        <!-- Fog Layers -->
+                        <ellipse cx="200" cy="270" rx="120" ry="40" fill="url(#mistGrad)" opacity="0.8" />
+                        <ellipse cx="140" cy="285" rx="80" ry="20" fill="white" opacity="0.6" />
+                        <ellipse cx="260" cy="280" rx="90" ry="25" fill="white" opacity="0.5" />
+
+                        <!-- Symbolic Tethers -->
+                        <line x1="200" y1="260" x2="200" y2="380" stroke="#dcdde1" stroke-width="0.5"
+                            stroke-dasharray="10 10" />
+                    </g>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Ethereal Mist (雾影孤岛)</h2>
+                <p>利用扁平化的叠层云雾，将岛屿的底部半遮半掩，营造出一种漂浮在万米高空的静谧与疏离。</p>
+            </div>
+        </div>
+
+        <!-- 3. Glacial Peak -->
+        <div class="island-card">
+            <div class="canvas">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <g class="anim-float">
+                        <!-- Sharp Iceberg/Peak -->
+                        <path d="M200 150 L 100 250 L 300 250 Z" fill="#fff" opacity="0.9" />
+                        <path d="M200 150 L 120 250 L 280 250 Z" fill="#f1f2f6" opacity="0.5" />
+                        <!-- Detail triangle -->
+
+                        <!-- Base Platform -->
+                        <path d="M100 250 Q 200 280 300 250 L 200 260 Z" fill="#95afc0" opacity="0.8" />
+
+                        <!-- Tiny House on Top -->
+                        <g transform="translate(185, 125)">
+                            <path d="M0 10 L 15 0 L 30 10 V 25 H 0 V 10" fill="#2f3640" />
+                            <rect x="10" y="12" width="10" height="10" fill="#fff" opacity="0.2" />
+                        </g>
+
+                        <!-- Glacial cracks/lines -->
+                        <line x1="200" y1="150" x2="200" y2="260" stroke="#dcdde1" stroke-width="0.5" />
+
+                        <!-- Roots -->
+                        <line x1="200" y1="260" x2="200" y2="380" stroke="#95afc0" stroke-width="1.5"
+                            stroke-dasharray="2 4" />
+                    </g>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Glacial Peak (冰川之巅)</h2>
+                <p>极简的锐利三角结构模拟北欧的冰川山脉，将孤傲的建筑置于世界之巅，极具秩序感与仪式感。</p>
+            </div>
+        </div>
+
+        <!-- 4. Celestial Tether -->
+        <div class="island-card">
+            <div class="canvas" style="background: #1a1a1a;">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <g class="anim-float">
+                        <!-- Darker Muted Island -->
+                        <path d="M110 240 Q 200 280 290 240 Q 200 250 110 240" fill="#444" stroke="#666"
+                            stroke-width="1" />
+
+                        <!-- House Outline (Glowy) -->
+                        <g transform="translate(165, 175)">
+                            <path d="M0 25 L 35 0 L 70 25 V 60 H 0 V 25" fill="none" stroke="#fff" stroke-width="1.5"
+                                opacity="0.9" />
+                            <rect x="30" y="32" width="10" height="10" fill="#fff" />
+                        </g>
+
+                        <!-- Constellation Roots -->
+                        <g stroke="#fff" fill="#fff" stroke-width="0.5" opacity="0.5">
+                            <!-- Left tether -->
+                            <line x1="160" y1="260" x2="140" y2="320" />
+                            <circle cx="140" cy="320" r="2.5" />
+                            <line x1="140" y1="320" x2="160" y2="370" />
+                            <circle cx="160" cy="370" r="1.5" />
+
+                            <!-- Middle tether -->
+                            <line x1="200" y1="270" x2="200" y2="350" />
+                            <circle cx="200" cy="350" r="3" />
+
+                            <!-- Right tether -->
+                            <line x1="240" y1="260" x2="260" y2="300" />
+                            <circle cx="260" cy="300" r="2" />
+                        </g>
+                    </g>
+
+                    <!-- Decorative Circle (Orbit) -->
+                    <circle cx="200" cy="220" r="120" stroke="#fff" stroke-width="0.3" fill="none" opacity="0.1" />
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Celestial Tether (星纬连线)</h2>
+                <p>将岛屿的维系绳索抽象为精密的星图连线，通过点与线的数学律动，表达宇宙与归宿之间的永恒平衡。</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

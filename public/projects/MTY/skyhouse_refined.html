@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - 心之所向</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;600&family=Outfit:wght@200;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Serif SC', sans-serif;
+            background: #fdfcfb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
+            color: #3d3d3d;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            color: #2d3436;
+            font-weight: 200;
+            font-size: 3rem;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+        }
+
+        .philosophy {
+            max-width: 500px;
+            color: #95a5a6;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            font-weight: 300;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .logo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 60px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .logo-card {
+            background: #fff;
+            padding: 60px 50px;
+            border-radius: 30px;
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 450px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.06);
+        }
+
+        .label {
+            margin-top: 35px;
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .desc {
+            font-size: 0.85rem;
+            color: #b2bec3;
+            margin-top: 10px;
+            font-weight: 300;
+            max-width: 250px;
+            line-height: 1.6;
+        }
+
+        svg {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Animations */
+        @keyframes gentle-float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes slow-fade {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes sway-fragile {
+
+            0%,
+            100% {
+                transform: rotate(-1.5deg);
+            }
+
+            50% {
+                transform: rotate(1.5deg);
+            }
+        }
+
+        @keyframes reach-up {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-3px) scale(1.02);
+            }
+        }
+
+        .float-anim {
+            animation: gentle-float 8s ease-in-out infinite;
+        }
+
+        .sway-anim {
+            animation: sway-fragile 6s ease-in-out infinite;
+            transform-origin: center top;
+        }
+
+        .reach-anim {
+            animation: reach-up 5s ease-in-out infinite;
+        }
+
+        /* --- Series C: Gemini Interpretations --- */
+        .card-gemini {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Inverse Gravity */
+        @keyframes orbit-slow {
+            0% {
+                transform: rotate(0deg) translateX(50px) rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg) translateX(50px) rotate(-360deg);
+            }
+        }
+
+        .orbit-item {
+            transform-origin: center;
+            animation: orbit-slow 15s linear infinite;
+        }
+
+        /* Starlit Ledge */
+        @keyframes pulse-star {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .star {
+            animation: pulse-star 3s ease-in-out infinite;
+        }
+
+        /* Fading Echo */
+        @keyframes echo-drift {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0.1;
+            }
+
+            100% {
+                transform: translate(40px, -40px);
+                opacity: 0;
+            }
+        }
+
+        .echo {
+            animation: echo-drift 4s linear infinite;
+        }
+
+        /* Golden Prism */
+        @keyframes refract {
+
+            0%,
+            100% {
+                filter: hue-rotate(0deg) brightness(1);
+            }
+
+            50% {
+                filter: hue-rotate(15deg) brightness(1.2);
+            }
+        }
+
+        .prism {
+            animation: refract 5s ease-in-out infinite;
+        }
+
+        /* Wind Swept */
+        @keyframes petal-fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(60px, 40px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .petal {
+            animation: petal-fall 6s ease-in-out infinite;
+        }
+
+        /* Compass */
+        @keyframes needle-quiver {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            20% {
+                transform: rotate(2deg);
+            }
+
+            40% {
+                transform: rotate(-1deg);
+            }
+
+            60% {
+                transform: rotate(1deg);
+            }
+
+            80% {
+                transform: rotate(-2deg);
+            }
+        }
+
+        .needle {
+            animation: needle-quiver 4s ease-in-out infinite;
+            transform-origin: 100px 100px;
+        }
+
+        /* --- Series D: PRO Vision --- */
+        .card-pro {
+            background: #000;
+            color: #fff;
+            border: 1px solid #333;
+        }
+
+        .card-pro .label {
+            color: #fff;
+        }
+
+        .card-pro .desc {
+            color: #b2bec3;
+        }
+
+        /* Tension */
+        @keyframes vibrate {
+            0% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-1px, 1px);
+            }
+
+            40% {
+                transform: translate(-1px, -1px);
+            }
+
+            60% {
+                transform: translate(1px, 1px);
+            }
+
+            80% {
+                transform: translate(1px, -1px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .tension-line {
+            animation: vibrate 0.2s linear infinite;
+        }
+
+        /* Digital Ghost */
+        @keyframes glitch-skew {
+            0% {
+                transform: skew(0deg);
+            }
+
+            20% {
+                transform: skew(-2deg);
+                opacity: 0.8;
+            }
+
+            40% {
+                transform: skew(2deg);
+                opacity: 0.9;
+            }
+
+            60% {
+                transform: skew(-1deg);
+                opacity: 1;
+            }
+
+            80% {
+                transform: skew(1deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: skew(0deg);
+                opacity: 1;
+            }
+        }
+
+        .glitch-layer {
+            mix-blend-mode: screen;
+        }
+
+        .glitch-anim {
+            animation: glitch-skew 3s infinite steps(10);
+        }
+
+        /* Bubble */
+        @keyframes bubble-wobble {
+
+            0%,
+            100% {
+                border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+                transform: rotate(0deg);
+            }
+
+            50% {
+                border-radius: 30% 60% 70% 40%/50% 60% 30% 60%;
+                transform: rotate(180deg);
+            }
+        }
+
+        .bubble-shape {
+            animation: bubble-wobble 8s linear infinite;
+            transform-origin: center;
+        }
+
+        /* Nebula */
+        @keyframes particle-swirl {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .nebula-core {
+            animation: particle-swirl 10s linear infinite;
+            transform-origin: center;
+        }
+
+        /* --- Series E: Sonnet Vision --- */
+        .card-sonnet {
+            background: linear-gradient(135deg, #fdfcfb 0%, #f5f5f5 100%);
+        }
+
+        /* Autumn Leaves */
+        @keyframes leaf-fall {
+            0% {
+                transform: translate(0, -20px) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(30px, 80px) rotate(180deg);
+                opacity: 0.3;
+            }
+        }
+
+        .autumn-leaf {
+            animation: leaf-fall 4s ease-in infinite;
+        }
+
+        /* Water Ripple */
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .ripple-ring {
+            animation: ripple 3s ease-out infinite;
+        }
+
+        /* Fog Veil */
+        @keyframes fog-drift {
+
+            0%,
+            100% {
+                transform: translateX(-10px);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateX(10px);
+                opacity: 0.7;
+            }
+        }
+
+        .fog-layer {
+            animation: fog-drift 8s ease-in-out infinite;
+        }
+
+        /* Melting */
+        @keyframes drip {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(15px);
+                opacity: 0;
+            }
+        }
+
+        .water-drop {
+            animation: drip 2s ease-in infinite;
+        }
+
+        /* Light Beams */
+        @keyframes beam-rotate {
+            0% {
+                transform: rotate(0deg);
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        .light-ray {
+            animation: beam-rotate 15s linear infinite;
+            transform-origin: center;
+        }
+
+        /* Temporal Shift */
+        @keyframes phase-shift {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            33% {
+                opacity: 0.6;
+            }
+
+            66% {
+                opacity: 0.4;
+            }
+        }
+
+        .time-layer-1 {
+            animation: phase-shift 6s ease-in-out infinite;
+        }
+
+        .time-layer-2 {
+            animation: phase-shift 6s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        .time-layer-3 {
+            animation: phase-shift 6s ease-in-out infinite;
+            animation-delay: 4s;
+        }
+
+        /* --- Series F: Opus Vision --- */
+        .card-opus {
+            background: linear-gradient(180deg, #0c0c1e 0%, #1a1a2e 100%);
+        }
+
+        .card-opus .label {
+            color: #ffeaa7;
+        }
+
+        .card-opus .desc {
+            color: #b2bec3;
+        }
+
+        /* Celestial Symphony - stars twinkling */
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        .star-note {
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        /* Converging Paths - spiral in */
+        @keyframes converge {
+            0% {
+                stroke-dashoffset: 200;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .path-line {
+            stroke-dasharray: 200;
+            animation: converge 8s linear infinite;
+        }
+
+        /* Inner Temple - breathing */
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+
+        .inner-glow {
+            animation: breathe 5s ease-in-out infinite;
+        }
+
+        /* Ouroboros - slow rotation */
+        @keyframes eternal-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ouroboros {
+            animation: eternal-spin 30s linear infinite;
+            transform-origin: center;
+        }
+
+        /* Cosmic Vastness - subtle pulse */
+        @keyframes cosmic-pulse {
+
+            0%,
+            100% {
+                opacity: 0.1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .cosmos-bg {
+            animation: cosmic-pulse 10s ease-in-out infinite;
+        }
+
+        /* Roots Growing */
+        @keyframes root-grow {
+            0% {
+                stroke-dashoffset: 50;
+                opacity: 0;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        .root-line {
+            stroke-dasharray: 50;
+            animation: root-grow 4s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>SKYHOUSE</h1>
+        <p class="philosophy">
+            飞在空中的房子，遥远却又是自己想要的家。<br>
+            是梦想，也是想要的未来。<br>
+            但因现实，它显得遥不可及。<br>
+            即使有了，也在空中，并不安稳。
+        </p>
+    </div>
+
+    <div class="logo-container">
+
+        <!-- Concept 1: The Distant Dream (遥不可及) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="fadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2d3436;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#2d3436;stop-opacity:0" />
+                    </linearGradient>
+                </defs>
+
+                <g class="float-anim">
+                    <!-- The tiny house, high up -->
+                    <g transform="translate(85, 35) scale(0.6)">
+                        <path d="M25 20 L5 35 V55 H45 V35 L25 20" fill="none" stroke="#2d3436" stroke-width="2"
+                            stroke-linejoin="round" />
+                        <rect x="18" y="40" width="14" height="15" fill="none" stroke="#2d3436" stroke-width="1.5" />
+                        <path d="M0 55 H50" stroke="#2d3436" stroke-width="2" />
+                    </g>
+
+                    <!-- The long, fading string - distance -->
+                    <path d="M100 60 Q 95 100, 100 180" stroke="url(#fadeGrad)" stroke-width="1.5" fill="none"
+                        stroke-dasharray="3 4" />
+                </g>
+
+                <!-- Subtle ground shadow (the reality below) -->
+                <ellipse cx="100" cy="185" rx="25" ry="4" fill="#e0e0e0" opacity="0.5" />
+
+                <text x="100" y="175" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="200"
+                    fill="#2d3436" font-size="16" letter-spacing="5">SKYHOUSE</text>
+            </svg>
+            <div class="label">遥不可及</div>
+            <div class="desc">The Distant Dream — 渐远的线，是现实与梦想之间的距离</div>
+        </div>
+
+        <!-- Concept 2: Fragile Balance (并不安稳) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g class="sway-anim">
+                    <!-- Cloud -->
+                    <path
+                        d="M55 110 C40 110 35 95 50 90 C50 75 70 65 90 75 C100 60 130 60 140 80 C155 80 160 95 145 110 Z"
+                        fill="#f5f6fa" stroke="#dfe6e9" stroke-width="1" />
+
+                    <!-- House sitting precariously -->
+                    <g transform="translate(75, 60)">
+                        <!-- Roof with overhang -->
+                        <path d="M0 30 L25 8 L50 30" fill="#e17055" stroke="#2d3436" stroke-width="2"
+                            stroke-linejoin="round" />
+                        <!-- Chimney -->
+                        <rect x="35" y="12" width="8" height="14" fill="#fab1a0" stroke="#2d3436" stroke-width="1.5" />
+                        <!-- Body -->
+                        <rect x="5" y="28" width="40" height="30" fill="#fff" stroke="#2d3436" stroke-width="2" />
+                        <!-- Window - light inside -->
+                        <rect x="15" y="35" width="20" height="12" fill="#ffeaa7" stroke="#2d3436" stroke-width="1.5" />
+                        <line x1="25" y1="35" x2="25" y2="47" stroke="#2d3436" stroke-width="1" />
+                        <!-- Door -->
+                        <rect x="20" y="48" width="10" height="10" fill="#74b9ff" stroke="#2d3436" stroke-width="1.5" />
+                    </g>
+                </g>
+
+                <text x="100" y="180" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="400"
+                    fill="#2d3436" font-size="18" letter-spacing="2">skyhouse</text>
+            </svg>
+            <div class="label">并不安稳</div>
+            <div class="desc">Fragile Balance — 飘在云端，轻轻摇曳，美丽却脆弱</div>
+        </div>
+
+        <!-- Concept 3: The Reach (心之所向) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- The small, distant house -->
+                <g class="float-anim" transform="translate(80, 25) scale(0.5)">
+                    <circle cx="40" cy="60" r="50" fill="#f8f9fa" stroke="#dfe6e9" stroke-width="1" />
+                    <path d="M20 50 L40 30 L60 50 V70 H20 V50" fill="#fff" stroke="#636e72" stroke-width="2"
+                        stroke-linejoin="round" />
+                    <rect x="32" y="55" width="16" height="15" fill="none" stroke="#636e72" stroke-width="1.5" />
+                </g>
+
+                <!-- Hand reaching up -->
+                <g class="reach-anim">
+                    <path d="M100 180 Q 100 140, 100 110" stroke="#b2bec3" stroke-width="1.5" fill="none"
+                        stroke-dasharray="4 3" />
+                    <!-- Stylized hand silhouette -->
+                    <path d="M90 180 C 85 160, 90 145, 95 135 L100 130 L105 135 C 110 145, 115 160, 110 180 Z"
+                        fill="none" stroke="#b2bec3" stroke-width="1.5" />
+                    <!-- Fingers reaching -->
+                    <path d="M95 135 Q 92 125, 95 115" stroke="#b2bec3" stroke-width="1" fill="none" />
+                    <path d="M100 130 Q 100 118, 100 105" stroke="#b2bec3" stroke-width="1" fill="none" />
+                    <path d="M105 135 Q 108 125, 105 115" stroke="#b2bec3" stroke-width="1" fill="none" />
+                </g>
+
+                <text x="100" y="195" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="4">心之所向</text>
+            </svg>
+            <div class="label">心之所向</div>
+            <div class="desc">The Longing Reach — 伸出的手，触不到的远方</div>
+        </div>
+
+        <!-- Concept 4: Unanchored (无所依傍) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="skyBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#74b9ff;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#a29bfe;stop-opacity:0.1" />
+                    </linearGradient>
+                </defs>
+
+                <g class="float-anim">
+                    <!-- Balloon -->
+                    <ellipse cx="100" cy="50" rx="30" ry="35" fill="url(#skyBlue)" stroke="#b2bec3" stroke-width="1" />
+                    <path d="M100 85 L100 100" stroke="#b2bec3" stroke-width="1.5" />
+
+                    <!-- House hanging from balloon -->
+                    <g transform="translate(77, 95)">
+                        <path d="M0 25 L23 5 L46 25" fill="#ffeaa7" stroke="#636e72" stroke-width="1.5"
+                            stroke-linejoin="round" />
+                        <rect x="5" y="23" width="36" height="28" fill="#fff" stroke="#636e72" stroke-width="1.5" />
+                        <rect x="17" y="30" width="12" height="10" fill="#74b9ff" opacity="0.5" stroke="#636e72"
+                            stroke-width="1" />
+                        <rect x="19" y="41" width="8" height="10" fill="#dfe6e9" stroke="#636e72" stroke-width="1" />
+                    </g>
+
+                    <!-- Dangling anchor (trying to find ground) -->
+                    <path d="M100 151 L100 175" stroke="#b2bec3" stroke-width="1" stroke-dasharray="2 2" />
+                    <path d="M95 180 L100 175 L105 180 M100 175 L100 185" stroke="#b2bec3" stroke-width="1.5"
+                        stroke-linecap="round" />
+                </g>
+
+                <text x="100" y="200" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="200"
+                    fill="#636e72" font-size="15" letter-spacing="4">SKYHOUSE</text>
+            </svg>
+            <div class="label">无所依傍</div>
+            <div class="desc">Unanchored — 垂落的锚，寻找着从未触及的大地</div>
+        </div>
+
+    </div>
+
+    <!-- SECTION 3: Gemini's Interpretations -->
+    <div class="section-title" style="margin-top: 80px;">Series C: Gemini 的理解</div>
+    <div class="logo-container">
+
+        <!-- Gemini 1: Inverse Gravity (逆向引力) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#f1f2f6" stroke-width="0.5" />
+                <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="#2d3436" />
+                <g class="orbit-item" style="animation-delay: 0s;">
+                    <circle cx="100" cy="100" r="3" fill="#fdcb6e" />
+                </g>
+                <g class="orbit-item" style="animation-delay: -5s;">
+                    <circle cx="100" cy="100" r="2" fill="#74b9ff" />
+                </g>
+                <g class="orbit-item" style="animation-delay: -10s;">
+                    <circle cx="100" cy="100" r="4" fill="#a29bfe" />
+                </g>
+                <text x="100" y="160" text-anchor="middle" font-family="'Outfit'" font-weight="400" fill="#2d3436"
+                    font-size="14" letter-spacing="2">INVERSE GRAVITY</text>
+            </svg>
+            <div class="label">逆向引力</div>
+            <div class="desc">The magnetic pull of a dream that defies the weight of the world.</div>
+        </div>
+
+        <!-- Gemini 2: Starlit Ledge (星河彼岸) -->
+        <div class="logo-card" style="background: #0b0c10;">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 100 A 60 60 0 0 0 160 100" fill="none" stroke="#f1c40f" stroke-width="1.5" opacity="0.6" />
+                <path d="M85 85 L100 70 L115 85 V105 H85 V85" fill="none" stroke="#ffffff" stroke-width="1.5" />
+                <circle class="star" cx="50" cy="60" r="1.5" fill="#fff" />
+                <circle class="star" cx="150" cy="80" r="1" fill="#fff" style="animation-delay: 1s;" />
+                <circle class="star" cx="100" cy="40" r="2" fill="#fff" style="animation-delay: 2s;" />
+                <text x="100" y="150" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#fff"
+                    font-size="14" letter-spacing="4">STARLIT LEDGE</text>
+            </svg>
+            <div class="label" style="color: #fff;">星河彼岸</div>
+            <div class="desc">A sanctuary perched on the fragile edge of a celestial promise.</div>
+        </div>
+
+        <!-- Gemini 3: Fading Echo (梦的余韵) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g opacity="0.1">
+                    <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="#2d3436" />
+                </g>
+                <g class="echo" style="animation-delay: 0s;">
+                    <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="none" stroke="#2d3436" stroke-width="1" />
+                </g>
+                <g class="echo" style="animation-delay: 1s;">
+                    <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="none" stroke="#2d3436" stroke-width="1" />
+                </g>
+                <g class="echo" style="animation-delay: 2s;">
+                    <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="none" stroke="#2d3436" stroke-width="1" />
+                </g>
+                <text x="100" y="160" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#b2bec3"
+                    font-size="14" letter-spacing="3">FADING ECHO</text>
+            </svg>
+            <div class="label">梦的余韵</div>
+            <div class="desc">The elusive memory of a home that exists only in the quiet of a thought.</div>
+        </div>
+
+        <!-- Gemini 4: Golden Prism (光之棱镜) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g class="prism">
+                    <path d="M100 60 L70 100 L100 140 L130 100 Z" fill="#fab1a0" opacity="0.3" />
+                    <path d="M100 60 L130 100 L100 140 Z" fill="#74b9ff" opacity="0.3" />
+                    <path d="M100 80 L85 100 L100 120 L115 100 Z" fill="none" stroke="#2d3436" stroke-width="1.5" />
+                </g>
+                <text x="100" y="170" text-anchor="middle" font-family="'Outfit'" font-weight="600" fill="#2d3436"
+                    font-size="14" letter-spacing="5">GOLDEN PRISM</text>
+            </svg>
+            <div class="label">光之棱镜</div>
+            <div class="desc">Multi-faceted and brilliant, reflecting the fragmented beauty of hope.</div>
+        </div>
+
+        <!-- Gemini 5: Wind Swept (随风而起) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="none" stroke="#2d3436" stroke-width="1.5" />
+                <rect class="petal" x="110" y="80" width="4" height="4" fill="#ff7675" style="animation-delay: 0s;" />
+                <rect class="petal" x="115" y="85" width="3" height="3" fill="#ff7675" style="animation-delay: 1s;" />
+                <rect class="petal" x="120" y="75" width="5" height="5" fill="#ff7675" style="animation-delay: 2s;" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#2d3436"
+                    font-size="14" letter-spacing="2">WIND SWEPT</text>
+            </svg>
+            <div class="label">随风而起</div>
+            <div class="desc">A stability as fleeting as petals in a breeze, beautiful in its disappearance.</div>
+        </div>
+
+        <!-- Gemini 6: The Compass (未来指引) -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#dfe6e9" stroke-width="1" />
+                <g class="needle">
+                    <path d="M100 40 L110 100 L90 100 Z" fill="#e17055" />
+                    <path d="M100 160 L110 100 L90 100 Z" fill="#dfe6e9" />
+                    <g transform="translate(85, 80) scale(0.3)">
+                        <path d="M25 20 L5 35 V55 H45 V35 L25 20" fill="#fff" stroke="#2d3436" stroke-width="2" />
+                    </g>
+                </g>
+                <circle cx="100" cy="30" r="3" fill="#f1c40f" class="star" />
+                <text x="100" y="180" text-anchor="middle" font-family="'Outfit'" font-weight="600" fill="#2d3436"
+                    font-size="14" letter-spacing="3">FUTURE GUIDANCE</text>
+            </svg>
+            <div class="label">未来指引</div>
+            <div class="desc">The house as a lighthouse for the soul, always pointing toward the dream.</div>
+        </div>
+
+    </div>
+
+    <!-- SECTION 4: PRO Vision -->
+    <div class="section-title" style="margin-top: 80px;">Series D: PRO Vision (PRO 视角)</div>
+    <div class="logo-container">
+
+        <!-- PRO 1: The Tension (羁绊之线) -->
+        <div class="logo-card card-pro">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Strained Line -->
+                <line x1="20" y1="20" x2="180" y2="40" stroke="#ff7675" stroke-width="0.5" />
+                <!-- The red thread holding the house -->
+                <path class="tension-line" d="M100 30 L100 80" stroke="#ff7675" stroke-width="1" />
+
+                <!-- Minimal Heavy Cube House -->
+                <g transform="translate(80, 80)">
+                    <rect x="0" y="0" width="40" height="40" fill="#2d3436" stroke="#b2bec3" stroke-width="1" />
+                    <rect x="10" y="10" width="20" height="20" fill="#000" />
+                </g>
+                <text x="100" y="170" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#fff"
+                    font-size="14" letter-spacing="6">TENSION</text>
+            </svg>
+            <div class="label">羁绊之线</div>
+            <div class="desc">The impossible physics of hanging a dream on a single, vibrating thread of hope.</div>
+        </div>
+
+        <!-- PRO 2: Digital Ghost (数字幽灵) -->
+        <div class="logo-card card-pro">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="glitch">
+                        <feColorMatrix in="SourceGraphic" type="matrix"
+                            values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red" />
+                        <feOffset in="red" dx="-2" dy="0" result="red_offset" />
+                        <feColorMatrix in="SourceGraphic" type="matrix"
+                            values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green" />
+                        <feOffset in="green" dx="2" dy="0" result="green_offset" />
+                        <feBlend in="red_offset" in2="green_offset" mode="screen" />
+                    </filter>
+                </defs>
+                <g class="glitch-anim" filter="url(#glitch)">
+                    <path d="M100 60 L70 90 V130 H130 V90 L100 60" fill="none" stroke="#00d2d3" stroke-width="2" />
+                    <rect x="90" y="100" width="20" height="20" fill="#00d2d3" opacity="0.5" />
+                    <path d="M60 140 H140" stroke="#00d2d3" stroke-width="1" stroke-dasharray="2 4" />
+                </g>
+                <text x="100" y="170" text-anchor="middle" font-family="'Courier New'" font-weight="bold" fill="#00d2d3"
+                    font-size="14" letter-spacing="2">DIGITAL_GHOST</text>
+            </svg>
+            <div class="label">数字幽灵</div>
+            <div class="desc">A glitch in the reality matrix. Steps 404: Ground Not Found.</div>
+        </div>
+
+        <!-- PRO 3: Bubble Sanctuary (气泡圣地) -->
+        <div class="logo-card card-pro">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="bubbleGrad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" style="stop-color:rgba(255,255,255,0)" />
+                        <stop offset="80%" style="stop-color:rgba(255,255,255,0.1)" />
+                        <stop offset="100%" style="stop-color:rgba(255,100,200,0.3)" />
+                    </radialGradient>
+                </defs>
+                <!-- Bubble -->
+                <circle cx="100" cy="90" r="60" fill="url(#bubbleGrad)" stroke="rgba(255,255,255,0.3)" stroke-width="1"
+                    class="bubble-shape" />
+                <path d="M70 60 Q 90 40 120 70" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"
+                    stroke-linecap="round" class="bubble-shape" style="animation-duration: 5s;" />
+
+                <!-- House Inside -->
+                <g transform="translate(85, 75) scale(0.6)">
+                    <path d="M25 0 L50 25 V50 H0 V25 L25 0" fill="#fff" opacity="0.8" />
+                </g>
+                <text x="100" y="175" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#fff"
+                    font-size="14" letter-spacing="3">SANCTUARY</text>
+            </svg>
+            <div class="label">气泡圣地</div>
+            <div class="desc">Perfect, iridescent protection that creates its own atmosphere but pops at a touch.</div>
+        </div>
+
+        <!-- PRO 4: Impossible Construct (错位几何) -->
+        <div class="logo-card card-pro">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Penrose Triangle style minimalist house -->
+                <path d="M100 50 L60 120 H140 L100 50 Z" fill="none" stroke="#fdcb6e" stroke-width="2" />
+                <path d="M100 50 L80 120 M140 120 L100 90 M60 120 L100 90" stroke="#fdcb6e" stroke-width="1" />
+                <path d="M100 30 V50" stroke="#fff" stroke-width="1" stroke-dasharray="2 2" />
+                <circle cx="100" cy="20" r="2" fill="#fff" />
+                <text x="100" y="170" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#fdcb6e"
+                    font-size="14" letter-spacing="4">IMPOSSIBLE</text>
+            </svg>
+            <div class="label">错位几何</div>
+            <div class="desc">Constructed from logic that does not exist here.</div>
+        </div>
+
+        <!-- PRO 5: Nebula Form (星云汇聚) -->
+        <div class="logo-card card-pro">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g class="nebula-core">
+                    <circle cx="100" cy="90" r="40" fill="url(#skyGrad)" opacity="0.2" filter="blur(5px)" />
+                    <circle cx="80" cy="80" r="2" fill="#fff" />
+                    <circle cx="120" cy="100" r="2" fill="#fff" />
+                    <circle cx="90" cy="110" r="1.5" fill="#fff" />
+                    <circle cx="110" cy="70" r="1.5" fill="#fff" />
+                </g>
+                <!-- Wireframe house forming -->
+                <path d="M100 60 L75 85 V120 H125 V85 L100 60" fill="none" stroke="#a29bfe" stroke-width="1"
+                    stroke-dasharray="2 3" opacity="0.7" />
+
+                <text x="100" y="170" text-anchor="middle" font-family="'Outfit'" font-weight="200" fill="#a29bfe"
+                    font-size="14" letter-spacing="3">NEBULA</text>
+            </svg>
+            <div class="label">星云汇聚</div>
+            <div class="desc">A home in the state of becoming, woven from stardust and time.</div>
+        </div>
+
+        <!-- PRO 6: Void Anchor (虚空之锚) -->
+        <div class="logo-card card-pro" style="background: #fff; border: 1px solid #2d3436;">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Dark solid block -->
+                <rect x="40" y="40" width="120" height="120" fill="#2d3436" />
+                <!-- Cutout House (Negative Space) -->
+                <path d="M100 70 L80 90 V120 H120 V90 L100 70 Z" fill="#fff" />
+                <!-- Cutout String upwards -->
+                <path d="M100 70 L100 40" stroke="#fff" stroke-width="2" />
+
+                <text x="100" y="190" text-anchor="middle" font-family="'Outfit'" font-weight="bold" fill="#2d3436"
+                    font-size="14" letter-spacing="4">VOID ANCHOR</text>
+            </svg>
+            <div class="label" style="color:#2d3436;">虚空之锚</div>
+            <div class="desc" style="color:#636e72;">Defined only by what it isn't. A hole in the fabric of the
+                mundane.</div>
+        </div>
+
+    </div>
+
+    <!-- SECTION 5: Sonnet Vision -->
+    <div class="section-title" style="margin-top: 80px;">Series E: Sonnet Vision (诗人之眼)</div>
+    <div class="logo-container">
+
+        <!-- Sonnet 1: Autumn's Homecoming (秋色暮归) -->
+        <div class="logo-card card-sonnet">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="autumnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#d63031" />
+                        <stop offset="50%" style="stop-color:#e17055" />
+                        <stop offset="100%" style="stop-color:#fdcb6e" />
+                    </linearGradient>
+                </defs>
+                <!-- House silhouette in background -->
+                <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="#dfe6e9" opacity="0.3" />
+                <!-- Falling leaves forming the house -->
+                <ellipse class="autumn-leaf" cx="95" cy="85" rx="4" ry="6" fill="url(#autumnGrad)"
+                    style="animation-delay: 0s;" />
+                <ellipse class="autumn-leaf" cx="105" cy="90" rx="5" ry="7" fill="url(#autumnGrad)"
+                    style="animation-delay: 0.5s;" />
+                <ellipse class="autumn-leaf" cx="90" cy="100" rx="6" ry="8" fill="url(#autumnGrad)"
+                    style="animation-delay: 1s;" />
+                <ellipse class="autumn-leaf" cx="110" cy="95" rx="4" ry="6" fill="url(#autumnGrad)"
+                    style="animation-delay: 1.5s;" />
+                <ellipse class="autumn-leaf" cx="100" cy="105" rx="5" ry="7" fill="url(#autumnGrad)"
+                    style="animation-delay: 2s;" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="3">秋色暮归</text>
+            </svg>
+            <div class="label">Autumn's Homecoming</div>
+            <div class="desc">Endings that promise new beginnings; beauty in letting go.</div>
+        </div>
+
+        <!-- Sonnet 2: Moonlit Fragments (月下碎影) -->
+        <div class="logo-card card-sonnet" style="background: #0f0f1e;">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Moon -->
+                <circle cx="100" cy="40" r="15" fill="#f1c40f" opacity="0.8" />
+                <!-- Water surface line -->
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#74b9ff" stroke-width="0.5" opacity="0.3" />
+                <!-- Ripple rings -->
+                <circle class="ripple-ring" cx="100" cy="100" r="40" fill="none" stroke="#74b9ff" stroke-width="0.5"
+                    style="animation-delay: 0s;" />
+                <circle class="ripple-ring" cx="100" cy="100" r="40" fill="none" stroke="#74b9ff" stroke-width="0.5"
+                    style="animation-delay: 1s;" />
+                <circle class="ripple-ring" cx="100" cy="100" r="40" fill="none" stroke="#74b9ff" stroke-width="0.5"
+                    style="animation-delay: 2s;" />
+                <!-- Fragmented house reflection -->
+                <path d="M85 110 L100 125 L115 110 V135 H85 V110" fill="none" stroke="#74b9ff" stroke-width="1"
+                    opacity="0.4" />
+                <rect x="90" y="115" width="5" height="10" fill="#74b9ff" opacity="0.3" />
+                <rect x="105" y="120" width="5" height="8" fill="#74b9ff" opacity="0.2" />
+                <text x="100" y="170" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#74b9ff" font-size="14" letter-spacing="3">月下碎影</text>
+            </svg>
+            <div class="label" style="color: #74b9ff;">Moonlit Fragments</div>
+            <div class="desc">Seeking wholeness in broken reflections.</div>
+        </div>
+
+        <!-- Sonnet 3: Dawn Mist Isle (晨雾浮屿) -->
+        <div class="logo-card card-sonnet">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="mistGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#dfe6e9;stop-opacity:0" />
+                        <stop offset="100%" style="stop-color:#b2bec3;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <!-- Multiple fog layers -->
+                <ellipse class="fog-layer" cx="100" cy="80" rx="60" ry="15" fill="url(#mistGrad)"
+                    style="animation-delay: 0s;" />
+                <ellipse class="fog-layer" cx="100" cy="100" rx="70" ry="20" fill="url(#mistGrad)"
+                    style="animation-delay: 2s;" />
+                <ellipse class="fog-layer" cx="100" cy="120" rx="65" ry="18" fill="url(#mistGrad)"
+                    style="animation-delay: 4s;" />
+                <!-- House silhouette emerging -->
+                <path d="M85 85 L100 70 L115 85 V110 H85 V85" fill="#2d3436" opacity="0.5" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="3">晨雾浮屿</text>
+            </svg>
+            <div class="label">Dawn Mist Isle</div>
+            <div class="desc">Hope materializing from obscurity.</div>
+        </div>
+
+        <!-- Sonnet 4: Spring's First Sight (雪融初见) -->
+        <div class="logo-card card-sonnet">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ice/snow house (melting edges) -->
+                <path d="M85 90 L100 75 L115 90 V115 H85 V90" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" />
+                <!-- Melting edges -->
+                <path d="M85 115 Q 90 118 95 115" fill="none" stroke="#74b9ff" stroke-width="1" opacity="0.6" />
+                <path d="M105 115 Q 110 118 115 115" fill="none" stroke="#74b9ff" stroke-width="1" opacity="0.6" />
+                <!-- Water drops -->
+                <circle class="water-drop" cx="88" cy="115" r="1.5" fill="#74b9ff" style="animation-delay: 0s;" />
+                <circle class="water-drop" cx="100" cy="115" r="1.5" fill="#74b9ff" style="animation-delay: 0.5s;" />
+                <circle class="water-drop" cx="112" cy="115" r="1.5" fill="#74b9ff" style="animation-delay: 1s;" />
+                <!-- Small puddle forming -->
+                <ellipse cx="100" cy="135" rx="15" ry="3" fill="#74b9ff" opacity="0.3" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="3">雪融初见</text>
+            </svg>
+            <div class="label">Spring's First Sight</div>
+            <div class="desc">Vulnerability in transformation.</div>
+        </div>
+
+        <!-- Sonnet 5: Poem of Light (光影诗篇) -->
+        <div class="logo-card card-sonnet">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g class="light-ray">
+                    <!-- Light beams from center -->
+                    <line x1="100" y1="100" x2="100" y2="40" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="140" y2="60" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="160" y2="100" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="140" y2="140" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="60" y2="140" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="40" y2="100" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                    <line x1="100" y1="100" x2="60" y2="60" stroke="#ffeaa7" stroke-width="2" opacity="0.4" />
+                </g>
+                <!-- Shadow house -->
+                <path d="M85 85 L100 70 L115 85 V110 H85 V85" fill="#2d3436" opacity="0.7" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="3">光影诗篇</text>
+            </svg>
+            <div class="label">Poem of Light</div>
+            <div class="desc">Substance from the intangible.</div>
+        </div>
+
+        <!-- Sonnet 6: Temporal Rift (时间裂隙) -->
+        <div class="logo-card card-sonnet">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Past (faded, left-shifted) -->
+                <path class="time-layer-1" d="M80 90 L95 75 L110 90 V115 H80 V90" fill="none" stroke="#95a5a6"
+                    stroke-width="1" />
+                <!-- Present (clearest, centered) -->
+                <path class="time-layer-2" d="M85 90 L100 75 L115 90 V115 H85 V90" fill="none" stroke="#2d3436"
+                    stroke-width="1.5" />
+                <!-- Future (ethereal, right-shifted) -->
+                <path class="time-layer-3" d="M90 90 L105 75 L120 90 V115 H90 V90" fill="none" stroke="#74b9ff"
+                    stroke-width="1" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#636e72" font-size="14" letter-spacing="3">时间裂隙</text>
+            </svg>
+            <div class="label">Temporal Rift</div>
+            <div class="desc">All versions of our dreams existing simultaneously.</div>
+        </div>
+
+    </div>
+
+    <!-- SECTION 6: Opus Vision -->
+    <div class="section-title" style="margin-top: 80px;">Series F: Opus Vision (终章之声)</div>
+    <div class="logo-container">
+
+        <!-- Opus 1: Celestial Symphony (星辰交响) -->
+        <div class="logo-card card-opus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Musical staff lines -->
+                <line x1="20" y1="60" x2="180" y2="60" stroke="#ffeaa7" stroke-width="0.5" opacity="0.3" />
+                <line x1="20" y1="80" x2="180" y2="80" stroke="#ffeaa7" stroke-width="0.5" opacity="0.3" />
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#ffeaa7" stroke-width="0.5" opacity="0.3" />
+                <line x1="20" y1="120" x2="180" y2="120" stroke="#ffeaa7" stroke-width="0.5" opacity="0.3" />
+                <line x1="20" y1="140" x2="180" y2="140" stroke="#ffeaa7" stroke-width="0.5" opacity="0.3" />
+                <!-- Stars as notes -->
+                <circle class="star-note" cx="50" cy="70" r="2" fill="#ffeaa7" style="animation-delay: 0s;" />
+                <circle class="star-note" cx="80" cy="110" r="2.5" fill="#ffeaa7" style="animation-delay: 0.5s;" />
+                <circle class="star-note" cx="130" cy="90" r="2" fill="#ffeaa7" style="animation-delay: 1s;" />
+                <circle class="star-note" cx="160" cy="130" r="2" fill="#ffeaa7" style="animation-delay: 1.5s;" />
+                <!-- House as the main note -->
+                <path d="M95 85 L100 80 L105 85 V95 H95 V85" fill="#ffeaa7" />
+                <text x="100" y="175" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">星辰交响</text>
+            </svg>
+            <div class="label">Celestial Symphony</div>
+            <div class="desc">One note in the cosmic melody; small, but essential to the whole.</div>
+        </div>
+
+        <!-- Opus 2: All Paths Converge (万径归一) -->
+        <div class="logo-card card-opus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Converging paths -->
+                <path class="path-line" d="M20 180 Q 60 100, 100 90" fill="none" stroke="#74b9ff" stroke-width="1"
+                    opacity="0.6" style="animation-delay: 0s;" />
+                <path class="path-line" d="M180 180 Q 140 100, 100 90" fill="none" stroke="#74b9ff" stroke-width="1"
+                    opacity="0.6" style="animation-delay: 1s;" />
+                <path class="path-line" d="M20 20 Q 60 60, 100 90" fill="none" stroke="#a29bfe" stroke-width="1"
+                    opacity="0.6" style="animation-delay: 2s;" />
+                <path class="path-line" d="M180 20 Q 140 60, 100 90" fill="none" stroke="#a29bfe" stroke-width="1"
+                    opacity="0.6" style="animation-delay: 3s;" />
+                <path class="path-line" d="M100 180 Q 100 140, 100 90" fill="none" stroke="#ffeaa7" stroke-width="1"
+                    opacity="0.8" style="animation-delay: 4s;" />
+                <!-- Central house -->
+                <path d="M90 85 L100 75 L110 85 V100 H90 V85" fill="#fff" opacity="0.9" />
+                <text x="100" y="160" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">万径归一</text>
+            </svg>
+            <div class="label">All Paths Converge</div>
+            <div class="desc">Every road leads to the same destination; the home we carry within.</div>
+        </div>
+
+        <!-- Opus 3: Temple Within (内在圣殿) -->
+        <div class="logo-card card-opus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Human silhouette outline -->
+                <ellipse cx="100" cy="50" rx="20" ry="25" fill="none" stroke="#b2bec3" stroke-width="1" />
+                <path d="M80 75 Q 60 120, 70 160 L85 160 L100 120 L115 160 L130 160 Q 140 120, 120 75" fill="none"
+                    stroke="#b2bec3" stroke-width="1" />
+                <!-- Inner glow -->
+                <circle class="inner-glow" cx="100" cy="100" r="25" fill="#ffeaa7" opacity="0.2" />
+                <!-- House in center -->
+                <path d="M92 95 L100 87 L108 95 V108 H92 V95" fill="#ffeaa7" opacity="0.8" />
+                <text x="100" y="180" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">内在圣殿</text>
+            </svg>
+            <div class="label">Temple Within</div>
+            <div class="desc">The house was never in the sky; it was always here, inside.</div>
+        </div>
+
+        <!-- Opus 4: Eternal Return (永恒轮回) -->
+        <div class="logo-card card-opus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ouroboros -->
+                <g class="ouroboros">
+                    <circle cx="100" cy="100" r="55" fill="none" stroke="#636e72" stroke-width="6" />
+                    <!-- Snake head eating tail -->
+                    <circle cx="100" cy="45" r="8" fill="#636e72" />
+                    <path d="M92 45 L100 38 L108 45" fill="#636e72" />
+                </g>
+                <!-- House in center -->
+                <path d="M90 95 L100 85 L110 95 V110 H90 V95" fill="none" stroke="#ffeaa7" stroke-width="1.5" />
+                <text x="100" y="175" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">永恒轮回</text>
+            </svg>
+            <div class="label">Eternal Return</div>
+            <div class="desc">The dream ends only to begin again; an infinite cycle of longing.</div>
+        </div>
+
+        <!-- Opus 5: In the Vastness (浩瀀之中) -->
+        <div class="logo-card card-opus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cosmic background -->
+                <circle class="cosmos-bg" cx="100" cy="100" r="90" fill="#1a1a2e" />
+                <circle class="cosmos-bg" cx="40" cy="40" r="30" fill="#2d2d44" style="animation-delay: 2s;" />
+                <circle class="cosmos-bg" cx="160" cy="150" r="25" fill="#2d2d44" style="animation-delay: 4s;" />
+                <!-- Scattered stars -->
+                <circle cx="30" cy="60" r="1" fill="#fff" />
+                <circle cx="170" cy="40" r="1" fill="#fff" />
+                <circle cx="50" cy="150" r="1" fill="#fff" />
+                <circle cx="150" cy="80" r="1" fill="#fff" />
+                <circle cx="80" cy="30" r="1" fill="#fff" />
+                <!-- Tiny house -->
+                <path d="M98 98 L100 96 L102 98 V102 H98 V98" fill="#ffeaa7" />
+                <text x="100" y="175" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">浩瀀之中</text>
+            </svg>
+            <div class="label">In the Vastness</div>
+            <div class="desc">Impossibly small, impossibly significant. The only anchor in infinity.</div>
+        </div>
+
+        <!-- Opus 6: Final Peace (终章安宁) -->
+        <div class="logo-card card-opus" style="background: linear-gradient(180deg, #1a1a2e 0%, #2d4a3e 100%);">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ground -->
+                <line x1="40" y1="120" x2="160" y2="120" stroke="#6ab04c" stroke-width="2" />
+                <!-- House finally grounded -->
+                <path d="M85 85 L100 70 L115 85 V120 H85 V85" fill="#2d3436" stroke="#ffeaa7" stroke-width="1" />
+                <rect x="92" y="95" width="16" height="25" fill="#ffeaa7" opacity="0.3" />
+                <!-- Roots growing -->
+                <path class="root-line" d="M90 120 Q 85 135, 80 145" fill="none" stroke="#6ab04c" stroke-width="1"
+                    style="animation-delay: 0s;" />
+                <path class="root-line" d="M100 120 Q 100 140, 100 155" fill="none" stroke="#6ab04c" stroke-width="1"
+                    style="animation-delay: 1s;" />
+                <path class="root-line" d="M110 120 Q 115 135, 120 145" fill="none" stroke="#6ab04c" stroke-width="1"
+                    style="animation-delay: 2s;" />
+                <text x="100" y="180" text-anchor="middle" font-family="'Noto Serif SC', serif" font-weight="300"
+                    fill="#ffeaa7" font-size="14" letter-spacing="3">终章安宁</text>
+            </svg>
+            <div class="label">Final Peace</div>
+            <div class="desc">Not compromise, but growth. Roots reaching down as dreams once reached up.</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

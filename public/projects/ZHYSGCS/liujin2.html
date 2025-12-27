@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>test</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="./css/main.css" type="text/css">
+	<script src="./js/libs/jquery.js"></script>
+	<script src="./js/libs/TweenMax.min.js"></script>
+</head>
+<body>
+	<div>
+		<ul class="icon">
+			<li>
+				<span id="reset" class="svg">
+					<svg class="svg-icon">
+						<use xlink:href="#icon-i_reset">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" viewBox="0 0 1024 1024" id="icon-i_reset">
+								<path d="M259.2 288l160 128L256 457.6zM512 512c-19.2 0-32-12.8-32-32v-96c0-16 12.8-32 32-32 16 0 32 12.8 32 32v96c0 19.2-12.8 32-32 32z" p-id="2083"></path>
+								<path d="M489.6 467.2c9.6-16 28.8-19.2 44.8-9.6l86.4 54.4c16 9.6 19.2 28.8 9.6 44.8-9.6 16-28.8 19.2-44.8 9.6L499.2 512c-16-9.6-19.2-32-9.6-44.8z" p-id="2084"></path>
+								<path d="M512 224c-134.4 0-243.2 102.4-256 233.6l67.2-16v-3.2C342.4 352 419.2 288 512 288c105.6 0 192 86.4 192 192s-86.4 192-192 192c-73.6 0-137.6-41.6-169.6-102.4l-64 12.8C316.8 672 406.4 736 512 736c140.8 0 256-115.2 256-256s-115.2-256-256-256z" p-id="2085"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li>
+			<li>
+				<span id="rotate" class="svg">
+					<svg class="svg-icon">
+						<use xlink:href="#icon-i_rotate">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" viewBox="0 0 1024 1024" id="icon-i_rotate">
+								<path d="M288 416h64v32H288v-32z m64 0h32v160h-32v-160z m-64 128h64v32H288v-32z m0-64h64v32H288v-32z m128-32h32v128h-32v-128z m32 32h64v32h-64v-32z m32 32h32v64h-32v-64z m-32 32h32v32h-32v-32z m-32-128h96v32h-96v-32z m128 32h32v128h-32v-128z m0-32h96v32h-96v-32z m64 32h32v128h-32v-128z m-32 96h32v32h-32v-32z m95.456-128H736v64h-64.544v-64z" p-id="2678"></path>
+								<path d="M291.2 304a602.528 602.528 0 0 1 228.736-64 417.504 417.504 0 0 1 208 64l-41.6 42.656A281.792 281.792 0 0 0 520 304a451.488 451.488 0 0 0-208 64 91.296 91.296 0 0 1-24-32 45.44 45.44 0 0 1 3.2-32z" p-id="2679"></path>
+								<path d="M608 384l160-128v128h-160z" p-id="2680"></path><path d="M748.8 688a602.528 602.528 0 0 1-228.736 64 417.472 417.472 0 0 1-208-64l41.6-42.656a281.792 281.792 0 0 0 166.4 42.656 451.552 451.552 0 0 0 208-64 36.96 36.96 0 0 1 24.032 32 63.232 63.232 0 0 1-3.296 32z" p-id="2681"></path><path d="M448 608l-159.744 128.32L288 608h160z" p-id="2682"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li>
+			<li>
+				<span id="size" class="svg">
+					<svg class="svg-icon">
+						<use xlink:href="#icon-i_size">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" viewBox="0 0 1024 1024" id="icon-i_size">
+								<path d="M256 512h64v256H256v-256z m64 192h384v64H320v-64z m384-192h64v256h-64v-256zM256 448h512v64H256v-64z" p-id="2201"></path>
+								<path d="M362.496 474.496h64v107.008h-64v-107.008z" p-id="2202"></path>
+								<path d="M485.504 474.496h64V624h-64v-149.504z" p-id="2203"></path>
+								<path d="M592 453.504h64v128h-64v-128z" p-id="2204"></path>
+								<path d="M256 256h64v128H256z" p-id="2205"></path>
+								<path d="M704 256h64v128h-64z" p-id="2206"></path>
+								<path d="M298.496 282.496h427.008v64H298.496v-64z" p-id="2207"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li>
+
+			<!-- <li>
+				<span id="fullscreen" class="svg">
+					<svg class="svg-icon">
+						<use id="exit" xlink:href="#icon-i_exit">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" viewBox="0 0 1024 1024" id="icon-i_exit">
+								<path d="M480 741.344L266.016 528H480v213.312z" p-id="2559"></path>
+								<path d="M300.512 773.184l-60.352-60.352 120.672-120.672 60.352 60.352z" p-id="2560"></path>
+								<path d="M544 250.656l213.984 213.344H544V250.656z" p-id="2561"></path>
+								<path d="M723.488 218.816L784 279.168 663.168 400l-60.352-60.352z" p-id="2562"></path>
+							</svg>
+						</use>
+
+						<use id="full" xlink:href="#icon-i_full">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" viewBox="0 0 1024 1024" id="icon-i_full">
+								<path d="M256 538.656l213.984 213.344H256v-213.344z" p-id="2440"></path>
+								<path d="M435.488 506.816l60.512 60.352-120.832 120.832-60.352-60.512z" p-id="2441"></path>
+								<path d="M768 453.344L554.016 240H768v213.344z" p-id="2442"></path>
+								<path d="M588.512 485.184l-60.352-60.352L648.832 304l60.352 60.352z" p-id="2443"></path>
+							</svg>
+						</use>
+					</svg>
+				</span>
+			</li> -->
+		</ul>
+	</div>
+
+	<script>
+		// $('.loading_t').css('margin-top', (window.innerHeight / 2 - 60) + 'px');
+
+		var html = '<div class="loading">' + 
+		'<div class="loading_t" style="margin-top: ' + (window.innerHeight / 2 - 60) + 'px;">模型加载中</div>' + 
+		'<div class="progressBar">' + 
+			'<div></div>' + 
+		'</div>' + 
+		'</div>';
+
+		document.write(html);
+	</script>
+	
+
+	<script type="module">
+		
+
+		import * as THREE from './js/three.module.js';
+		import Stats from './js/libs/stats.module.js';
+		import { GUI } from './js/libs/dat.gui.module.js';
+		import { OrbitControls } from './js/controls/OrbitControls.js';
+		import { GLTFLoader } from './js/loaders/GLTFLoader.js';
+		import { RGBELoader } from './js/loaders/RGBELoader.js';
+		import { RoughnessMipmapper } from './js/loaders/RoughnessMipmapper.js';
+
+		var camera, scene, renderer, raycaster, stats, controls;
+		var clock = new THREE.Clock();
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+
+		var groupArray = [];
+		var initPosition = new THREE.Vector3(-600, 0, 0);
+
+		init();
+		animate();
+
+		//1.场景
+		function initScene() {
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color( 0x6f6f6f );
+
+			window.scene = scene;
+		}
+
+		//2.透视相机
+		function initCamera() {
+			camera = new THREE.PerspectiveCamera(13.68, window.innerWidth / window.innerHeight, 10, 2000);
+			camera.position.copy(initPosition);
+		}
+
+		//3.渲染器
+		function initRender() {
+			raycaster = new THREE.Raycaster();
+			renderer = new THREE.WebGLRenderer({
+				antialias: true
+			});
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1;
+
+            renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			document.body.appendChild(renderer.domElement);
+		}
+
+		function launchFullScreen(element) {
+ 			if(element.requestFullscreen) {
+  				element.requestFullscreen();
+ 			} else if(element.mozRequestFullScreen) {
+  				element.mozRequestFullScreen();
+ 			} else if(element.webkitRequestFullscreen) {
+				element.webkitRequestFullscreen();
+ 			} else if(element.msRequestFullscreen) {
+				element.msRequestFullscreen();
+			}
+		}
+
+		function exitFullScreen() {
+			if(document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if(document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if(document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		}
+
+		//4.事件
+		function initEvent() {
+			window.addEventListener('resize', onWindowResize, false);
+
+			$('#rotate').click(function(){
+				controls.autoRotate = !controls.autoRotate;
+
+				if (controls.autoRotate) {
+					$(this).addClass('active');
+				} else {
+					$(this).removeClass('active');
+				}
+			});
+
+			$('#reset').click(function(){
+				camera.position.copy(initPosition);
+			});
+
+			$('#size').click(function(){
+				if ($(this).hasClass('active')) {
+					$(this).removeClass('active');
+				} else {
+					$(this).addClass('active');
+				}
+
+				for (var i = 0; i < groupArray.length; i++) {
+					groupArray[i].visible = $(this).hasClass('active');
+				}
+			});
+
+			$('#fullscreen').click(function(){
+				if (document.fullscreenElement) {
+					exitFullScreen();
+
+					// $('#full').show();
+					// $('#exit').hide();
+				} else {
+
+					// $('#full').hide();
+					// $('#exit').show();
+					launchFullScreen(document.documentElement);
+				}
+			});
+		}
+
+		//5.控制
+		function initControls() {
+			controls = new OrbitControls(camera, renderer.domElement);
+			controls.minDistance = 150;
+            controls.maxDistance = 1000;
+			controls.enableDamping = true;
+			controls.dampingFactor = 0.2;
+            controls.enablePan = false;
+			controls.update();
+		}
+
+		//6.光源
+		function initLight(array, offset) {
+			//环境光
+			var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+			scene.add(ambientLight);
+
+//平行光1，设置光的颜色，强度，位置，是否投射阴影，阴影相机的各种参数
+            var dirLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+            dirLight.position.set( 80, 100, 80 );
+            dirLight.castShadow = false;
+            dirLight.shadow.camera.right = 100;
+            dirLight.shadow.camera.left = - 100;
+            dirLight.shadow.camera.top	= 100;
+            dirLight.shadow.camera.bottom = - 100;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+
+            scene.add( dirLight );
+
+            // window.dirLight = dirLight;
+
+            //光源辅助对象
+            // var helper = new THREE.DirectionalLightHelper( dirLight, 5 );
+            // scene.add( helper );
+
+            //平行光2
+            var dirLight2 = dirLight.clone();
+            dirLight2.intensity = 1;
+            dirLight2.position.set(-80, 100, 80);
+            scene.add(dirLight2);
+
+            // var helper = new THREE.DirectionalLightHelper( dirLight2, 5 );
+            // scene.add( helper );
+
+            var dirLight3 = dirLight.clone();
+            dirLight3.intensity = 1;
+            dirLight3.position.set(-80, -100, -80);
+            scene.add(dirLight3);
+
+            // var helper = new THREE.DirectionalLightHelper( dirLight3, 5 );
+            // scene.add( helper );
+
+            var dirLight4 = dirLight.clone();
+            dirLight4.intensity = 1;
+            dirLight4.position.set(80, -100, -80);
+            scene.add(dirLight4);
+
+            var dirLight5 = dirLight.clone();
+            dirLight4.intensity = 1;
+            dirLight5.position.set(80, -100, 80);
+            scene.add(dirLight5);
+
+            var dirLight6 = dirLight.clone();
+            dirLight4.intensity = 1;
+            dirLight6.position.set(-80, 100, -80);
+            scene.add(dirLight6);
+            // var helper = new THREE.DirectionalLightHelper( dirLight4, 5 );
+            // scene.add( helper );
+		}
+
+		//7.其它
+		function initOther() {
+			//x, y, z轴辅助器
+			var axes = new THREE.AxesHelper(500);
+			axes.position.set(100, 100, 100);
+			// scene.add(axes);
+			
+			//性能检查Stats， 可以查看当前帧数
+			stats = new Stats();
+			//document.body.appendChild( stats.dom );
+
+			
+			new RGBELoader()
+				.setDataType( THREE.UnsignedByteType )
+				.setPath( 'environment/' )
+				.load( '3.hdr', function ( texture ) {
+
+					var pmremGenerator = new THREE.PMREMGenerator( renderer );
+					pmremGenerator.compileEquirectangularShader();
+					var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+
+					// scene.background = envMap;
+					// scene.environment = envMap;
+
+					texture.dispose();
+					pmremGenerator.dispose();
+
+					render();
+
+					var progressBar = $('.progressBar div');
+					// use of RoughnessMipmapper is optional
+					var roughnessMipmapper = new RoughnessMipmapper( renderer );
+
+					
+					var loader = new GLTFLoader().setPath( './model/' );
+					loader.load( 'liujin2.glb', function ( gltf ) {
+						$('.loading').hide();
+
+						var object = gltf.scene;
+						object.traverse( function ( child ) {
+							if ( child.isMesh ) {
+								roughnessMipmapper.generateMipmaps( child.material );
+
+								child.material.envMap = envMap;
+							}
+						} );
+
+						let scale = 30;
+
+						new THREE.Box3().setFromObject(object).getCenter(object.position).multiplyScalar(-1);
+						scene.add(object);
+
+						TweenMax.to( object.scale, 1, { x: scale, y: scale, z: scale, ease: Power2.easeInOut } );
+						TweenMax.to( object.rotation, 1.5, { x: 0, y: Math.PI / 2, z: 0, ease: Power2.easeInOut } );
+						
+						roughnessMipmapper.dispose();
+						render();
+
+						var box3 = new THREE.Box3().setFromObject(object);
+						console.log(box3);
+					}, function(xhr) {
+						// console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+						// console.log(( xhr.loaded / xhr.total * 100 ).toFixed(2));
+
+						progressBar.width(Math.round( xhr.loaded / xhr.total * 220 ));
+					} );
+				} );
+		}
+
+		function getSizeMesh(start, end) {
+			var w = 0.6;
+			var h = 6;
+			var start = new THREE.Vector2(start, 0);
+			var end = new THREE.Vector2(end, 0);
+			
+
+			var shape = new THREE.Shape()
+				.moveTo( start.x, start.y )
+				.lineTo( start.x, start.y + h )
+				.lineTo( end.x, end.y + h )
+				.lineTo( end.x, end.y )
+				.lineTo( end.x - w, end.y )
+				.lineTo( end.x - w, end.y + h - w )
+				.lineTo( start.x + w, start.y + h - w )
+				.lineTo( start.x + w, start.y )
+				.lineTo( start.x, start.y );
+			var geometry = new THREE.ShapeBufferGeometry( shape );
+			geometry.center();
+			return new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: 0x000000, side: THREE.DoubleSide } ) );
+		}
+
+		function getText(font, message) {
+			var xMid, text;
+
+			var matLite = new THREE.MeshBasicMaterial( {
+				color: 0x000000,
+				side: THREE.DoubleSide
+			} );
+
+			var shapes = font.generateShapes( message, 5 );
+
+			var geometry = new THREE.ShapeBufferGeometry( shapes );
+
+			geometry.computeBoundingBox();
+
+			xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+
+			geometry.translate( xMid, 0, 0 );
+
+			text = new THREE.Mesh( geometry, matLite );
+			text.position.y = 5;
+
+			return text;
+		}
+
+		function initSize() {
+			var group1 = new THREE.Group();
+			group1.add(getSizeMesh(-30, 45));
+
+			var group2 = new THREE.Group();
+			group2.add(getSizeMesh(-30, 40));
+
+			var group3 = new THREE.Group();
+			var mesh = getSizeMesh(-12, 36);
+			mesh.rotation.x = Math.PI
+			group3.add(mesh);
+
+			var loader = new THREE.FontLoader();
+			loader.load( 'font/helvetiker_regular.typeface.json', function ( font ) {
+				group1.add( getText(font, '40.00cm') );
+				group2.add( getText(font, '38.00cm') );
+				group3.add( getText(font, '32.00cm') );
+			});
+
+			group1.rotation.y = - Math.PI / 2;
+			group1.position.set(0, 50, 0);
+			group1.visible = false;
+			scene.add(group1);
+
+			group2.rotation.set(0, - Math.PI / 2, Math.PI / 2);
+			group2.position.set(0, 0, -50);
+			group2.visible = false;
+			scene.add(group2);
+
+			group3.position.set(0, -30, 50);
+			group3.visible = false;
+			scene.add(group3);
+
+			groupArray.push(group1, group2, group3);
+		}
+
+		// 初始函数，初始化各种对象
+		function init() {
+			initScene();
+			initCamera();
+			initRender();
+			initEvent();
+			initControls();
+			initLight();
+			initOther();
+			initSize();
+		}
+
+		// 窗口缩放时自适应屏幕
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+
+		function animate() {
+			render();
+			requestAnimationFrame(animate); //循环执行animate函数
+		}
+
+		function render() {
+			controls.update();
+			stats.update();
+
+			renderer.clear();
+			renderer.render(scene, camera);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Series Final (V4-V7)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f0f2f5;
+            color: #2d3436;
+            min-height: 100vh;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.5rem;
+            color: #636e72;
+            margin-bottom: 60px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        svg {
+            width: 200px;
+            height: 240px;
+            overflow: visible;
+        }
+
+        .label {
+            margin-top: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        .sub-label {
+            font-size: 0.8rem;
+            color: #b2bec3;
+            margin-top: 5px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* --- V6 TEXTURE --- */
+        .gold-texture {
+            filter: url(#noiseGold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Skyhouse Series / V4 - V7 Collection</h1>
+
+    <div class="gallery">
+
+        <!-- V4: NEGATIVE SPACE (Design) -->
+        <div class="card">
+            <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <mask id="windowHole">
+                        <rect x="0" y="0" width="200" height="240" fill="white" />
+                        <rect x="94" y="104" width="12" height="12" fill="black" />
+                    </mask>
+                </defs>
+
+                <g transform="translate(0, 20)">
+                    <!-- Balloons (Elliptical) -->
+                    <!-- Simplification: 3 overlapping ellipses -->
+                    <g transform="translate(100, 40)">
+                        <ellipse cx="-15" cy="5" rx="10" ry="14" fill="#a29bfe" />
+                        <ellipse cx="15" cy="5" rx="10" ry="14" fill="#fab1a0" />
+                        <ellipse cx="0" cy="-5" rx="12" ry="16" fill="#81ecec" />
+                        <!-- Strings -->
+                        <path d="M-15 19 Q -5 35, 0 50 M 15 19 Q 5 35, 0 50 M 0 11 L 0 50" stroke="#b2bec3"
+                            stroke-width="0.5" fill="none" />
+                    </g>
+
+                    <!-- House Body -->
+                    <!-- Solid shape with mask cutout -->
+                    <g transform="translate(76, 90)">
+                        <path d="M0 24 L24 0 L48 24 L48 56 L0 56 Z" fill="#2d3436" mask="url(#windowHole)" />
+                        <!-- The Light BEHIND the hole -->
+                        <rect x="18" y="34" width="12" height="12" fill="#fdcb6e" />
+                        <!-- Slight Inner Glow for the light -->
+                        <rect x="18" y="34" width="12" height="12" fill="#fdcb6e" filter="blur(2px)" opacity="0.5" />
+                    </g>
+
+                    <!-- Moon (Matte Flat) -->
+                    <path d="M60 180 C 60 210, 140 210, 140 180 C 140 195, 60 195, 60 180" fill="#e1b12c" />
+                </g>
+            </svg>
+            <div class="label">V4 | Negative Space</div>
+            <div class="sub-label">Solid Forms • Matte Moon • Ellipses</div>
+        </div>
+
+        <!-- V5: MINIMALIST ICON (Tiny) -->
+        <div class="card" style="background: #2d3436;">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Compact Composition -->
+                <g transform="translate(50, 50)">
+
+                    <!-- 1 Balloon (Accent) -->
+                    <!-- Solid accent color vs White lines -->
+                    <circle cx="0" cy="-35" r="8" fill="#00d2d3" />
+                    <line x1="0" y1="-27" x2="0" y2="-15" stroke="#fff" stroke-width="1.5" />
+
+                    <!-- House (White Outline) -->
+                    <g transform="translate(-12, -15)">
+                        <path d="M0 10 L12 0 L24 10 L24 24 L0 24 Z" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linejoin="round" />
+                        <!-- Window (Solid Warm) -->
+                        <rect x="8" y="12" width="8" height="8" fill="#f1c40f" />
+                    </g>
+
+                    <!-- Moon (Short Arc) -->
+                    <path d="M-18 20 Q 0 35, 18 20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                </g>
+            </svg>
+            <div class="label" style="color: #fff">V5 | Minimalist Icon</div>
+            <div class="sub-label" style="color: #636e72">Line Art • Single Accent • Compact</div>
+        </div>
+
+        <!-- V6: FAIRYTALE (Illustration) -->
+        <div class="card">
+            <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="noiseGold">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+                        <feColorMatrix type="saturate" values="0" />
+                        <feComponentTransfer>
+                            <feFuncR type="linear" slope="3" intercept="-1" />
+                            <feFuncG type="linear" slope="3" intercept="-1" />
+                            <feFuncB type="linear" slope="3" intercept="-1" />
+                        </feComponentTransfer>
+                        <feComposite operator="in" in2="SourceGraphic" />
+                        <feBlend mode="multiply" in="SourceGraphic" />
+                    </filter>
+                    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#fff" stop-opacity="0" />
+                        <stop offset="50%" stop-color="#fff" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+
+                <g transform="translate(0, 20)">
+
+                    <!-- Balloons (Asymmetrical 1 Big 2 Small) -->
+                    <g transform="translate(100, 50)">
+                        <!-- Big -->
+                        <circle cx="0" cy="-10" r="18" fill="#ff7675" />
+                        <!-- Small -->
+                        <circle cx="-16" cy="8" r="10" fill="#74b9ff" />
+                        <circle cx="16" cy="8" r="10" fill="#55efc4" />
+
+                        <!-- Strings -->
+                        <path d="M0 8 L 0 50 M -16 18 L 0 50 M 16 18 L 0 50" stroke="#b2bec3" stroke-width="0.5" />
+                    </g>
+
+                    <!-- House (Terracotta Roof) -->
+                    <g transform="translate(76, 100)">
+                        <rect x="0" y="24" width="48" height="32" fill="#fcfcfc" /> <!-- Cream Body -->
+                        <path d="M-4 24 L24 -4 L52 24 Z" fill="#c0392b" /> <!-- Oversized Terracotta Roof -->
+                        <rect x="18" y="34" width="12" height="12" fill="#ffeaa7" />
+                    </g>
+
+                    <!-- Cloud Strip (Atmosphere) -->
+                    <rect x="40" y="160" width="120" height="10" fill="url(#cloudGrad)" rx="5" />
+
+                    <!-- Moon (Gold Foil) -->
+                    <path d="M60 180 C 60 220, 140 220, 140 180 C 140 200, 60 200, 60 180" fill="#f1c40f" />
+                    <!-- Texture Overlay -->
+                    <path d="M60 180 C 60 220, 140 220, 140 180 C 140 200, 60 200, 60 180" fill="#d35400" opacity="0.3"
+                        filter="url(#noiseGold)" />
+
+                </g>
+
+            </svg>
+            <div class="label">V6 | Fairytale Texture</div>
+            <div class="sub-label">Terracotta • Gold Foil • Cloud Mist</div>
+        </div>
+
+        <!-- V7: MONOGRAM (Brand Symbol) -->
+        <div class="card">
+            <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                <g transform="translate(0, 30)">
+
+                    <!-- The Gylph -->
+                    <g transform="translate(100, 120)">
+
+                        <!-- Moon as Letter 'C/U' Base -->
+                        <!-- Thick, uniform stroke style -->
+                        <path d="M-40 20 A 40 40 0 0 0 40 20" fill="none" stroke="#2d3436" stroke-width="6"
+                            stroke-linecap="round" />
+
+                        <!-- House Resting on Arc -->
+                        <!-- Simplified -->
+                        <path d="M-20 20 L20 20 L20 -10 L0 -30 L-20 -10 Z" fill="#2d3436" />
+
+                        <!-- Window (Negative Space in Glyph) -->
+                        <rect x="-6" y="0" width="12" height="12" fill="#fff" />
+                    </g>
+
+                    <!-- Central Tether -->
+                    <line x1="100" y1="90" x2="100" y2="40" stroke="#2d3436" stroke-width="2" />
+
+                    <!-- Balloon Cluster as Dot -->
+                    <g transform="translate(100, 30)">
+                        <circle cx="-10" cy="5" r="10" fill="#2d3436" />
+                        <circle cx="10" cy="5" r="10" fill="#2d3436" />
+                        <circle cx="0" cy="-5" r="12" fill="#fab1a0" /> <!-- Pop Color -->
+                    </g>
+
+                </g>
+            </svg>
+            <div class="label">V7 | Monogram Symbol</div>
+            <div class="sub-label">Letter C/U • Unified Glyph • Strong Brand</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+
+body {
+    margin: 0;
+    overflow: hidden;
+    color: #444;
+    background: #eee;
+}
+a {
+    color: #08f;
+}
+.colorPicker {
+    display: inline-block;
+    margin: 0 10px;
+    color: #fff;
+    vertical-align: top;
+}
+
+#info {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+a, button, input, select {
+    pointer-events: auto;
+}
+
+.annotation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 120px;
+    color: #fff;
+    background: rgba(0, 0, 0, 1);
+    border-radius: .5em;
+    font-size: 12px;
+    line-height: 1.2;
+    display: none;
+}
+
+.annotation p {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.icon {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    bottom: 7px;
+    z-index: 100;
+}
+
+.icon li {
+    margin-left: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+li {
+    list-style: none;
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+.icon li .svg {
+    color: #fff;
+    font-size: 30px;
+}
+
+.icon li .svg svg {
+    filter: drop-shadow(2px 2px 3px #4e4e4e);
+}
+
+.svg-icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.icon li .svg.active {
+    color: #ff7420;
+}
+
+#exit {
+    display: none;
+}
+
+.loading {
+    position: absolute;
+    z-index: 999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.loading_d {
+    position: absolute;
+    z-index: 999;
+    bottom: calc(50% + 150px);
+    text-align: center;
+    color: white;
+    width: 100%;
+    font-size: 20px;
+}
+
+.loading_t {
+    font-size: 16px;
+    color: white;
+    width: 100%;  
+}
+
+
+.progressBar {
+    display: inline-block;
+    width: 355px;
+    height: 176px;
+    background: url(../images/logo3.png);
+position: relative;
+    
+}
+
+.progressBar div {
+    bottom: 0; position: absolute; color: #fff;
+     background: url(../images/logo2.png);
+
+  background-repeat: no-repeat;
+  background-position: center bottom ;
+    height: 0;overflow: hidden;
+    width: 355px;
+
+}
+

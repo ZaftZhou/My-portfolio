@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - V2 Hoist Structure</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #dfe6e9;
+            /* Industrial Concrete Grey */
+            color: #2d3436;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: #636e72;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .showcase {
+            background: #f1f2f6;
+            padding: 80px;
+            border-radius: 4px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px #fff;
+            position: relative;
+        }
+
+        /* Technical Grid Overlay */
+        .showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(#ced6e0 1px, transparent 1px),
+                linear-gradient(90deg, #ced6e0 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        svg {
+            width: 300px;
+            height: 400px;
+            overflow: visible;
+            /* Drop shadow for the whole suspended object */
+            filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.15));
+        }
+
+        .label {
+            margin-top: 40px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: #b2bec3;
+            text-align: center;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>V2 | HOIST STRUCTURE</h1>
+
+    <div class="showcase">
+        <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#bdc3c7" />
+                    <stop offset="50%" stop-color="#ecf0f1" />
+                    <stop offset="100%" stop-color="#bdc3c7" />
+                </linearGradient>
+                <linearGradient id="moonSafety" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f39c12" />
+                    <stop offset="100%" stop-color="#e67e22" />
+                </linearGradient>
+            </defs>
+
+            <!-- 1. THE RIGGING SYSTEM (Top) -->
+            <!-- Industrial "Spreader Bar" style -->
+            <g transform="translate(100, 50)">
+                <!-- Main Vertical Line (Going up to infinity/sky) -->
+                <line x1="0" y1="-50" x2="0" y2="0" stroke="#2d3436" stroke-width="1" stroke-dasharray="4 2"
+                    opacity="0.5" />
+
+                <!-- Spreader Bar -->
+                <rect x="-30" y="0" width="60" height="4" rx="2" fill="url(#metalGrad)" stroke="#636e72"
+                    stroke-width="0.5" />
+
+                <!-- Hoist Points (Pulleys) -->
+                <circle cx="-25" cy="2" r="4" fill="#2d3436" />
+                <circle cx="25" cy="2" r="4" fill="#2d3436" />
+                <circle cx="-25" cy="2" r="1.5" fill="#fff" />
+                <circle cx="25" cy="2" r="1.5" fill="#fff" />
+            </g>
+
+            <!-- 2. THE HOUSE & TETHERS (Suspended & Tilted) -->
+            <!-- Wind Force: Blowing from Left to Right -->
+
+            <!-- Tethers: Curved under tension and wind -->
+            <!-- Left Tether -->
+            <path d="M75 52 Q 80 100, 85 130" stroke="#636e72" stroke-width="0.8" fill="none" />
+            <!-- Right Tether -->
+            <path d="M125 52 Q 115 100, 110 135" stroke="#636e72" stroke-width="0.8" fill="none" />
+
+
+            <!-- The House Group (Tilted 5deg) -->
+            <!-- Positioned at the end of tethers roughly -->
+            <g transform="translate(100, 150) rotate(-5)"> <!-- Tilted LEFT against wind or RIGHT? 
+                 If wind from left, house swings right and tilts top-left/bottom-right.
+                 Let's try a precarious tilt: 5 degrees. -->
+
+                <!-- House Body -->
+                <g transform="translate(-24, -24)">
+                    <rect x="0" y="20" width="48" height="36" fill="#dfe6e9" stroke="#b2bec3" stroke-width="0.5" />
+                    <path d="M0 20 L24 -4 L48 20" fill="#2d3436" />
+
+                    <!-- Window: Small, singular, precise -->
+                    <rect x="18" y="32" width="12" height="12" fill="#ffeaa7" stroke="#fab1a0" stroke-width="1" />
+                </g>
+            </g>
+
+            <!-- 3. THE SAFETY MOON (Catcher) -->
+            <!-- Positioned very close below, "catching" the precarious house -->
+            <g transform="translate(100, 200)">
+                <!-- Wide, shallow tray shape -->
+                <path d="M-50 -10 Q 0 25, 50 -10 C 50 10, 0 40, -50 -10 Z" fill="url(#moonSafety)" />
+
+                <!-- Glow/Reflection on top indicates it's waiting for the house -->
+                <path d="M-40 -5 Q 0 20, 40 -5" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.3"
+                    fill="none" />
+            </g>
+
+            <!-- Visual Tension Indicators (Engineering Annotations) -->
+            <g opacity="0.4">
+                <!-- Center of Gravity Line -->
+                <line x1="100" y1="130" x2="100" y2="220" stroke="#e84393" stroke-width="0.5" stroke-dasharray="2 2" />
+                <!-- Tilt Angle -->
+                <path d="M130 140 A 10 10 0 0 1 128 150" stroke="#e84393" stroke-width="1" fill="none" />
+                <text x="135" y="145" font-family="'Share Tech Mono'" font-size="8" fill="#e84393">5° TILT</text>
+            </g>
+
+        </svg>
+    </div>
+
+    <div class="label">STATUS: PRECARIOUS / DREAM STABLE</div>
+
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse Logo Concepts - Extended Collection</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+            margin: 0;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 800;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            background: -webkit-linear-gradient(45deg, #0984e3, #fdcb6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #bdc3c7;
+            margin-bottom: 60px;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 60px;
+            max-width: 1200px;
+        }
+
+        .logo-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 280px;
+            height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #f5f5f5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            border-color: #ededed;
+        }
+
+        .label {
+            margin-top: 20px;
+            font-weight: 700;
+            color: #b2bec3;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+        }
+
+        svg {
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.05));
+        }
+
+        /* Specific Card Styles */
+        .card-neon {
+            background: #0b0c15;
+            border: 1px solid #2d3436;
+        }
+
+        .card-neon .label {
+            color: #636e72;
+        }
+
+        .card-banana {
+            background: #fffde7;
+            border: 1px solid #fff9c4;
+        }
+
+        .card-banana .label {
+            color: #fbc02d;
+        }
+
+        .card-nano {
+            background: #f0f3f4;
+            border: 1px solid #dfe6e9;
+        }
+
+        .card-nano .label {
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Skyhouse</h1>
+    <p>Design Exploration Series</p>
+
+    <div class="logo-container">
+
+        <!-- Concept 1: Radiant Cloud -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4FACFE;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00F2FE;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path
+                    d="M50 145 C25 145 15 120 40 105 C40 70 80 45 110 70 C125 50 165 50 175 85 C195 90 200 120 175 145 Z"
+                    fill="#ffffff" stroke="#e0e0e0" stroke-width="1" />
+                <path d="M80 115 L105 90 L130 115 V145 H80 V115" fill="url(#skyGrad)" />
+                <path d="M75 115 L105 85 L135 115" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"
+                    stroke-linejoin="round" fill="none" />
+                <circle cx="105" cy="110" r="8" fill="#FFD700" />
+                <text x="105" y="180" text-anchor="middle" font-family="Segoe UI, sans-serif" font-weight="bold"
+                    fill="#2c3e50" font-size="22" letter-spacing="2">SKYHOUSE</text>
+            </svg>
+            <div class="label">The Dream Above</div>
+        </div>
+
+        <!-- Concept 2: Warm Ascent -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="sunsetGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M100 35 L45 95 H75 V155 H125 V95 H155 L100 35 Z" fill="url(#sunsetGrad)" />
+                <path d="M100 155 V115 M85 115 H115" stroke="white" stroke-width="5" stroke-linecap="round" />
+                <circle cx="40" cy="50" r="4" fill="#4FACFE" />
+                <circle cx="160" cy="60" r="3" fill="#4FACFE" />
+                <text x="100" y="190" text-anchor="middle" font-family="Segoe UI Light, sans-serif" letter-spacing="6"
+                    fill="#fa709a" font-weight="bold" font-size="18">SKYHOUSE</text>
+            </svg>
+            <div class="label">Warm Ascent</div>
+        </div>
+
+        <!-- Concept 3: Playful Line Art -->
+        <div class="logo-card">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="90" r="75" stroke="#333" stroke-width="3" fill="none" />
+                <path d="M100 80 L75 105 V140 H125 V105 L100 80" fill="none" stroke="#333" stroke-width="3"
+                    stroke-linejoin="round" />
+                <line x1="100" y1="80" x2="100" y2="50" stroke="#333" stroke-width="2" />
+                <circle cx="100" cy="40" r="14" fill="#FF6B6B" stroke="none" />
+                <path d="M100 80 L80 55" stroke="#333" stroke-width="2" />
+                <circle cx="75" cy="45" r="12" fill="#4ECDC4" stroke="none" />
+                <path d="M100 80 L120 55" stroke="#333" stroke-width="2" />
+                <circle cx="125" cy="45" r="12" fill="#FFE66D" stroke="none" />
+                <text x="100" y="190" text-anchor="middle" font-family="Verdana, sans-serif" font-weight="normal"
+                    fill="#333" font-size="20" letter-spacing="1">skyhouse</text>
+            </svg>
+            <div class="label">Soaring High</div>
+        </div>
+
+        <!-- Concept 4: Neon Cyber Sky -->
+        <div class="logo-card card-neon">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="neonGlow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+                <!-- Grid Floor -->
+                <path d="M20 160 H180" stroke="#d63031" stroke-width="2" />
+                <line x1="50" y1="160" x2="20" y2="200" stroke="#d63031" stroke-width="1" />
+                <line x1="150" y1="160" x2="180" y2="200" stroke="#d63031" stroke-width="1" />
+                <line x1="100" y1="160" x2="100" y2="200" stroke="#d63031" stroke-width="1" />
+
+                <!-- Sun -->
+                <circle cx="100" cy="80" r="40" fill="url(#sunsetGrad)" opacity="0.8" />
+
+                <!-- House Wireframe -->
+                <path d="M100 70 L70 100 V140 H130 V100 L100 70 Z" fill="none" stroke="#00d2d3" stroke-width="3"
+                    filter="url(#neonGlow)" />
+                <path d="M20 140 Q 100 40 180 140" fill="none" stroke="#a29bfe" stroke-width="1"
+                    stroke-dasharray="5,5" />
+
+                <text x="100" y="185" text-anchor="middle" font-family="Consolas, monospace" fill="#00d2d3"
+                    font-size="18" letter-spacing="4" filter="url(#neonGlow)">SKY_HOUSE</text>
+            </svg>
+            <div class="label">Cyber Neon</div>
+        </div>
+
+        <!-- Concept 5: Banana Pop -->
+        <div class="logo-card card-banana">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Banana Cloud -->
+                <path d="M40 100 Q 100 180 160 100 Q 150 130 100 145 Q 50 130 40 100" fill="#FFE135" stroke="#333"
+                    stroke-width="3" />
+
+                <!-- House sitting on it -->
+                <path d="M80 115 L80 80 L100 60 L120 80 L120 115" fill="#FF7675" stroke="#333" stroke-width="3" />
+                <rect x="92" y="90" width="16" height="16" fill="#fff" stroke="#333" stroke-width="2" />
+
+                <!-- Pop elements -->
+                <path d="M130 60 L140 50 M140 70 L150 60" stroke="#333" stroke-width="3" stroke-linecap="round" />
+                <circle cx="50" cy="50" r="20" fill="#74b9ff" opacity="0.5" />
+
+                <text x="100" y="180" text-anchor="middle" font-family="Comic Sans MS, cursive" font-weight="900"
+                    fill="#333" font-size="24">SkyHouse!</text>
+            </svg>
+            <div class="label">Banana Pop</div>
+        </div>
+
+        <!-- Concept 6: Nano Pixel -->
+        <div class="logo-card card-nano">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <!-- Pixelated Cloud -->
+                <rect x="60" y="130" width="80" height="20" fill="#b2bec3" />
+                <rect x="50" y="140" width="100" height="10" fill="#b2bec3" />
+                <rect x="70" y="120" width="60" height="10" fill="#b2bec3" />
+
+                <!-- Pixel House -->
+                <rect x="80" y="90" width="40" height="40" fill="#2d3436" />
+                <rect x="80" y="80" width="40" height="10" fill="#e17055" />
+                <rect x="90" y="70" width="20" height="10" fill="#e17055" />
+                <rect x="95" y="60" width="10" height="10" fill="#e17055" />
+
+                <!-- Propulsion fire -->
+                <rect x="85" y="130" width="10" height="10" fill="#fdcb6e" />
+                <rect x="105" y="130" width="10" height="10" fill="#fdcb6e" />
+                <rect x="90" y="135" width="20" height="10" fill="#fab1a0" />
+
+                <text x="100" y="180" text-anchor="middle" font-family="'Courier New', monospace" font-weight="bold"
+                    fill="#2d3436" font-size="20">SKYHOUSE_v1</text>
+            </svg>
+            <div class="label">Nano Pixel</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

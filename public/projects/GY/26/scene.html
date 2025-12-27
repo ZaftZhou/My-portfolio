@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <title>3D Artifact Viewer</title>
+    <script src="../js/marmoset.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            overflow: hidden;
+            margin: 0;
+            background: #000;
+        }
+
+        .tl {
+            position: absolute;
+            z-index: 2;
+            left: 15px;
+            top: 15px;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .ap {
+            position: absolute;
+            z-index: 2;
+            right: 15px;
+            top: 15px;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .ap span {
+            cursor: pointer;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .bp a {
+            position: absolute;
+            z-index: 2;
+            right: 15px;
+            bottom: 15px;
+            font-size: 22px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .modal-body p {
+            text-indent: 24px;
+        }
+
+        .tips {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #000 url(../js.png) no-repeat center center;
+            background-size: contain;
+            z-index: 999999;
+            opacity: 0.9;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        marmoset.embed('scene.mview', { width: 1920, height: 1080, autoStart: true, fullFrame: true, pagePreset: false });
+        marmoset.noUserInterface = true;
+    </script>
+
+    <div class="tl">Gilded Bronze Crown</div>
+
+    <div class="ap">
+        <span id="play" class="glyphicon glyphicon-volume-off glyphicon-volume-up"></span>
+        <span class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#myModal"></span>
+    </div>
+
+    <div style="display:none">
+        <audio loop src="index.mp3" class="audio" controls></audio>
+        <audio loop src="bg.mp3" class="audio" controls></audio>
+    </div>
+
+    <div class="bp">
+        <a href="../index.html"><span class="glyphicon glyphicon-home"></span></a>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Artifact Information</h4>
+                </div>
+                <div class="modal-body">
+                    <p>This is a 3D scanned artifact from the collection.</p>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tips"></div>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var audio = $(".audio");
+            var tag = true;
+
+            $("#play").click(function () {
+                if (tag) {
+                    audio[0].pause();
+                    audio[1].pause();
+                    tag = false;
+                    $("#play").removeClass("glyphicon-volume-up");
+                } else {
+                    audio[0].play();
+                    audio[1].play();
+                    tag = true;
+                    $("#play").addClass("glyphicon-volume-up");
+                }
+            });
+
+            $(".tips").click(function () {
+                $(".tips").fadeOut();
+                audio[0].play();
+                audio[1].play();
+            });
+        });
+    </script>
+</body>
+
+</html>

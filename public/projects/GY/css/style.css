@@ -1,0 +1,4 @@
+	html,body{width: 100%; height: 100%; overflow: hidden;}
+.rbox3d p{ display: inline-block; width:20%; float: left;}
+.rbox3d p a{display: block; padding: 3px;}
+.rbox3d p a img{width: 100%; opacity: .8;}

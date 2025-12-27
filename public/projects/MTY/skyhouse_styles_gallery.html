@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyhouse - Diverse Styles Gallery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@200;400;600&family=Noto+Serif+JP:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fcfcfc;
+            padding: 80px 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 200;
+            font-size: 2.8rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .style-card {
+            background: #fff;
+            padding: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .info {
+            padding: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SKYHOUSE STYLE SELECT</h1>
+
+    <div class="grid">
+
+        <!-- 1. Rapid Sketch -->
+        <div class="style-card">
+            <div class="canvas" style="background: #fff;">
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(200, 125) scale(0.9)">
+                        <!-- Rapid graphite lines -->
+                        <g stroke="#333" fill="none" stroke-width="1.5" stroke-linecap="round" opacity="0.8">
+                            <!-- Shaky Island -->
+                            <path d="M-80 10 Q -40 60 0 65 Q 40 60 85 10" />
+                            <path d="M-85 15 Q -40 70 5 75 Q 45 65 90 12" opacity="0.4" />
+
+                            <!-- House Sketch -->
+                            <path d="M-50 15 L 0 -35 L 50 15" stroke-width="2" />
+                            <path d="M-50 15 V 50 H 50 V 15" stroke-width="2" />
+                            <path d="M-55 12 L 0 -40 L 55 12" stroke-width="1" opacity="0.3" /> <!-- Overshoot line -->
+
+                            <!-- Rapid Roots -->
+                            <path d="M-20 60 L -30 110" />
+                            <path d="M10 70 L 5 130" />
+                            <path d="M40 55 L 45 100" />
+                            <path d="M-15 65 L -25 105" opacity="0.4" />
+                        </g>
+                    </g>
+                    <text x="200" y="220" text-anchor="middle" font-family="'Caveat', cursive" font-size="28"
+                        fill="#333">Just a quick thought...</text>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Rapid Sketch (速写风)</h2>
+                <p>极具生命力的重叠线条，保留了灵感闪现时的草稿质感。不去定义每一个边缘，而是捕捉一种漂浮的意向。</p>
+            </div>
+        </div>
+
+        <!-- 2. Ghibli Skies -->
+        <div class="style-card">
+            <div class="canvas" style="background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);">
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fff" />
+                            <stop offset="100%" stop-color="#fff" stop-opacity="0.8" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Fluffy Ghibli Clouds -->
+                    <circle cx="100" cy="50" r="30" fill="white" opacity="0.6" />
+                    <circle cx="140" cy="60" r="40" fill="white" opacity="0.4" />
+                    <circle cx="320" cy="180" r="50" fill="white" opacity="0.3" />
+
+                    <g transform="translate(200, 125) scale(1.1)">
+                        <!-- Clean Ink Outline Island -->
+                        <path d="M-70 20 Q -40 70 0 75 Q 50 70 80 20 Q 0 30 -70 20" fill="#7ed6df" stroke="#130f40"
+                            stroke-width="2.5" />
+
+                        <!-- Cel-shaded roots -->
+                        <path d="M-20 60 Q -30 100 -20 130" fill="none" stroke="#130f40" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M20 70 Q 30 110 15 150" fill="none" stroke="#130f40" stroke-width="3"
+                            stroke-linecap="round" />
+
+                        <!-- Ghibli House -->
+                        <g transform="translate(0, -5)">
+                            <path d="M-45 25 L 0 -25 L 45 25 V 55 H -45 Z" fill="#eb4d4b" stroke="#130f40"
+                                stroke-width="2.5" />
+                            <!-- White spec highlights -->
+                            <rect x="-15" y="10" width="30" height="25" fill="white" stroke="#130f40"
+                                stroke-width="2" />
+                            <rect x="-10" y="15" width="20" height="15" fill="#f9ca24" />
+                            <line x1="0" y1="15" x2="0" y2="30" stroke="#130f40" stroke-width="1.5" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Ghibli Skies (日漫风)</h2>
+                <p>明亮的赛璐珞上色与干净的圆润墨线。蓝天绿地红屋顶，充满对远方冒险的治愈感与向往。</p>
+            </div>
+        </div>
+
+        <!-- 3. Pure Geometry -->
+        <div class="style-card">
+            <div class="canvas" style="background: #1a1a1a;">
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(200, 110) scale(1.2)">
+                        <!-- Minimalist shapes -->
+                        <!-- Island as a simple crescent -->
+                        <path d="M-60 15 A 80 80 0 0 0 60 15 L 0 25 Z" fill="#fff" />
+
+                        <!-- Three symbolic root lines -->
+                        <rect x="-30" y="55" width="2" height="40" fill="#555" />
+                        <rect x="0" y="65" width="2" height="60" fill="white" />
+                        <rect x="30" y="55" width="2" height="30" fill="#555" />
+
+                        <!-- House as basic triangles/squares -->
+                        <g transform="translate(0, -5)">
+                            <path d="M-35 20 L 0 -15 L 35 20 Z" fill="#fff" />
+                            <rect x="-35" y="20" width="70" height="30" fill="#fff" />
+                            <!-- High contrast yellow window -->
+                            <rect x="-5" y="28" width="10" height="10" fill="#f1c40f" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Pure Geometry (简约风)</h2>
+                <p>极致的几何简化。通过黑白的高对比与核心图形的提炼，展现一种冷静、现代且极具专业感的标志性设计。</p>
+            </div>
+        </div>
+
+        <!-- 4. Nordic Birch -->
+        <div class="style-card">
+            <div class="canvas" style="background: #f1f2f6;">
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Fine Wood grain pattern -->
+                        <pattern id="birchGrain" width="200" height="20" patternUnits="userSpaceOnUse"
+                            patternTransform="rotate(2)">
+                            <path d="M0 10 Q 50 5 100 10 T 200 10" stroke="#dcdde1" stroke-width="0.5" fill="none" />
+                        </pattern>
+                    </defs>
+
+                    <rect width="100%" height="100%" fill="url(#birchGrain)" />
+
+                    <g transform="translate(200, 115) scale(1.05)">
+                        <!-- Muted Nordic palette -->
+                        <!-- Island (Sage Green) -->
+                        <path d="M-75 15 C -75 15, -40 60, 0 60 C 40 60, 75 15, 75 15 Z" fill="#95afc0" />
+
+                        <!-- Natural wood roots -->
+                        <line x1="-25" y1="50" x2="-25" y2="100" stroke="#dff9fb" stroke-width="2" />
+                        <line x1="10" y1="60" x2="10" y2="130" stroke="#dff9fb" stroke-width="2" />
+
+                        <!-- House (Soft Gray/Wood) -->
+                        <g transform="translate(0, -5)">
+                            <path d="M-40 20 L 0 -20 L 40 20 V 50 H -40 Z" fill="#fff" />
+                            <!-- Clean line detail -->
+                            <rect x="-10" y="15" width="20" height="20" fill="#f1f2f6" />
+                        </g>
+                    </g>
+                    <text x="200" y="225" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="200"
+                        font-size="14" fill="#666" letter-spacing="4">N O R D I C S K Y</text>
+                </svg>
+            </div>
+            <div class="info">
+                <h2>Nordic Birch (北欧风)</h2>
+                <p>莫兰迪色系与自然纹理的结合。清冷而安静的配色，传达出一种功能美学与森林气息交织的宁静氛围。</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

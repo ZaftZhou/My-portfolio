@@ -1,0 +1,491 @@
+body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body p {
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+}
+
+.huanbj {
+    display: block;
+    margin-bottom: 6px;
+    width: 30px;
+    height: 30px;
+}
+
+.huanbj1 {
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+    background: url(../images/new/4.png);
+}
+
+.bgColor1 {
+    background: #333;
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+}
+
+.bgColor2 {
+    background: #666;
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+}
+
+.bgColor3 {
+    background: #999;
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+}
+
+#my3d {
+    height: 100%;
+}
+
+#my3d iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.huanbj2 {
+    background: rgb(14, 141, 160);
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+}
+
+.huanbj3 {
+    border: 2px solid #d9bc64;
+    border-radius: 17px;
+    background: url(../images/new/5.png);
+}
+
+/* åŠ è½½è¿›åº¦ */
+#loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    color: #fff;
+    z-index: 2;
+    width: 250px;
+    height: 250px;
+    background: url(../images/loading.gif) no-repeat center center;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* å·¦ä¾§é¡¶éƒ¨ */
+.wwPos {
+    position: absolute;
+    color: #dcbe64;
+    z-index: 2;
+}
+
+.ww-title {
+    font-size: 20px;
+    top: 3%;
+    padding-left: 2%;
+    font-weight: 500;
+}
+
+.ww-btn1 {
+    top: 8%;
+    left: 3%;
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    background: url(../images/icon.png) 0px 0px no-repeat;
+    background-size: 54px auto;
+}
+
+.ww-btn2 {
+    top: 13%;
+    left: 3%;
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    background: url(../images/icon.png) 0px -126px no-repeat;
+    background-size: 54px auto;
+}
+
+/* å³ä¾§é¡¶éƒ¨ */
+.ww-content {
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    right: 2%;
+    top: 3%;
+    background: #1c1c1cf5;
+    padding: 0 35px;
+    box-sizing: border-box;
+    z-index: 999;
+    display: none;
+}
+
+.ww-contTitle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ww-close {
+    width: 42px;
+    height: 42px;
+    background: url(../images/icon.png) 0px -147px no-repeat;
+    background-size: 42px auto;
+    right: 0px;
+    position: absolute;
+}
+
+.ww-text {
+    width: 100%;
+    height: 290px;
+    line-height: 1.3em;
+    overflow: hidden;
+    color: #fff;
+    text-align: justify;
+}
+
+.ww-ContentP {
+    box-sizing: border-box;
+    width: 113%;
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 8%;
+}
+
+.ww-ContentP p {
+    line-height: 1.6em;
+}
+
+.ww-ContentP>p:nth-child(3) {
+    -webkit-margin-after: 0.5em;
+}
+
+p.wzjsP:before {
+    content: "●";
+    color: #dc0037;
+}
+
+/* é¼ æ ‡æç¤º */
+.mouseTip {
+    position: absolute;
+    bottom: 2%;
+    width: 10px;
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    left: 50%;
+}
+
+.mouseTip span {
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    background-color: #fff;
+    top: 5px;
+    left: 4px;
+    animation: mouse 1s linear 2s infinite;
+}
+
+@keyframes mouse {
+    0% {
+        top: 5px;
+    }
+
+    50% {
+        top: 10px;
+    }
+
+    100% {
+        top: 5px;
+    }
+}
+
+/* å³ä¾§åº•éƒ¨ */
+.ww-btnList {
+    top: 6%;
+    right: 2%;
+}
+
+.ww-icon {
+    width: 42px;
+    height: 42px;
+}
+
+.ww-backHome {
+    background: url(../images/icon.png) 0px -196px no-repeat;
+    background-size: 42px auto;
+}
+
+/* å£°éŸ³æ‰“å¼€ */
+.ww-vioce {
+    background: url(../images/icon.png) 0px -238px no-repeat;
+    background-size: 42px auto;
+}
+
+/* å£°éŸ³å…³é—­ */
+.ww-voiceCl {
+    background: url(../images/icon.png) 0px -280px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-share {
+    background: url(../images/icon.png) 0px -322px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-share1 {
+    background: url(../images/icon.png) 0px -322px no-repeat;
+    background-size: 42px auto;
+    display: none;
+}
+
+.ww-help {
+    background: url(../images/icon.png) 0px -532px no-repeat;
+    background-size: 42px auto;
+}
+
+.phoneShare {
+    position: absolute;
+    right: 0;
+    display: none;
+    top: 0;
+    z-index: 2;
+}
+
+.phoneShare>img {
+    width: 200px;
+    height: auto;
+}
+
+/* å¸®åŠ©æ‰‹å†Œ */
+.helpManual {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    display: none;
+    z-index: 3;
+}
+
+.closeBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+}
+
+.closeBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.helpPc {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cir {
+    width: 10%;
+    text-align: center;
+}
+
+.helpPhone {
+    display: none;
+}
+
+/* åˆ†äº«åˆ—è¡¨ */
+.ww-shareList {
+    display: none;
+    width: 144px;
+    height: 36px;
+    position: absolute;
+    top: 125px;
+    left: -108px;
+    background: #292929;
+    border-radius: 0px 25px 25px 0px;
+}
+
+.social-share a.ww-icon {
+    margin: 0px;
+    color: #292929;
+    border-color: #292929;
+}
+
+.social-share a.ww-shareWx:hover {
+    background: url(../images/icon.png) 0px -406px no-repeat;
+    background-size: 42px auto;
+}
+
+.social-share a.ww-shareQq:hover {
+    background: url(../images/icon.png) 0px -448px no-repeat;
+    background-size: 42px auto;
+}
+
+.social-share a.ww-shareWb:hover {
+    background: url(../images/icon.png) 0px -490px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-shareWx {
+    background: url(../images/icon.png) 0px -406px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-shareQq {
+    background: url(../images/icon.png) 0px -448px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-shareWb {
+    background: url(../images/icon.png) 0px -490px no-repeat;
+    background-size: 42px auto;
+}
+
+.ww-shareCl {
+    background: url(../images/icon.png) 0px -364px no-repeat;
+    background-size: 42px auto;
+}
+
+@media screen and (max-width: 1920px) {
+    .ww-btn1 {
+        top: 9%;
+    }
+
+    .ww-btn2 {
+        top: 16%;
+    }
+}
+
+@media screen and (max-width: 1680px) {
+    .ww-btn1 {
+        top: 11%;
+    }
+
+    .ww-btn2 {
+        top: 22%;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .ww-btn1 {
+        top: 10%;
+    }
+
+    .ww-btn2 {
+        top: 19%;
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .ww-btn1 {
+        top: 12%;
+    }
+
+    .ww-btn2 {
+        top: 22%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ww-btn1 {
+        top: 9%;
+    }
+
+    .ww-btn2 {
+        top: 16%;
+    }
+
+    /* æ–‡å­—ä»‹ç» */
+    .ww-ContentP {
+        width: 108%;
+    }
+
+    /* å¸®åŠ©æ‰‹å†Œ */
+    .helpPc {
+        display: none;
+    }
+
+    .closeBtn>img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .helpPhone {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .cirPhone {
+        width: 35%;
+        text-align: center;
+    }
+
+    .cirPhone:nth-child(1),
+    .cirPhone:nth-child(2) {
+        margin-top: 70px;
+    }
+
+    .cirPhone:nth-child(3),
+    .cirPhone:nth-child(4) {
+        margin-top: -200px;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .ww-btn1 {
+        top: 9%;
+        width: 42px;
+        height: 42px;
+        background: url(../images/icon.png) 0px 0px no-repeat;
+        background-size: 100% auto;
+    }
+
+    .ww-btn2 {
+        top: 17%;
+        width: 42px;
+        height: 42px;
+        background: url(../images/icon.png) 0px -98px no-repeat;
+        background-size: 100% auto;
+    }
+
+    .ww-title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .ww-content {
+        right: 57px;
+        top: 26%;
+    }
+
+    .ww-btnList {
+        top: 6%;
+    }
+
+    .ww-share1 {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .ww-content {
+        right: 37px;
+        top: 19%;
+    }
+}
